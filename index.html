@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to HJS!</title>
+    <title>Welcome!</title>
     <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Playfair+Display:wght@700&display=swap');
 
@@ -265,6 +265,7 @@ body {
 <canvas id="particles"></canvas>
 
 <h1 class="main-title">Welcome to <span class="hjs-text">HJS</span></h1>
+<!-- <h1 class="main-title"> <span class="hjs-text">H J S</span></h1> -->
 
 <div class="login-box">
     <h2 class="login-title">Login</h2>
@@ -293,7 +294,7 @@ const clickSound  = document.getElementById("clickSound");
 const bgVideo     = document.getElementById("bg-video");
 
 function noAccess() {
-    alert("접근 권한이 없습니다.\n개인적으로 연락 부탁 드리겠습니다.\n\t\t- 한지성 올림");
+    alert("접근 권한이 없습니다.\n개인적으로 연락 부탁 드리겠습니다.\n- 한지성 올림");
 }
 
 document.addEventListener("mousemove", (e) => {
@@ -362,6 +363,7 @@ form.addEventListener("submit", function(e) {
     const pw = document.getElementById("password").value;
 
     if ((id === "qwerqwer" && pw === "qwerqwer") || (id === "1q2w3e4r5t!" && pw === "1q2w3e4r5t!")) {
+        msg.textContent = "잘못된 아이디 또는 비밀번호 입니다.";
         msg.style.color        = "#00FFFF";
         flash.style.opacity    = "1";
         flash.style.transition = "opacity 0.8s ease";

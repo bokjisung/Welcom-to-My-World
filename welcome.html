@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script>
+document.addEventListener("contextmenu", function(e) { e.preventDefault(); });
+document.addEventListener("selectstart", function(e) { e.preventDefault(); });
+document.addEventListener("dragstart", function(e) { e.preventDefault(); });
+document.addEventListener("keydown", function(e) {
+    if (e.key === "F12") { e.preventDefault(); return false; }
+    if (e.ctrlKey && e.shiftKey && e.key === "I") { e.preventDefault(); return false; }
+    if (e.ctrlKey && e.shiftKey && e.key === "J") { e.preventDefault(); return false; }
+    if (e.ctrlKey && e.shiftKey && e.key === "C") { e.preventDefault(); return false; }
+    if (e.ctrlKey && (e.key === "u" || e.key === "U")) { e.preventDefault(); return false; }
+    if (e.ctrlKey && (e.key === "s" || e.key === "S")) { e.preventDefault(); return false; }
+    if (e.ctrlKey && (e.key === "a" || e.key === "A")) { e.preventDefault(); return false; }
+    if (e.ctrlKey && (e.key === "p" || e.key === "P")) { e.preventDefault(); return false; }
+});
+setInterval(function() {
+    if (window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160) {
+        document.body.innerHTML = `<div style="display:flex;justify-content:center;align-items:center;height:100vh;font-size:40px;font-weight:bold;">접근 불가</div>`;
+    }
+}, 1000);
+setInterval(() => {
+    if (window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160) {
+        location.href = "about:blank";
+    }
+}, 100);
+setInterval(() => { debugger; }, 10);
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR 뷰어</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&family=Playfair+Display:wght@700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  background: #0a0a0a;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 12px;
+  letter-spacing: 8px;
+  color: #a855f7;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.card {
+  width: 100%;
+  padding: 40px 36px;
+  border-radius: 20px;
+  background: #111;
+  border: 1px solid rgba(168,85,247,0.18);
+}
+
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: #c084fc;
+  margin-bottom: 22px;
+}
+
+.preview-box {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 1px solid rgba(168,85,247,0.2);
+  border-radius: 14px;
+  background: #0d0d0d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 22px;
+  overflow: hidden;
+  position: relative;
+  transition: border-color 0.3s;
+}
+
+.preview-box.has-image {
+  border-color: rgba(168,85,247,0.45);
+  background: #fff;
+}
+
+.preview-box img {
+  width: 85%; height: 85%;
+  object-fit: contain;
+  display: none;
+}
+.preview-box.has-image img { display: block; }
+.preview-box.has-image .empty { display: none; }
+
+.corner {
+  position: absolute;
+  width: 18px; height: 18px;
+  border-color: rgba(168,85,247,0.4);
+  border-style: solid;
+}
+.corner.tl { top: 10px; left: 10px;   border-width: 2px 0 0 2px; border-radius: 3px 0 0 0; }
+.corner.tr { top: 10px; right: 10px;  border-width: 2px 2px 0 0; border-radius: 0 3px 0 0; }
+.corner.bl { bottom: 10px; left: 10px;  border-width: 0 0 2px 2px; border-radius: 0 0 0 3px; }
+.corner.br { bottom: 10px; right: 10px; border-width: 0 2px 2px 0; border-radius: 0 0 3px 0; }
+.preview-box.has-image .corner { border-color: rgba(168,85,247,0.25); }
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.empty svg { opacity: 0.35; }
+.empty span {
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: rgba(255,255,255,0.18);
+}
+
+label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.22);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(168,85,247,0.2);
+  background: #0d0d0d;
+  color: rgba(255,255,255,0.75);
+  font-size: 13px;
+  font-family: 'Poppins', sans-serif;
+  outline: none;
+  margin-bottom: 14px;
+  transition: border-color 0.2s;
+}
+input::placeholder { color: rgba(255,255,255,0.14); }
+input:focus { border-color: rgba(168,85,247,0.5); }
+
+.btn-row { display: flex; gap: 10px; }
+
+.btn-primary {
+  flex: 1;
+  padding: 13px;
+  border-radius: 10px;
+  border: none;
+  background: #a855f7;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+.btn-primary:hover { background: #9333ea; }
+.btn-primary:active { transform: scale(0.98); }
+
+.btn-ghost {
+  padding: 13px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(168,85,247,0.22);
+  background: transparent;
+  color: rgba(168,85,247,0.55);
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+.btn-ghost:hover { border-color: rgba(168,85,247,0.5); color: #a855f7; }
+
+.action-row {
+  display: none;
+  gap: 8px;
+  margin-top: 10px;
+}
+.action-row.visible { display: flex; }
+.action-row .btn-ghost {
+  flex: 1;
+  text-align: center;
+  font-size: 11px;
+  padding: 10px;
+}
+
+.msg {
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 12px;
+  min-height: 18px;
+}
+.msg.success { color: #34d399; }
+.msg.error   { color: #f87171; }
+
+@media (max-width: 480px) {
+  .card { padding: 30px 22px; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="logo">QR Viewer</div>
+
+  <div class="card">
+    <div class="card-title">QR 코드 이미지</div>
+
+    <div class="preview-box" id="previewBox">
+      <div class="corner tl"></div>
+      <div class="corner tr"></div>
+      <div class="corner bl"></div>
+      <div class="corner br"></div>
+
+      <div class="empty">
+        <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4"  y="4"  width="24" height="24" rx="3" stroke="#a855f7" stroke-width="2" fill="none"/>
+          <rect x="10" y="10" width="12" height="12" rx="1.5" fill="#a855f7"/>
+          <rect x="44" y="4"  width="24" height="24" rx="3" stroke="#a855f7" stroke-width="2" fill="none"/>
+          <rect x="50" y="10" width="12" height="12" rx="1.5" fill="#a855f7"/>
+          <rect x="4"  y="44" width="24" height="24" rx="3" stroke="#a855f7" stroke-width="2" fill="none"/>
+          <rect x="10" y="50" width="12" height="12" rx="1.5" fill="#a855f7"/>
+          <rect x="34" y="34" width="4" height="4" rx="1" fill="#a855f7" opacity="0.5"/>
+          <rect x="40" y="34" width="4" height="4" rx="1" fill="#a855f7" opacity="0.3"/>
+          <rect x="34" y="40" width="4" height="4" rx="1" fill="#a855f7" opacity="0.4"/>
+          <rect x="46" y="40" width="4" height="4" rx="1" fill="#a855f7" opacity="0.5"/>
+          <rect x="40" y="46" width="4" height="4" rx="1" fill="#a855f7" opacity="0.3"/>
+          <rect x="52" y="46" width="4" height="4" rx="1" fill="#a855f7" opacity="0.4"/>
+          <rect x="58" y="34" width="4" height="4" rx="1" fill="#a855f7" opacity="0.3"/>
+          <rect x="58" y="52" width="4" height="4" rx="1" fill="#a855f7" opacity="0.5"/>
+          <rect x="46" y="58" width="4" height="4" rx="1" fill="#a855f7" opacity="0.3"/>
+          <rect x="58" y="58" width="4" height="4" rx="1" fill="#a855f7" opacity="0.4"/>
+        </svg>
+        <span>URL을 입력하세요</span>
+      </div>
+
+      <img id="qrImg" alt="QR 코드" />
+    </div>
+
+    <label>Image URL</label>
+    <input type="text" id="urlInput" placeholder="https://example.com/qrcode.png" />
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="loadQR()">적용</button>
+      <button class="btn-ghost" onclick="clearQR()">초기화</button>
+    </div>
+
+    <div class="action-row" id="actionRow">
+      <button class="btn-ghost" onclick="openImage()">원본 열기 ↗</button>
+    </div>
+
+    <div class="msg" id="msgBox"></div>
+  </div>
+</div>
+
+<script>
+const input  = document.getElementById('urlInput');
+const img    = document.getElementById('qrImg');
+const box    = document.getElementById('previewBox');
+const msgBox = document.getElementById('msgBox');
+const acts   = document.getElementById('actionRow');
+
+input.addEventListener('keydown', e => { if (e.key === 'Enter') loadQR(); });
+
+function setMsg(text, type) {
+  msgBox.textContent = text;
+  msgBox.className = 'msg ' + type;
+}
+
+function loadQR() {
+  const url = input.value.trim();
+  if (!url) { setMsg('URL을 입력해주세요.', 'error'); return; }
+  setMsg('', '');
+  img.src = '';
+  box.classList.remove('has-image');
+  acts.classList.remove('visible');
+
+  img.onload = () => {
+    box.classList.add('has-image');
+    acts.classList.add('visible');
+    setMsg('✔ 로드 완료', 'success');
+  };
+  img.onerror = () => setMsg('⚠ 이미지를 불러올 수 없습니다.', 'error');
+  img.src = url;
+}
+
+function clearQR() {
+  input.value = '';
+  img.src = '';
+  box.classList.remove('has-image');
+  acts.classList.remove('visible');
+  setMsg('', '');
+}
+
+function openImage() {
+  if (img.src) window.open(img.src, '_blank');
+}
+</script>
+</body>
+</html>

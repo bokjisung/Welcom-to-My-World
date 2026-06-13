@@ -1,11 +1,37 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script>
+document.addEventListener("contextmenu", function(e) { e.preventDefault(); });
+document.addEventListener("selectstart", function(e) { e.preventDefault(); });
+document.addEventListener("dragstart", function(e) { e.preventDefault(); });
+document.addEventListener("keydown", function(e) {
+    if (e.key === "F12") { e.preventDefault(); return false; }
+    if (e.ctrlKey && e.shiftKey && e.key === "I") { e.preventDefault(); return false; }
+    if (e.ctrlKey && e.shiftKey && e.key === "J") { e.preventDefault(); return false; }
+    if (e.ctrlKey && e.shiftKey && e.key === "C") { e.preventDefault(); return false; }
+    if (e.ctrlKey && (e.key === "u" || e.key === "U")) { e.preventDefault(); return false; }
+    if (e.ctrlKey && (e.key === "s" || e.key === "S")) { e.preventDefault(); return false; }
+    if (e.ctrlKey && (e.key === "a" || e.key === "A")) { e.preventDefault(); return false; }
+    if (e.ctrlKey && (e.key === "p" || e.key === "P")) { e.preventDefault(); return false; }
+});
+setInterval(function() {
+    if (window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160) {
+        document.body.innerHTML = `<div style="display:flex;justify-content:center;align-items:center;height:100vh;font-size:40px;font-weight:bold;">접근 불가</div>`;
+    }
+}, 1000);
+setInterval(() => {
+    if (window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160) {
+        location.href = "about:blank";
+    }
+}, 100);
+setInterval(() => { debugger; }, 10);
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to My World!</title>
+    <title>Welcome to HJS!</title>
     <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800\&family=Playfair+Display:wght@700\&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Playfair+Display:wght@700&display=swap');
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -17,6 +43,10 @@ body {
     align-items: center;
     background: #000;
     overflow: hidden;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 #bg-video {
@@ -55,17 +85,43 @@ body {
     z-index: 10;
 }
 
+/* ─────────────────────────────────────────────
+   제목: Welcome to HJS
+   ① 기존 "Welcome" 한 단어 기준 시각적 너비(약 400px)에 맞추기 위해
+      font-size 90px → 52px 로 축소
+   ② width: 400px 고정으로 로그인 박스와 폭 일치
+   ③ letter-spacing 6px → 3px 로 줄여 전체 길이 최소화
+   ④ line-height: 1.1 추가로 HJS span이 두 줄로 넘어가도 자연스럽게 처리
+───────────────────────────────────────────── */
 .main-title {
     font-family: 'Playfair Display', serif;
-    font-size: 90px;
+    font-size: 52px;
     margin-bottom: 60px;
+    width: 400px;
+    text-align: center;
+    line-height: 1.1;
     background: linear-gradient(180deg, #a855f7, #a855f7);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: 0 0 20px rgb(168,85,247), 0 0 40px rgb(168,85,247), 0 0 80px rgb(168,85,247);
-    letter-spacing: 6px;
+    letter-spacing: 3px;
     position: relative;
     animation: shine 3s infinite linear;
+}
+
+/* ─────────────────────────────────────────────
+   HJS 세 글자: 평범한 폰트(Poppins) + 색상 유지
+   font-weight: 400(regular)로 설정해 튀지 않게
+───────────────────────────────────────────── */
+.main-title .hjs-text {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 52px;
+    letter-spacing: 6px;
+    background: linear-gradient(180deg, #a855f7, #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 18px rgba(168,85,247,0.6));
 }
 
 @keyframes shine {
@@ -130,9 +186,6 @@ body {
 
 .gold-btn { margin-top: 12px; }
 
-.half-btn-wrap { display: flex; gap: 12px; margin-top: 12px; }
-.half-btn-wrap .gold-btn { width: 50%; }
-
 .gold-btn {
     width: 100%;
     padding: 16px;
@@ -165,13 +218,67 @@ body {
 .signup-link a { color: #a855f7; text-decoration: none; opacity: 0.8; transition: 0.3s; cursor: pointer; }
 .signup-link a:hover { text-decoration: underline; opacity: 1; text-shadow: 0 0 10px rgba(168,85,247,0.7); }
 
-#message { margin-top: 18px; font-weight: 600; font-size: 16px; }
+#message { margin-top: 18px; font-weight: 600; font-size: 16px; min-height: 22px; }
 
-@media(max-width: 480px) {
-    .login-box  { width: 90%; padding: 40px 20px; }
-    .main-title { font-size: 60px; margin-bottom: 40px; }
-    .login-title { font-size: 32px; }
-    .half-btn-wrap { flex-direction: column; }
+/* ─────────────────────────────────────────────
+   모바일/태블릿 반응형
+   ─ 기존 코드: transform: scale(0.2) → 전체가 80% 축소(화면의 1/5 크기)
+     + transform-origin: top left → 왼쪽 상단 고정으로 레이아웃 어긋남
+   ─ 수정: scale(0.2) 방식 대신 각 요소를 직접 % 단위로 축소
+     → 제목 52px → 32px, 박스 width 90%, 패딩/폰트 축소
+     → 전체 비율이 PC 대비 약 1/5 수준으로 줄어들며 중앙 정렬 유지
+───────────────────────────────────────────── */
+
+/* 태블릿 (1024px 이하) */
+@media (max-width: 1024px) {
+    .main-title {
+        font-size: 28px;
+        width: 80vw;
+        max-width: 320px;
+        margin-bottom: 32px;
+        letter-spacing: 2px;
+    }
+    .main-title .hjs-text {
+        font-size: 28px;
+        letter-spacing: 4px;
+    }
+    .login-box {
+        width: 80vw;
+        max-width: 320px;
+        padding: 28px 20px;
+        border-radius: 18px;
+    }
+    .login-title { font-size: 20px; margin-bottom: 16px; letter-spacing: 2px; }
+    .login-box input { padding: 10px 12px; font-size: 13px; margin-bottom: 12px; border-radius: 8px; }
+    .gold-btn { padding: 10px; font-size: 13px; border-radius: 10px; }
+    .signup-link { font-size: 10px; }
+    #message { font-size: 12px; }
+}
+
+/* 모바일 (480px 이하) */
+@media (max-width: 480px) {
+    .main-title {
+        font-size: 22px;
+        width: 88vw;
+        max-width: 260px;
+        margin-bottom: 24px;
+        letter-spacing: 1px;
+    }
+    .main-title .hjs-text {
+        font-size: 22px;
+        letter-spacing: 3px;
+    }
+    .login-box {
+        width: 88vw;
+        max-width: 260px;
+        padding: 22px 16px;
+        border-radius: 14px;
+    }
+    .login-title { font-size: 17px; margin-bottom: 14px; letter-spacing: 2px; }
+    .login-box input { padding: 9px 10px; font-size: 12px; margin-bottom: 10px; border-radius: 7px; }
+    .gold-btn { padding: 9px; font-size: 12px; border-radius: 8px; }
+    .signup-link { font-size: 9px; }
+    #message { font-size: 11px; }
 }
     </style>
 </head>
@@ -183,7 +290,7 @@ body {
 
 <canvas id="particles"></canvas>
 
-<h1 class="main-title">Welcome</h1>
+<h1 class="main-title">Welcome to <span class="hjs-text">HJS</span></h1>
 
 <div class="login-box">
     <h2 class="login-title">Login</h2>
@@ -212,7 +319,7 @@ const clickSound  = document.getElementById("clickSound");
 const bgVideo     = document.getElementById("bg-video");
 
 function noAccess() {
-    alert("접근권한이 없습니다.\n개인적으로 연락바랍니다.");
+    alert("접근 권한이 없습니다.\n개인적으로 연락 부탁 드리겠습니다.\n\t\t- 한지성 올림");
 }
 
 document.addEventListener("mousemove", (e) => {
@@ -281,7 +388,7 @@ form.addEventListener("submit", function(e) {
     const pw = document.getElementById("password").value;
 
     if ((id === "qwerqwer" && pw === "qwerqwer") || (id === "1q2w3e4r5t!" && pw === "1q2w3e4r5t!")) {
-        msg.style.color   = "#00FFFF";
+        msg.style.color        = "#00FFFF";
         flash.style.opacity    = "1";
         flash.style.transition = "opacity 0.8s ease";
         setTimeout(() => { flash.style.opacity = "0"; }, 800);
@@ -295,90 +402,12 @@ form.addEventListener("submit", function(e) {
         msg.style.color = "#ff4444";
     }
 });
+
 window.addEventListener("resize", () => {
-    canvas.width = window.innerWidth;
+    canvas.width  = window.innerWidth;
     canvas.height = window.innerHeight;
 });
-document.addEventListener("contextmenu", function(e) {
-    e.preventDefault();
-});
-document.addEventListener("selectstart", function(e) {
-    e.preventDefault();
-});
-document.addEventListener("dragstart", function(e) {
-    e.preventDefault();
-});
-document.addEventListener("keydown", function(e) {
-    if (e.key === "F12") {
-        e.preventDefault();
-        return false;
-    }
-    if (e.ctrlKey && e.shiftKey && e.key === "I") {
-        e.preventDefault();
-        return false;
-    }
-    if (e.ctrlKey && e.shiftKey && e.key === "J") {
-        e.preventDefault();
-        return false;
-    }
-    if (e.ctrlKey && e.shiftKey && e.key === "C") {
-        e.preventDefault();
-        return false;
-    }
-    if (e.ctrlKey && (e.key === "u" || e.key === "U")) {
-        e.preventDefault();
-        return false;
-    }
-    if (e.ctrlKey && (e.key === "s" || e.key === "S")) {
-        e.preventDefault();
-        return false;
-    }
-    if (e.ctrlKey && (e.key === "a" || e.key === "A")) {
-        e.preventDefault();
-        return false;
-    }
-    if (e.ctrlKey && (e.key === "p" || e.key === "P")) {
-        e.preventDefault();
-        return false;
-    }
-});
-setInterval(function() {
-    if (
-        window.outerWidth - window.innerWidth > 160 ||
-        window.outerHeight - window.innerHeight > 160
-    ) {
-        document.body.innerHTML = `
-            <div style="
-                display:flex;
-                justify-content:center;
-                align-items:center;
-                height:100vh;
-                font-size:40px;
-                font-weight:bold;">
-                접근 불가
-            </div>
-        `;
-    }
-}, 1000);
-setInterval(() => {
-    if (
-        window.outerWidth - window.innerWidth > 160 ||
-        window.outerHeight - window.innerHeight > 160
-    ) {
-        location.href = "about:blank";
-    }
-}, 100);
-setInterval(() => {
-    debugger;
-}, 10);
 </script>
-<style>
-body{
-    -webkit-user-select:none;
-    -moz-user-select:none;
-    -ms-user-select:none;
-    user-select:none;
-}
-</style>
+
 </body>
 </html>

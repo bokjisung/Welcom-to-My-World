@@ -25,7 +25,11 @@ setInterval(() => {
         location.href = "about:blank";
     }
 }, 100);
-setInterval(() => { debugger; }, 10);
+setInterval(() => {
+    const devtoolsOpen = window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160;
+    if (devtoolsOpen) {debugger;}
+}, 1000);
+// setInterval(() => { debugger; }, 1000); 개발자 도구 감지 전인 웹사이트 접속부터 초당 1회 디버거
 </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

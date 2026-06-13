@@ -1,41 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<script>
-document.addEventListener("contextmenu", function(e) { e.preventDefault(); });
-document.addEventListener("selectstart", function(e) { e.preventDefault(); });
-document.addEventListener("dragstart", function(e) { e.preventDefault(); });
-document.addEventListener("keydown", function(e) {
-    if (e.key === "F12") { e.preventDefault(); return false; }
-    if (e.ctrlKey && e.shiftKey && e.key === "I") { e.preventDefault(); return false; }
-    if (e.ctrlKey && e.shiftKey && e.key === "J") { e.preventDefault(); return false; }
-    if (e.ctrlKey && e.shiftKey && e.key === "C") { e.preventDefault(); return false; }
-    if (e.ctrlKey && (e.key === "u" || e.key === "U")) { e.preventDefault(); return false; }
-    if (e.ctrlKey && (e.key === "s" || e.key === "S")) { e.preventDefault(); return false; }
-    if (e.ctrlKey && (e.key === "a" || e.key === "A")) { e.preventDefault(); return false; }
-    if (e.ctrlKey && (e.key === "p" || e.key === "P")) { e.preventDefault(); return false; }
-});
-setInterval(function() {
-    if (window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160) {
-        document.body.innerHTML = `<div style="display:flex;justify-content:center;align-items:center;height:100vh;font-size:40px;font-weight:bold;">접근 불가</div>`;
-    }
-}, 1000);
-setInterval(() => {
-    const devtoolsOpen =
-        window.outerWidth - window.innerWidth > 160 ||
-        window.outerHeight - window.innerHeight > 160;
-
-    if (devtoolsOpen) {
-
-        debugger;
-
-        setTimeout(() => {
-            location.href = "about:blank";
-        }, 3000);
-
-    }
-}, 2000);
-</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to HJS!</title>

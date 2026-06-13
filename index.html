@@ -363,7 +363,7 @@ form.addEventListener("submit", function(e) {
     const pw = document.getElementById("password").value;
 
     if ((id === "qwerqwer" && pw === "qwerqwer") || (id === "1q2w3e4r5t!" && pw === "1q2w3e4r5t!")) {
-        msg.textContent = "잘못된 아이디 또는 비밀번호 입니다.";
+        msg.textContent = "환영합니다! 미완성(개발중)";
         msg.style.color        = "#00FFFF";
         flash.style.opacity    = "1";
         flash.style.transition = "opacity 0.8s ease";
@@ -374,7 +374,9 @@ form.addEventListener("submit", function(e) {
         alert("환영합니다!");
         window.location.href = 'welcome.html';
     } else {
-        msg.textContent = "잘못된 아이디 또는 비밀번호 입니다.";
+        msg.textContent = "잘못된 아이디 또는 비밀번호입니다.";
+        // msg.textContent = "Hint: PC로 들어오셔야 합니다!";
+        // msg.textContent = "잘못된 아이디 또는 비밀번호입니다.\nHint: PC로 들어오셔야 합니다!";
         msg.style.color = "#ff4444";
     }
 });

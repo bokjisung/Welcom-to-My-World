@@ -1,44 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<script>
-document.addEventListener("contextmenu", function(e) { e.preventDefault(); });
-document.addEventListener("selectstart", function(e) { e.preventDefault(); });
-document.addEventListener("dragstart", function(e) { e.preventDefault(); });
-document.addEventListener("keydown", function(e) {
-    if (e.key === "F12") { e.preventDefault(); return false; }
-    if (e.ctrlKey && e.shiftKey && e.key === "I") { e.preventDefault(); return false; }
-    if (e.ctrlKey && e.shiftKey && e.key === "J") { e.preventDefault(); return false; }
-    if (e.ctrlKey && e.shiftKey && e.key === "C") { e.preventDefault(); return false; }
-    if (e.ctrlKey && (e.key === "u" || e.key === "U")) { e.preventDefault(); return false; }
-    if (e.ctrlKey && (e.key === "s" || e.key === "S")) { e.preventDefault(); return false; }
-    if (e.ctrlKey && (e.key === "a" || e.key === "A")) { e.preventDefault(); return false; }
-    if (e.ctrlKey && (e.key === "p" || e.key === "P")) { e.preventDefault(); return false; }
-});
-setInterval(function() {
-    if (window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160) {
-        document.body.innerHTML = `<div style="display:flex;justify-content:center;align-items:center;height:100vh;font-size:40px;font-weight:bold;">접근 불가</div>`;
-    }
-}, 1000);
-setInterval(() => {
-    const devtoolsOpen =
-        window.outerWidth - window.innerWidth > 160 ||
-        window.outerHeight - window.innerHeight > 160;
-
-    if (devtoolsOpen) {
-
-        debugger;
-
-        setTimeout(() => {
-            location.href = "about:blank";
-        }, 3000);
-
-    }
-}, 2000);
-</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to HJS!</title>
+    <title>Welcome!</title>
     <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Playfair+Display:wght@700&display=swap');
 
@@ -291,6 +256,33 @@ body {
 }
     </style>
 </head>
+<script>
+(function() {
+    let devtoolsOpen = false;
+    const threshold = 160;
+    document.addEventListener("contextmenu", e => e.preventDefault());
+    document.addEventListener("selectstart", e => e.preventDefault());
+    document.addEventListener("dragstart", e => e.preventDefault());
+    document.addEventListener("keydown", function(e) {
+        if (e.key === "F12") return e.preventDefault();
+        if (e.ctrlKey && e.shiftKey && ["I","J","C"].includes(e.key.toUpperCase())) return e.preventDefault();
+        if (e.ctrlKey && ["U","S"].includes(e.key.toUpperCase())) return e.preventDefault();
+    });
+    function checkDevTools() {
+        const widthDiff = window.outerWidth - window.innerWidth > threshold;
+        const heightDiff = window.outerHeight - window.innerHeight > threshold;
+
+        if ((widthDiff || heightDiff) && !devtoolsOpen) {
+            devtoolsOpen = true;
+            document.body.style.filter = "blur(8px)";
+        } else if (!widthDiff && !heightDiff && devtoolsOpen) {
+            devtoolsOpen = false;
+            document.body.style.filter = "none";
+        }
+    }
+    setInterval(checkDevTools, 1000);
+})();
+</script>
 <body>
 
 <video autoplay muted loop id="bg-video">
@@ -300,6 +292,7 @@ body {
 <canvas id="particles"></canvas>
 
 <h1 class="main-title">Welcome to <span class="hjs-text">HJS</span></h1>
+<!-- <h1 class="main-title"> <span class="hjs-text">H J S</span></h1> -->
 
 <div class="login-box">
     <h2 class="login-title">Login</h2>
@@ -328,7 +321,7 @@ const clickSound  = document.getElementById("clickSound");
 const bgVideo     = document.getElementById("bg-video");
 
 function noAccess() {
-    alert("접근 권한이 없습니다.\n개인적으로 연락 부탁 드리겠습니다.\n\t\t- 한지성 올림");
+    alert("접근 권한이 없습니다.\n개별 연락 부탁드립니다.\n- 한지성 올림");
 }
 
 document.addEventListener("mousemove", (e) => {
@@ -397,6 +390,7 @@ form.addEventListener("submit", function(e) {
     const pw = document.getElementById("password").value;
 
     if ((id === "qwerqwer" && pw === "qwerqwer") || (id === "1q2w3e4r5t!" && pw === "1q2w3e4r5t!")) {
+        msg.textContent = "환영합니다! 미완성(개발중)";
         msg.style.color        = "#00FFFF";
         flash.style.opacity    = "1";
         flash.style.transition = "opacity 0.8s ease";
@@ -404,10 +398,12 @@ form.addEventListener("submit", function(e) {
         setTimeout(() => { box.classList.add("success"); }, 500);
         createParticles(200);
         bgVideo.style.filter = "brightness(0.6) contrast(1.2)";
-        alert("환영합니다!");
+        alert("환영합니다!\n- 한지성 올림");
         window.location.href = 'welcome.html';
     } else {
-        msg.textContent = "잘못된 아이디 또는 비밀번호 입니다.";
+        msg.textContent = "잘못된 아이디 또는 비밀번호입니다.";
+        // msg.textContent = "Hint: PC로 들어오셔야 합니다!";
+        // msg.textContent = "잘못된 아이디 또는 비밀번호입니다.\nHint: PC로 들어오셔야 합니다!";
         msg.style.color = "#ff4444";
     }
 });

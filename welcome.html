@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HJS</title>
+<style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&family=Playfair+Display:wght@700&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -192,7 +196,7 @@ input:focus { border-color: rgba(168,85,247,0.5); }
   <div class="logo">QR Viewer</div>
 
   <div class="card">
-    <div class="card-title">QR 코드 이미지</div>
+    <!-- <div class="card-title">QR 코드 이미지</div> -->
 
     <div class="preview-box" id="previewBox">
       <div class="corner tl"></div>
@@ -219,20 +223,20 @@ input:focus { border-color: rgba(168,85,247,0.5); }
           <rect x="46" y="58" width="4" height="4" rx="1" fill="#a855f7" opacity="0.3"/>
           <rect x="58" y="58" width="4" height="4" rx="1" fill="#a855f7" opacity="0.4"/>
         </svg>
-        <span>URL을 입력하세요</span>
+        <!--<span>URL을 입력하세요</span>-->
       </div>
 
       <img id="qrImg" alt="QR 코드" />
     </div>
 
-    <label>Image URL</label>
+<!--     <label>Image URL</label>
     <input type="text" id="urlInput" placeholder="https://example.com/qrcode.png" />
 
-    <div class="btn-row">
+   <div class="btn-row">
       <button class="btn-primary" onclick="loadQR()">적용</button>
       <button class="btn-ghost" onclick="clearQR()">초기화</button>
     </div>
-
+  -->
     <div class="action-row" id="actionRow">
       <button class="btn-ghost" onclick="openImage()">원본 열기 ↗</button>
     </div>

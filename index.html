@@ -1,3 +1,4 @@
+<!-- 날씨 서울에서 부산, 오른쪽 템플릿(레이아웃?)은 그대로 유지하되 버튼 일년치(365)개로 확장 (휴일 빨간 버튼 및 오늘 위치는 그대로) 이 어플 기능도 실시간 시간의 의해서 변경되는 건지 알려줘. <div class="quarter-q" id="qLabel">Q2</div> 이게 뭘 의미하는지 알려줘-->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -293,7 +294,7 @@ body {
         <input type="text" id="username" placeholder="Username" required>
         <input type="password" id="password" placeholder="Password" required>
         <button type="submit" class="gold-btn">ENTER</button>
-        <button type="button" class="guest-btn" id="guestBtn">비회원 접속</button>
+        <button type="button" class="guest-btn" id="guestBtn">비회원</button>
         <div class="signup-link">
             <a onclick="noAccess()">회원가입</a>
         </div>
@@ -315,7 +316,7 @@ const clickSound  = document.getElementById("clickSound");
 const bgVideo     = document.getElementById("bg-video");
 
 function noAccess() {
-    alert("접근 권한이 없습니다.\n개인적으로 연락 부탁 드리겠습니다.\n- 한지성 올림");
+    alert("접근 권한이 없습니다.\n개별 연락 부탁드립니다.\n- 한지성 올림");
 }
 
 document.addEventListener("mousemove", (e) => {
@@ -383,23 +384,23 @@ form.addEventListener("submit", function(e) {
     const id = document.getElementById("username").value;
     const pw = document.getElementById("password").value;
 
-    if ((id === "qwerqwer" && pw === "qwerqwer") || (id === "1q2w3e4r5t!" && pw === "1q2w3e4r5t!")) {
-        msg.textContent = "환영합니다! 미완성(개발중)";
-        msg.style.color        = "#00FFFF";
-        flash.style.opacity    = "1";
-        flash.style.transition = "opacity 0.8s ease";
-        setTimeout(() => { flash.style.opacity = "0"; }, 800);
-        setTimeout(() => { box.classList.add("success"); }, 500);
-        createParticles(200);
-        bgVideo.style.filter = "brightness(0.6) contrast(1.2)";
-        alert("환영합니다!");
-        window.location.href = 'welcome.html';
-    } else {
-        msg.textContent = "잘못된 아이디 또는 비밀번호입니다.";
-        // msg.textContent = "Hint: PC로 들어오셔야 합니다!";
-        // msg.textContent = "잘못된 아이디 또는 비밀번호입니다.\nHint: PC로 들어오셔야 합니다!";
-        msg.style.color = "#ff4444";
-    }
+    // if ((id === "qwerqwer" && pw === "qwerqwer") || (id === "1q2w3e4r5t!" && pw === "1q2w3e4r5t!")) {
+    //     msg.textContent = "환영합니다! 미완성(개발중)";
+    //     msg.style.color        = "#00FFFF";
+    //     flash.style.opacity    = "1";
+    //     flash.style.transition = "opacity 0.8s ease";
+    //     setTimeout(() => { flash.style.opacity = "0"; }, 800);
+    //     setTimeout(() => { box.classList.add("success"); }, 500);
+    //     createParticles(200);
+    //     bgVideo.style.filter = "brightness(0.6) contrast(1.2)";
+    //     alert("환영합니다!\n- 한지성 올림");
+    //     window.location.href = 'welcome.html';
+    // } else {
+    //     msg.textContent = "잘못된 아이디 또는 비밀번호입니다.";
+    //     // msg.textContent = "Hint: PC로 들어오셔야 합니다!";
+    //     // msg.textContent = "잘못된 아이디 또는 비밀번호입니다.\nHint: PC로 들어오셔야 합니다!";
+    //     msg.style.color = "#ff4444";
+    // }
 });
 
 window.addEventListener("resize", () => {
@@ -415,7 +416,7 @@ document.getElementById("guestBtn").addEventListener("click", function() {
     setTimeout(() => { box.classList.add("success"); }, 500);
     createParticles(200);
     bgVideo.style.filter = "brightness(0.6) contrast(1.2)";
-    alert("환영합니다!");
+    alert("환영합니다!\n- 한지성 올림");
     window.location.href = 'welcome.html';
 });
 </script>

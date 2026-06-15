@@ -374,12 +374,6 @@ body::after{
     color:var(--text);
     text-shadow:0 0 14px rgba(168,85,247,0.3);
 }
-.quarter-q{
-    font-size:11px;
-    letter-spacing:3px;
-    color:var(--text-faint);
-    margin-bottom:8px;
-}
 .quarter-sub{
     font-size:12px;
     color:var(--green);
@@ -390,13 +384,13 @@ body::after{
 
 .day-grid{
     display:grid;
-    grid-template-columns:repeat(8,1fr);
-    gap:5px;
+    grid-template-columns:repeat(15,1fr);
+    gap:3px;
     width:100%;
 }
 .day-cell{
     aspect-ratio:1;
-    border-radius:4px;
+    border-radius:3px;
     background:rgba(255,255,255,0.04);
 }
 .day-cell.past{ background:var(--green); box-shadow:0 0 6px rgba(52,211,153,0.4); }
@@ -565,7 +559,6 @@ footer{
         <!-- <a class="link-btn" href="https://blog.naver.com/codingsolution" target="_blank"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAoACgDASIAAhEBAxEB/8QAGQABAAIDAAAAAAAAAAAAAAAAAAMFBAYH/8QALBAAAQQCAAQEBQUAAAAAAAAAAQACAwQFEQYSIUEUFTFRE2GRk9EjJVWB8P/EABoBAAIDAQEAAAAAAAAAAAAAAAIEAAMGAQX/xAAgEQACAwACAQUAAAAAAAAAAAABAgADEQQSIQYxUWGR/9oADAMBAAIRAxEAPwDv6IqzPSWmYxzabHule4N2wbLR3P8AvdC7dVLQHbopb4mVJkKcTyyS1C1w9QXjYU0U0c8Ykie17D3adhaHXxN2R4aK0gJ7ubygfVbrjqgpUo4N7LR1Pue6U43ItuY9lxYvxr7bSey4JlIiJ2NyOckQSEeoadfRcQ83yRHXIW/vO/K7kRsELjfEmCnwuRkBYfCvcTDJrpr2PzCXvBwETO+oEt6JYm4N3PvJg+bZL+Qt/ed+VZYixkr8tn95tQGvA6YOdM4gka6Hr81QreeG+B2XKfico2VnOQY4g7lPL7u79VSgZj4nhcCvkci0KmnPfyQP2bdwvkp8rgK1qyP1jtrjrXNo62is61aKpXjggY2OKMcrWt9AEToGDDN3SrJWqudIHkyVRzQRWIzHLG17D6tcNg/0iLssmHBg8ZVl+LBRrxv7ObGAQrADQRFMyCqqoxRkIiKQp//Z" alt="네이버카페">네이버 카페 바로가기</a> -->
          <a class="link-btn" href="#" onclick="alert('점검중입니다.'); return false;"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAoACgDASIAAhEBAxEB/8QAGQABAAIDAAAAAAAAAAAAAAAAAAMFBAYH/8QALBAAAQQCAAQEBQUAAAAAAAAAAQACAwQFEQYSIUEUFTFRE2GRk9EjJVWB8P/EABoBAAIDAQEAAAAAAAAAAAAAAAIEAAMGAQX/xAAgEQACAwACAQUAAAAAAAAAAAABAgADEQQSIQYxUWGR/9oADAMBAAIRAxEAPwDv6IqzPSWmYxzabHule4N2wbLR3P8AvdC7dVLQHbopb4mVJkKcTyyS1C1w9QXjYU0U0c8Ykie17D3adhaHXxN2R4aK0gJ7ubygfVbrjqgpUo4N7LR1Pue6U43ItuY9lxYvxr7bSey4JlIiJ2NyOckQSEeoadfRcQ83yRHXIW/vO/K7kRsELjfEmCnwuRkBYfCvcTDJrpr2PzCXvBwETO+oEt6JYm4N3PvJg+bZL+Qt/ed+VZYixkr8tn95tQGvA6YOdM4gka6Hr81QreeG+B2XKfico2VnOQY4g7lPL7u79VSgZj4nhcCvkci0KmnPfyQP2bdwvkp8rgK1qyP1jtrjrXNo62is61aKpXjggY2OKMcrWt9AEToGDDN3SrJWqudIHkyVRzQRWIzHLG17D6tcNg/0iLssmHBg8ZVl+LBRrxv7ObGAQrADQRFMyCqqoxRkIiKQp//Z" alt="네이버카페">네이버 카페 바로가기</a>
     <!-- <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/..." alt="네이버카페"> -->
-    네이버 카페 바로가기
 </a>
     </div>
 
@@ -575,7 +568,7 @@ footer{
         <!-- Weather -->
         <div class="panel weather-panel">
             <div class="panel-title">Weather</div>
-            <div class="weather-loc">📍 서울 · 대체로 맑음</div>
+            <div class="weather-loc">📍 부산 · 대체로 맑음</div>
             <div class="weather-main">
                 <div class="weather-icon">☀️</div>
                 <div>
@@ -729,44 +722,52 @@ setInterval(updateClock, 1000);
 function renderQuarter(){
     const now = new Date();
     const year = now.getFullYear();
-    const month = now.getMonth(); // 0-indexed
-    const quarter = Math.floor(month/3) + 1;
+    const startOfYear = new Date(year, 0, 1);
+    const endOfYear = new Date(year, 11, 31);
 
-    const qStartMonth = (quarter-1)*3;
-    const qStart = new Date(year, qStartMonth, 1);
-    const qEnd = new Date(year, qStartMonth+3, 0); // 마지막 날
-    const totalDays = qEnd.getDate() + (new Date(year,qStartMonth+1,0).getDate()) + (new Date(year,qStartMonth+2,0).getDate());
-
-    // 분기 전체 일수 계산
-    const daysInQuarter = [];
-    let cursor = new Date(qStart);
-    while(cursor <= qEnd){
-        daysInQuarter.push(new Date(cursor));
+    const daysInYear = [];
+    let cursor = new Date(startOfYear);
+    while(cursor <= endOfYear){
+        daysInYear.push(new Date(cursor));
         cursor.setDate(cursor.getDate()+1);
     }
 
     const today = new Date(year, now.getMonth(), now.getDate());
-    const passedDays = daysInQuarter.filter(d => d < today).length;
-    const remainingDays = daysInQuarter.length - daysInQuarter.findIndex(d => d.getTime() === today.getTime()) - 1;
-    const pct = Math.round(((passedDays+1) / daysInQuarter.length) * 100);
+    const todayIndex = daysInYear.findIndex(d => d.getTime() === today.getTime());
+    const passedDays = todayIndex; // 0-indexed
+    const remainingDays = daysInYear.length - todayIndex - 1;
+    const pct = Math.round(((passedDays+1) / daysInYear.length) * 100);
 
     document.getElementById('qYear').textContent = `${year}년`;
-    document.getElementById('qLabel').textContent = `Q${quarter}`;
+    document.getElementById('qLabel').textContent = ''; // 분기 라벨 제거 또는 비움
     document.getElementById('qSub').innerHTML = `${remainingDays}일 남음 · <span class="pct">${pct}%</span>`;
+
+    // 공휴일 목록 (한국 기준, 필요시 수정)
+    const holidays2026 = [
+        '2026-01-01','2026-02-16','2026-02-17','2026-02-18',
+        '2026-03-01','2026-03-02','2026-05-05','2026-05-24',
+        '2026-06-06','2026-08-15','2026-09-24','2026-09-25','2026-09-26',
+        '2026-10-03','2026-10-09','2026-12-25'
+    ];
 
     const grid = document.getElementById('dayGrid');
     grid.innerHTML = '';
-    daysInQuarter.forEach(d => {
+    daysInYear.forEach(d => {
         const cell = document.createElement('div');
         cell.className = 'day-cell';
         const isToday = d.getTime() === today.getTime();
         const isWeekend = d.getDay() === 0 || d.getDay() === 6;
+        const dateStr = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+        const isHoliday = holidays2026.includes(dateStr);
+
         if(isToday){
             cell.classList.add('today');
+        } else if(isHoliday || isWeekend){
+            cell.classList.add('weekend'); // 빨간색 (휴일/주말 통합)
         } else if(d < today){
-            cell.classList.add(isWeekend ? 'weekend' : 'past');
+            cell.classList.add('past');
         } else {
-            cell.classList.add(isWeekend ? 'weekend' : 'future');
+            cell.classList.add('future');
         }
         grid.appendChild(cell);
     });
@@ -786,7 +787,9 @@ function iconFor(code){
 
 async function loadWeather(){
     try{
-        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FSeoul&forecast_days=7');
+        // const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FSeoul&forecast_days=7');
+        // 변경 후 (부산: 35.1796, 129.0756)
+        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=35.1796&longitude=129.0756&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FSeoul&forecast_days=7');
         const data = await res.json();
 
         const cur = data.current;
@@ -824,7 +827,7 @@ async function loadWeather(){
     }
 }
 loadWeather();
-
+setInterval(loadWeather, 180000);
 /* ===================== Timetable ===================== */
 const timetables = {
     '2026-1': {

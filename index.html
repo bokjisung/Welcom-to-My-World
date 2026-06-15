@@ -293,7 +293,7 @@ body {
     <form id="loginForm">
         <input type="text" id="username" placeholder="Username" required>
         <input type="password" id="password" placeholder="Password" required>
-        <button type="submit" class="gold-btn">ENTER</button>
+        <button type="submit" class="gold-btn" id="zxc">ENTER</button>
         <button type="button" class="guest-btn" id="guestBtn">비회원</button>
         <div class="signup-link">
             <a onclick="noAccess()">회원가입</a>
@@ -407,14 +407,18 @@ window.addEventListener("resize", () => {
     canvas.width  = window.innerWidth;
     canvas.height = window.innerHeight;
 });
-
+document.getElementById("zxc").addEventListener("click", function() {
+    clickSound.play();
+    bgVideo.style.filter = "brightness(0.6) contrast(1.2)";
+    alert("현재 서비스 개발이 진행 중인 관계로,\n**비회원 버튼**으로 안내해 드리겠습니다.\n가급적 🖥️PC 접속을 권장합니다.");
+});
 document.getElementById("guestBtn").addEventListener("click", function() {
     clickSound.play();
     flash.style.opacity    = "1";
     flash.style.transition = "opacity 0.8s ease";
     setTimeout(() => { flash.style.opacity = "0"; }, 800);
     setTimeout(() => { box.classList.add("success"); }, 500);
-    createParticles(200);
+    // createParticles(200);
     bgVideo.style.filter = "brightness(0.6) contrast(1.2)";
     alert("환영합니다!\n- 한지성 올림");
     window.location.href = 'welcome.html';

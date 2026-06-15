@@ -316,7 +316,7 @@ const clickSound  = document.getElementById("clickSound");
 const bgVideo     = document.getElementById("bg-video");
 
 function noAccess() {
-    alert("접근 권한이 없습니다.\n개별 연락 부탁드립니다.\n- 한지성 올림");
+    alert("접근 권한이 없습니다.\n개별 연락 부탁드립니다.\n현재 서비스 개발이 진행 중인 관계로,\n**비회원 버튼**으로 안내해 드리겠습니다.\n\n- 한지성 올림");
 }
 
 document.addEventListener("mousemove", (e) => {
@@ -420,7 +420,7 @@ document.getElementById("guestBtn").addEventListener("click", function() {
     setTimeout(() => { box.classList.add("success"); }, 500);
     // createParticles(200);
     bgVideo.style.filter = "brightness(0.6) contrast(1.2)";
-    alert("환영합니다!\n- 한지성 올림");
+    alert("환영합니다!\n\n- 한지성 올림");
     window.location.href = 'welcome.html';
 });
 </script>

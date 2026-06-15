@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome!</title>
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Playfair+Display:wght@700&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+    overflow: hidden;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#bg-video {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: -4;
+    filter: brightness(0.3) contrast(1.2);
+    transition: 0.5s;
+}
+
+#particles {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -3;
+}
+
+.cursor-light {
+    position: fixed;
+    width: 250px; height: 250px;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(140,80,255,0.4) 0%, rgba(180,130,255,0.05) 40%, transparent 80%);
+    transform: translate(-50%, -50%);
+    z-index: -2;
+    mix-blend-mode: screen;
+    transition: transform 0.1s ease, opacity 0.3s ease;
+    opacity: 0;
+}
+
+.flash {
+    position: fixed; inset: 0;
+    background: radial-gradient(circle at center, rgba(130,60,255,0.9), transparent 70%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* ─────────────────────────────────────────────
+   제목: Welcome to HJS
+   ① 기존 "Welcome" 한 단어 기준 시각적 너비(약 400px)에 맞추기 위해
+      font-size 90px → 52px 로 축소
+   ② width: 400px 고정으로 로그인 박스와 폭 일치
+   ③ letter-spacing 6px → 3px 로 줄여 전체 길이 최소화
+   ④ line-height: 1.1 추가로 HJS span이 두 줄로 넘어가도 자연스럽게 처리
+───────────────────────────────────────────── */
+.main-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    margin-bottom: 60px;
+    width: 400px;
+    text-align: center;
+    line-height: 1.1;
+    background: linear-gradient(180deg, #a855f7, #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgb(168,85,247), 0 0 40px rgb(168,85,247), 0 0 80px rgb(168,85,247);
+    letter-spacing: 3px;
+    position: relative;
+    animation: shine 3s infinite linear;
+}
+
+/* ─────────────────────────────────────────────
+   HJS 세 글자: 평범한 폰트(Poppins) + 색상 유지
+   font-weight: 400(regular)로 설정해 튀지 않게
+───────────────────────────────────────────── */
+.main-title .hjs-text {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 52px;
+    letter-spacing: 6px;
+    background: linear-gradient(180deg, #a855f7, #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 18px rgba(168,85,247,0.6));
+}
+
+@keyframes shine {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.login-box {
+    width: 400px;
+    padding: 55px 45px;
+    border-radius: 30px;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(168,85,247,0.5);
+    box-shadow: 0 0 60px rgba(140,60,230,0.2), inset 0 0 35px rgba(160,80,255,0.1);
+    text-align: center;
+    animation: boxFade 1.2s ease forwards;
+    transition: all 1s ease;
+}
+
+.login-box.success {
+    opacity: 0;
+    transform: scale(0.8) translateY(-50px);
+}
+
+@keyframes boxFade {
+    from { opacity: 0; transform: translateY(50px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.login-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px;
+    margin-bottom: 28px;
+    background: linear-gradient(180deg, #a855f7, #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 10px rgb(168,85,247), 0 0 20px rgba(168,85,247,0.3);
+    letter-spacing: 4px;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 16px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(168,85,247,0.3);
+    background: rgba(0,0,0,0.6);
+    color: #a855f7;
+    outline: none;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.login-box input::placeholder { color: rgba(168,85,247,0.7); }
+
+.login-box input:focus {
+    border-color: #a855f7;
+    box-shadow: 0 0 15px rgba(168,85,247,0.5);
+}
+
+.gold-btn { margin-top: 12px; }
+
+.gold-btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    cursor: pointer;
+    background: linear-gradient(180deg, #a855f7, #7c3aed);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s;
+    box-shadow: 0 10px 25px rgba(168,85,247,0.6);
+}
+
+.gold-btn:hover  { transform: scale(1.07); box-shadow: 0 15px 35px rgba(168,85,247,0.8); }
+.gold-btn:active { transform: scale(0.95); box-shadow: inset 0 5px 15px rgba(0,0,0,0.5); }
+
+.gold-btn::before {
+    content: "";
+    position: absolute; top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: 0.6s;
+}
+.gold-btn:hover::before { left: 100%; }
+
+.guest-btn {
+    width: 100%;
+    padding: 16px;
+    margin-top: 12px;
+    border: 1px solid #a855f7;
+    border-radius: 14px;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    cursor: pointer;
+    background: transparent;
+    color: #a855f7;
+    transition: 0.3s;
+}
+.guest-btn:hover {
+    background: rgba(168,85,247,0.12);
+    box-shadow: 0 0 15px rgba(168,85,247,0.4);
+    transform: scale(1.03);
+}
+.guest-btn:active { transform: scale(0.95); }
+
+.signup-link { margin-top: 12px; font-size: 12px; text-align: center; }
+.signup-link a { color: #a855f7; text-decoration: none; opacity: 0.8; transition: 0.3s; cursor: pointer; }
+.signup-link a:hover { text-decoration: underline; opacity: 1; text-shadow: 0 0 10px rgba(168,85,247,0.7); }
+
+#message { margin-top: 18px; font-weight: 600; font-size: 16px; min-height: 22px; }
+
+/* ─────────────────────────────────────────────
+   모바일/태블릿 반응형
+   ─ 기존 코드: transform: scale(0.2) → 전체가 80% 축소(화면의 1/5 크기)
+     + transform-origin: top left → 왼쪽 상단 고정으로 레이아웃 어긋남
+   ─ 수정: scale(0.2) 방식 대신 각 요소를 직접 % 단위로 축소
+     → 제목 52px → 32px, 박스 width 90%, 패딩/폰트 축소
+     → 전체 비율이 PC 대비 약 1/5 수준으로 줄어들며 중앙 정렬 유지
+───────────────────────────────────────────── */
+
+/* 태블릿 (1024px 이하) */
+@media (max-width: 1024px) {
+    .main-title {
+        font-size: 28px;
+        width: 80vw;
+        max-width: 320px;
+        margin-bottom: 32px;
+        letter-spacing: 2px;
+    }
+    .main-title .hjs-text {
+        font-size: 28px;
+        letter-spacing: 4px;
+    }
+    .login-box {
+        width: 80vw;
+        max-width: 320px;
+        padding: 28px 20px;
+        border-radius: 18px;
+    }
+    .login-title { font-size: 20px; margin-bottom: 16px; letter-spacing: 2px; }
+    .login-box input { padding: 10px 12px; font-size: 13px; margin-bottom: 12px; border-radius: 8px; }
+    .gold-btn { padding: 10px; font-size: 13px; border-radius: 10px; }
+    .signup-link { font-size: 10px; }
+    #message { font-size: 12px; }
+}
+
+/* 모바일 (480px 이하) */
+@media (max-width: 480px) {
+    .main-title {
+        font-size: 22px;
+        width: 88vw;
+        max-width: 260px;
+        margin-bottom: 24px;
+        letter-spacing: 1px;
+    }
+    .main-title .hjs-text {
+        font-size: 22px;
+        letter-spacing: 3px;
+    }
+    .login-box {
+        width: 88vw;
+        max-width: 260px;
+        padding: 22px 16px;
+        border-radius: 14px;
+    }
+    .login-title { font-size: 17px; margin-bottom: 14px; letter-spacing: 2px; }
+    .login-box input { padding: 9px 10px; font-size: 12px; margin-bottom: 10px; border-radius: 7px; }
+    .gold-btn { padding: 9px; font-size: 12px; border-radius: 8px; }
+    .signup-link { font-size: 9px; }
+    #message { font-size: 11px; }
+}
+    </style>
+</head>
+<body>
+
+<video autoplay muted loop id="bg-video">
+    <source src="https://cdn.coverr.co/videos/coverr-golden-light-particles-1574/1080p.mp4" type="video/mp4">
+</video>
+
+<canvas id="particles"></canvas>
+
+<h1 class="main-title">Welcome to <span class="hjs-text">HJS</span></h1>
+<!-- <h1 class="main-title"> <span class="hjs-text">H J S</span></h1> -->
+
+<div class="login-box">
+    <h2 class="login-title">Login</h2>
+    <form id="loginForm">
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit" class="gold-btn">ENTER</button>
+        <button type="button" class="guest-btn" id="guestBtn">비회원 접속</button>
+        <div class="signup-link">
+            <a onclick="noAccess()">회원가입</a>
+        </div>
+    </form>
+    <p id="message"></p>
+</div>
+
+<div class="cursor-light"></div>
+<div class="flash"></div>
+<audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
+
+<script>
+const form        = document.getElementById("loginForm");
+const msg         = document.getElementById("message");
+const flash       = document.querySelector(".flash");
+const cursorLight = document.querySelector(".cursor-light");
+const box         = document.querySelector(".login-box");
+const clickSound  = document.getElementById("clickSound");
+const bgVideo     = document.getElementById("bg-video");
+
+function noAccess() {
+    alert("접근 권한이 없습니다.\n개인적으로 연락 부탁 드리겠습니다.\n- 한지성 올림");
+}
+
+document.addEventListener("mousemove", (e) => {
+    cursorLight.style.left    = e.clientX + "px";
+    cursorLight.style.top     = e.clientY + "px";
+    cursorLight.style.opacity = "1";
+});
+document.addEventListener("mouseleave", () => cursorLight.style.opacity = "0");
+
+const canvas = document.getElementById("particles");
+const ctx    = canvas.getContext("2d");
+canvas.width  = window.innerWidth;
+canvas.height = window.innerHeight;
+let particles = [];
+
+function createParticles(count, x = canvas.width / 2, y = canvas.height / 2) {
+    for (let i = 0; i < count; i++) {
+        particles.push({
+            x, y,
+            size:          Math.random() * 4 + 1,
+            speedX:        (Math.random() - 0.5) * 6,
+            speedY:        (Math.random() - 0.5) * 6,
+            life:          Math.random() * 100 + 50,
+            angle:         Math.random() * Math.PI * 2,
+            rotationSpeed: (Math.random() - 0.5) * 0.2,
+            shape:         Math.random() > 0.5 ? "star" : "circle"
+        });
+    }
+}
+
+function drawStar(ctx, r) {
+    ctx.beginPath();
+    for (let i = 0; i < 5; i++) {
+        ctx.lineTo( Math.cos((18 + i*72) * Math.PI / 180) * r,  -Math.sin((18 + i*72) * Math.PI / 180) * r);
+        ctx.lineTo( Math.cos((54 + i*72) * Math.PI / 180) * (r/2), -Math.sin((54 + i*72) * Math.PI / 180) * (r/2));
+    }
+    ctx.closePath();
+    ctx.fill();
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach((p, i) => {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.angle);
+        ctx.fillStyle = "rgba(180,120,255,0.9)";
+        if (p.shape === "star") drawStar(ctx, p.size);
+        else { ctx.beginPath(); ctx.arc(0, 0, p.size, 0, Math.PI*2); ctx.fill(); }
+        ctx.restore();
+        p.x += p.speedX;
+        p.y += p.speedY;
+        p.angle += p.rotationSpeed;
+        p.life--;
+        if (p.life <= 0) particles.splice(i, 1);
+    });
+    requestAnimationFrame(animate);
+}
+animate();
+
+form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    clickSound.play();
+
+    const id = document.getElementById("username").value;
+    const pw = document.getElementById("password").value;
+
+    if ((id === "qwerqwer" && pw === "qwerqwer") || (id === "1q2w3e4r5t!" && pw === "1q2w3e4r5t!")) {
+        msg.textContent = "환영합니다! 미완성(개발중)";
+        msg.style.color        = "#00FFFF";
+        flash.style.opacity    = "1";
+        flash.style.transition = "opacity 0.8s ease";
+        setTimeout(() => { flash.style.opacity = "0"; }, 800);
+        setTimeout(() => { box.classList.add("success"); }, 500);
+        createParticles(200);
+        bgVideo.style.filter = "brightness(0.6) contrast(1.2)";
+        alert("환영합니다!");
+        window.location.href = 'welcome.html';
+    } else {
+        msg.textContent = "잘못된 아이디 또는 비밀번호입니다.";
+        // msg.textContent = "Hint: PC로 들어오셔야 합니다!";
+        // msg.textContent = "잘못된 아이디 또는 비밀번호입니다.\nHint: PC로 들어오셔야 합니다!";
+        msg.style.color = "#ff4444";
+    }
+});
+
+window.addEventListener("resize", () => {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
+document.getElementById("guestBtn").addEventListener("click", function() {
+    clickSound.play();
+    flash.style.opacity    = "1";
+    flash.style.transition = "opacity 0.8s ease";
+    setTimeout(() => { flash.style.opacity = "0"; }, 800);
+    setTimeout(() => { box.classList.add("success"); }, 500);
+    createParticles(200);
+    bgVideo.style.filter = "brightness(0.6) contrast(1.2)";
+    alert("환영합니다!");
+    window.location.href = 'welcome.html';
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HJS Dashboard</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap');
+
+:root{
+    --bg:#000000;
+    --panel:rgba(20,12,35,0.55);
+    --panel-border:rgba(168,85,247,0.25);
+    --accent:#a855f7;
+    --accent-soft:rgba(168,85,247,0.15);
+    --text:#f3eaff;
+    --text-dim:#b9a8d6;
+    --text-faint:#7a6a93;
+    --green:#34d399;
+    --red:#f87171;
+    --blue:#60a5fa;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+    position:relative;
+}
+
+/* 배경 글로우 */
+body::before{
+    content:"";
+    position:fixed;
+    top:-20%; left:-10%;
+    width:60vw; height:60vw;
+    background:radial-gradient(circle, rgba(168,85,247,0.1), transparent 70%);
+    filter:blur(60px);
+    z-index:-2;
+    animation:float1 18s ease-in-out infinite;
+}
+body::after{
+    content:"";
+    position:fixed;
+    bottom:-25%; right:-15%;
+    width:55vw; height:55vw;
+    background:radial-gradient(circle, rgba(124,58,237,0.08), transparent 70%);
+    filter:blur(70px);
+    z-index:-2;
+    animation:float2 22s ease-in-out infinite;
+}
+@keyframes float1{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{ transform:translate(5%,8%) scale(1.1); }
+}
+@keyframes float2{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{ transform:translate(-6%,-6%) scale(1.08); }
+}
+
+.wrap{
+    max-width:1400px;
+    margin:0 auto;
+    padding:36px 28px 80px;
+}
+
+/* ===== Header ===== */
+.header{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:24px;
+    padding-bottom:28px;
+    border-bottom:1px solid var(--panel-border);
+    margin-bottom:28px;
+    animation:fadeUp .8s ease both;
+}
+
+.title-block .eyebrow{
+    font-size:12px;
+    letter-spacing:4px;
+    color:var(--accent);
+    text-transform:uppercase;
+    margin-bottom:8px;
+    font-weight:600;
+    opacity:.85;
+}
+
+.title-block h1{
+    font-family:'Playfair Display',serif;
+    font-size:46px;
+    letter-spacing:6px;
+    line-height:1.1;
+    background:linear-gradient(180deg,#a855f7,#a855f7);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    text-shadow:0 0 20px rgb(168,85,247), 0 0 40px rgb(168,85,247), 0 0 80px rgb(168,85,247);
+    animation:shine 3s infinite linear;
+}
+.title-block h1 .hjs-text{
+    font-family:'Poppins',sans-serif;
+    font-weight:400;
+    letter-spacing:6px;
+    background:linear-gradient(180deg,#a855f7,#a855f7);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    filter:drop-shadow(0 0 18px rgba(168,85,247,0.6));
+}
+@keyframes shine {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.profile-info{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px 28px;
+    font-size:13px;
+    color:var(--text-dim);
+}
+.profile-info span{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    white-space:nowrap;
+}
+.profile-info span b{
+    color:var(--text);
+    font-weight:500;
+}
+.profile-info .dot{
+    color:var(--accent);
+    font-size:10px;
+}
+
+/* ===== Quick links ===== */
+.links-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-bottom:32px;
+    animation:fadeUp .8s ease .05s both;
+}
+.link-btn{
+    flex:1 1 150px;
+    text-align:center;
+    padding:13px 14px;
+    border-radius:14px;
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    color:var(--text-dim);
+    text-decoration:none;
+    font-size:13px;
+    font-weight:500;
+    letter-spacing:.5px;
+    backdrop-filter:blur(16px);
+    transition:.25s;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+}
+.link-btn img{
+    width:22px;
+    height:22px;
+    border-radius:6px;
+    object-fit:cover;
+    flex-shrink:0;
+}
+.link-btn:hover{
+    border-color:var(--accent);
+    color:var(--text);
+    box-shadow:0 0 20px rgba(168,85,247,0.25);
+    transform:translateY(-2px);
+}
+
+/* ===== Top grid: weather / clock / quarter ===== */
+.top-grid{
+    display:grid;
+    grid-template-columns:1fr 1.6fr 1fr;
+    gap:20px;
+    margin-bottom:36px;
+}
+
+.panel{
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-radius:22px;
+    backdrop-filter:blur(20px);
+    box-shadow:0 0 40px rgba(140,60,230,0.08), inset 0 0 30px rgba(160,80,255,0.04);
+    padding:24px;
+    animation:fadeUp .8s ease .1s both;
+    position:relative;
+    overflow:hidden;
+}
+
+.panel-title{
+    font-size:11px;
+    letter-spacing:3px;
+    color:var(--accent);
+    text-transform:uppercase;
+    font-weight:600;
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+.panel-title::before{
+    content:"";
+    width:8px; height:8px;
+    background:var(--accent);
+    border-radius:2px;
+    box-shadow:0 0 10px var(--accent);
+    display:inline-block;
+}
+
+/* --- Weather --- */
+.weather-main{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:14px;
+}
+.weather-icon{ font-size:46px; }
+.weather-temp{ font-size:42px; font-weight:700; line-height:1; }
+.weather-meta{ font-size:12px; color:var(--text-dim); margin-top:6px; }
+.weather-loc{ font-size:13px; color:var(--text-dim); margin-bottom:2px; }
+.weather-stats{
+    display:flex; gap:10px; margin:14px 0 16px;
+}
+.weather-stat{
+    flex:1;
+    background:rgba(168,85,247,0.08);
+    border:1px solid var(--panel-border);
+    border-radius:10px;
+    padding:8px 10px;
+    font-size:12px;
+    text-align:center;
+    color:var(--text-dim);
+}
+.weather-stat b{ color:var(--text); font-size:14px; display:block; margin-top:2px; }
+
+.outfit-box{
+    background:rgba(168,85,247,0.06);
+    border:1px solid var(--panel-border);
+    border-radius:12px;
+    padding:12px 14px;
+    font-size:12px;
+    color:var(--text-dim);
+    margin-bottom:16px;
+}
+.outfit-box b{ color:var(--text); }
+.outfit-box .label{
+    color:var(--accent);
+    font-weight:600;
+    display:block;
+    margin-bottom:4px;
+    font-size:11px;
+    letter-spacing:1px;
+}
+
+.forecast-row{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:6px;
+    font-size:11px;
+    text-align:center;
+}
+.forecast-day{
+    background:rgba(255,255,255,0.02);
+    border-radius:8px;
+    padding:8px 2px;
+    color:var(--text-dim);
+}
+.forecast-day .dname{ font-weight:600; color:var(--text); margin-bottom:4px; }
+.forecast-day .dicon{ font-size:18px; margin:4px 0; }
+.forecast-day .temps{ font-weight:600; }
+.forecast-day .temps .hi{ color:#fca5a5; }
+.forecast-day .temps .lo{ color:#93c5fd; }
+.forecast-day .pop{ color:var(--blue); margin-top:2px; }
+
+/* --- Flip Clock --- */
+.clock-panel{ display:flex; flex-direction:column; }
+.flip-clock{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    flex:1;
+    padding:10px 0 6px;
+}
+.flip-unit{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+}
+.flip-digits{
+    display:flex;
+    gap:6px;
+}
+.flip-card{
+    position:relative;
+    width:64px;
+    height:88px;
+    background:linear-gradient(180deg,#1c1330,#120a22);
+    border-radius:10px;
+    border:1px solid rgba(168,85,247,0.3);
+    box-shadow:0 6px 20px rgba(0,0,0,0.5), inset 0 0 14px rgba(168,85,247,0.08);
+    overflow:hidden;
+}
+.flip-card::before{
+    content:"";
+    position:absolute;
+    top:50%; left:0; right:0;
+    height:1px;
+    background:rgba(168,85,247,0.35);
+    z-index:3;
+}
+.flip-digit{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:46px;
+    font-weight:800;
+    font-family:'Poppins',sans-serif;
+    color:#e9d8ff;
+    text-shadow:0 0 18px rgba(168,85,247,0.5);
+}
+.flip-label{
+    font-size:11px;
+    letter-spacing:3px;
+    color:var(--text-faint);
+    text-transform:uppercase;
+}
+.flip-sep{
+    font-size:38px;
+    font-weight:800;
+    color:var(--accent);
+    align-self:center;
+    margin-top:-22px;
+    text-shadow:0 0 12px rgba(168,85,247,0.5);
+}
+.ampm-badge{
+    margin-top:4px;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:3px;
+    color:var(--accent);
+    text-align:center;
+}
+.date-line{
+    text-align:center;
+    margin-top:14px;
+    font-size:13px;
+    color:var(--text-dim);
+    letter-spacing:1px;
+}
+
+/* --- Quarter progress --- */
+.quarter-panel{ display:flex; flex-direction:column; align-items:center; }
+.quarter-year{
+    font-family:'Playfair Display',serif;
+    font-size:24px;
+    color:var(--text);
+    text-shadow:0 0 14px rgba(168,85,247,0.3);
+}
+.quarter-q{
+    font-size:11px;
+    letter-spacing:3px;
+    color:var(--text-faint);
+    margin-bottom:8px;
+}
+.quarter-sub{
+    font-size:12px;
+    color:var(--green);
+    margin-bottom:16px;
+    font-weight:600;
+}
+.quarter-sub .pct{ color:var(--accent); }
+
+.day-grid{
+    display:grid;
+    grid-template-columns:repeat(8,1fr);
+    gap:5px;
+    width:100%;
+}
+.day-cell{
+    aspect-ratio:1;
+    border-radius:4px;
+    background:rgba(255,255,255,0.04);
+}
+.day-cell.past{ background:var(--green); box-shadow:0 0 6px rgba(52,211,153,0.4); }
+.day-cell.today{ background:var(--blue); box-shadow:0 0 10px rgba(96,165,250,0.7); }
+.day-cell.weekend{ background:var(--red); opacity:.55; }
+.day-cell.future{ background:rgba(255,255,255,0.05); }
+
+.quarter-legend{
+    display:flex;
+    gap:14px;
+    margin-top:14px;
+    font-size:11px;
+    color:var(--text-faint);
+    flex-wrap:wrap;
+    justify-content:center;
+}
+.quarter-legend span{ display:flex; align-items:center; gap:5px; }
+.legend-dot{ width:10px; height:10px; border-radius:3px; display:inline-block; }
+
+/* ===== Timetable ===== */
+.tt-panel{
+    animation:fadeUp .8s ease .15s both;
+}
+.tt-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:14px;
+    margin-bottom:18px;
+}
+.tt-tabs{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+.tt-tab{
+    padding:9px 18px;
+    border-radius:10px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid var(--panel-border);
+    color:var(--text-dim);
+    font-size:13px;
+    font-weight:500;
+    cursor:pointer;
+    transition:.2s;
+    letter-spacing:.5px;
+}
+.tt-tab:hover{ border-color:var(--accent); color:var(--text); }
+.tt-tab.active{
+    background:linear-gradient(180deg,#a855f7,#7c3aed);
+    color:#fff;
+    border-color:transparent;
+    box-shadow:0 6px 18px rgba(168,85,247,0.4);
+}
+
+.tt-table-wrap{
+    overflow-x:auto;
+    border-radius:14px;
+    border:1px solid var(--panel-border);
+}
+table.tt{
+    width:100%;
+    border-collapse:collapse;
+    min-width:760px;
+    font-size:13px;
+}
+table.tt th, table.tt td{
+    border:1px solid rgba(168,85,247,0.12);
+    padding:10px 8px;
+    text-align:left;
+    vertical-align:top;
+    height:46px;
+}
+table.tt th{
+    background:rgba(168,85,247,0.1);
+    color:var(--text);
+    font-weight:600;
+    text-align:center;
+    letter-spacing:1px;
+    font-size:12px;
+}
+table.tt td.time-col{
+    background:rgba(255,255,255,0.02);
+    color:var(--text-faint);
+    font-size:11px;
+    white-space:nowrap;
+    text-align:center;
+    font-weight:500;
+}
+table.tt td.cell{ color:var(--text-dim); font-weight:600; font-size:12px; }
+.cell-main{ font-weight:700; margin-bottom:3px; }
+.cell-detail{ font-size:10px; font-weight:400; opacity:.75; line-height:1.4; }
+table.tt td.empty{ color:transparent; }
+
+/* 시간표 셀 색상 */
+.c-tbl   { background:rgba(168,85,247,0.18); color:#e9d5ff !important; }
+.c-bim   { background:rgba(124,58,237,0.22); color:#ddd6fe !important; }
+.c-mat   { background:rgba(96,165,250,0.18); color:#bfdbfe !important; }
+.c-c     { background:rgba(52,211,153,0.16); color:#bbf7d0 !important; }
+.c-design{ background:rgba(251,146,60,0.18); color:#fed7aa !important; }
+.c-mech  { background:rgba(217,119,6,0.22); color:#fde68a !important; }
+.c-linux { background:rgba(202,138,4,0.18); color:#fef08a !important; }
+.c-job   { background:rgba(220,38,38,0.22); color:#fecaca !important; }
+.c-gym   { background:rgba(255,255,255,0.04); color:#d4d4d8 !important; }
+.c-mento { background:rgba(217,119,6,0.18); color:#fde68a !important; }
+
+footer{
+    text-align:left;
+    margin-top:50px;
+    font-size:12px;
+    color:var(--text-faint);
+    letter-spacing:1px;
+}
+
+@keyframes fadeUp{
+    from{ opacity:0; transform:translateY(24px); }
+    to{ opacity:1; transform:translateY(0); }
+}
+
+/* ===== Responsive ===== */
+@media (max-width:1100px){
+    .top-grid{ grid-template-columns:1fr 1fr; }
+    .quarter-panel{ grid-column:span 2; }
+}
+@media (max-width:760px){
+    .title-block h1{ font-size:32px; letter-spacing:3px; }
+    .top-grid{ grid-template-columns:1fr; }
+    .quarter-panel{ grid-column:span 1; }
+    .flip-card{ width:48px; height:68px; }
+    .flip-digit{ font-size:34px; }
+    .flip-sep{ font-size:28px; margin-top:-16px; }
+    .header{ flex-direction:column; align-items:flex-start; }
+    .profile-info{ font-size:12px; gap:10px 18px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+    <!-- ===== Header ===== -->
+    <div class="header">
+        <div class="title-block">
+            <div class="eyebrow">Personal Dashboard</div>
+            <h1>Welcome to <span class="hjs-text">HJS</span></h1>
+        </div>
+        <div class="profile-info">
+            <span><span class="dot">●</span>이름 : <b>한지성</b></span>
+            <span><span class="dot">●</span>탄생일 : <b>2004년 02월 11일</b></span>
+            <span><span class="dot">●</span>전공 : <b>건축공학과 &amp; 컴퓨터공학과</b></span>
+            <span><span class="dot">●</span>Email : <b>bokjisung@naver.com</b></span>
+            <span><span class="dot">●</span>취미 : <b>캠핑 &amp; 글램핑</b></span>
+        </div>
+    </div>
+
+    <!-- ===== Quick links ===== -->
+    <div class="links-row">
+        <a class="link-btn" href="https://open.kakao.com/o/sed9JXxi" target="_blank"><img src="data:image/png;base64,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" alt="카카오톡">카카오톡 바로가기</a>
+        <a class="link-btn" href="https://www.instagram.com/j.___________.s?igsh=M2JxaGp3N3U2emMz" target="_blank"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAoACgDASIAAhEBAxEB/8QAGgAAAgIDAAAAAAAAAAAAAAAAAAYEBQIDB//EADcQAAECBAIGBwUJAAAAAAAAAAECBAADBREGEhQhMUFCUQcTMmFxodIVIiOBkRYXVGJ0ksHR8P/EABgBAAMBAQAAAAAAAAAAAAAAAAMEBQIG/8QAIxEAAQQBAwUBAQAAAAAAAAAAAQACAxEhBAUSMUFRYaEUcf/aAAwDAQACEQMRAD8A7STa6iSLG5J2g+rytCo+6RKCynqkoXOc5bgqkIBR4Aki4O/yjLpBdzmuFly5CspcTEyVEHg1kgcwbbfEQmTFMcHUunlVMbP6s9kBytbtOeXJQrspSnn3xpnG8q/tm1xzxCWS3FxIDRjoLJJ8Jn+8+ifh3u7gT6t26JbLpDoTyemUpbhsVK1LnIATc77gmxO++qFgVjEBYacMGUwtsubrPZptbntvbvjY+Ys67TXF2tNb1aSxFQlzKar4cyXxIWncofzDDWRnqPqPJtmnbgtI7WHA1/V03UU8JTl5+7l9PfBCr0dvprzCyEzFKUW85UpBtc5bAi3Mi9rcoIXe3i4hc/qITDK6M9ituOJPX0OWnb8YHs/lP08Ioq20bLxJhpTxKS2S1bCZm2WBO3uhwrrUuacU2JyLCiL3+vM69sUrynyK40bBTmU3eN5QkkTjZK0jYQecSp9SY5yzvQI9q5tmoDIWgmgOQPqx1S5ORi4Y/wAyFPTN0r3QM3VdVm/bky/68FK0T7YYt0HLo2gOsmTs7r27r3i5nUWs6GWacStUt7ZerLwgW5bL27opyzaYVptRKH0h3U3rctkIbHMiShXaUVc+6HY9TYzhV2yMlZwbXIgNAaD5GT4r5nJtXHRfrwzP/VK4rcKfp4wRM6PafNp+FwZycpcTVTkgjg1AE8wbbPnBB3O5G1y27Fp1spacWmrVl4bW+VvTEGdSGs5RulSdYuAfLxO6CCASwRTCpGgpJkj4zbDSiLwwwmbVTd+wj+t2+MJOEqVKmiauWudlsQmaq6fEgbQd3nBBGWaWFmWtTH7tTVcyrwC1gARY2AG2/q8rQQQQwlF//9k=" alt="인스타그램">인스타그램 바로가기</a>
+        <a class="link-btn" href="https://github.com/bokjisung" target="_blank"><img src="data:image/png;base64,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" alt="깃허브">깃허브 바로가기</a>
+        <a class="link-btn" href="https://blog.naver.com/codingsolution" target="_blank"><img src="data:image/png;base64,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" alt="네이버블로그">네이버 블로그 바로가기</a>
+        <a class="link-btn" href="https://blog.naver.com/codingsolution" target="_blank"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAoACgDASIAAhEBAxEB/8QAGQABAAIDAAAAAAAAAAAAAAAAAAMFBAYH/8QALBAAAQQCAAQEBQUAAAAAAAAAAQACAwQFEQYSIUEUFTFRE2GRk9EjJVWB8P/EABoBAAIDAQEAAAAAAAAAAAAAAAIEAAMGAQX/xAAgEQACAwACAQUAAAAAAAAAAAABAgADEQQSIQYxUWGR/9oADAMBAAIRAxEAPwDv6IqzPSWmYxzabHule4N2wbLR3P8AvdC7dVLQHbopb4mVJkKcTyyS1C1w9QXjYU0U0c8Ykie17D3adhaHXxN2R4aK0gJ7ubygfVbrjqgpUo4N7LR1Pue6U43ItuY9lxYvxr7bSey4JlIiJ2NyOckQSEeoadfRcQ83yRHXIW/vO/K7kRsELjfEmCnwuRkBYfCvcTDJrpr2PzCXvBwETO+oEt6JYm4N3PvJg+bZL+Qt/ed+VZYixkr8tn95tQGvA6YOdM4gka6Hr81QreeG+B2XKfico2VnOQY4g7lPL7u79VSgZj4nhcCvkci0KmnPfyQP2bdwvkp8rgK1qyP1jtrjrXNo62is61aKpXjggY2OKMcrWt9AEToGDDN3SrJWqudIHkyVRzQRWIzHLG17D6tcNg/0iLssmHBg8ZVl+LBRrxv7ObGAQrADQRFMyCqqoxRkIiKQp//Z" alt="네이버카페">네이버 카페 바로가기</a>
+    </div>
+
+    <!-- ===== Top grid ===== -->
+    <div class="top-grid">
+
+        <!-- Weather -->
+        <div class="panel weather-panel">
+            <div class="panel-title">Weather</div>
+            <div class="weather-loc">📍 서울 · 대체로 맑음</div>
+            <div class="weather-main">
+                <div class="weather-icon">☀️</div>
+                <div>
+                    <div class="weather-temp" id="curTemp">20°</div>
+                    <div class="weather-meta" id="feelsLike">체감 22°</div>
+                </div>
+            </div>
+            <div class="weather-stats">
+                <div class="weather-stat">💧 습도<b id="humidity">88%</b></div>
+                <div class="weather-stat">🌬 바람<b id="wind">3km/h</b></div>
+            </div>
+            <div class="outfit-box">
+                <span class="label">👕 오늘의 옷차림</span>
+                긴팔, 얇은 가디건
+            </div>
+            <div class="forecast-row" id="forecastRow">
+                <!-- JS로 채워짐 -->
+            </div>
+        </div>
+
+        <!-- Flip Clock -->
+        <div class="panel clock-panel">
+            <div class="panel-title">Live Clock</div>
+            <div class="flip-clock" id="flipClock">
+                <div class="flip-unit">
+                    <div class="flip-digits">
+                        <div class="flip-card"><div class="flip-digit" id="h1">0</div></div>
+                        <div class="flip-card"><div class="flip-digit" id="h2">0</div></div>
+                    </div>
+                    <!-- <div class="flip-label">Hour</div> -->
+                </div>
+                <div class="flip-sep">:</div>
+                <div class="flip-unit">
+                    <div class="flip-digits">
+                        <div class="flip-card"><div class="flip-digit" id="m1">0</div></div>
+                        <div class="flip-card"><div class="flip-digit" id="m2">0</div></div>
+                    </div>
+                    <!-- <div class="flip-label">Minute</div> -->
+                </div>
+                <div class="flip-sep">:</div>
+                <div class="flip-unit">
+                    <div class="flip-digits">
+                        <div class="flip-card"><div class="flip-digit" id="s1">0</div></div>
+                        <div class="flip-card"><div class="flip-digit" id="s2">0</div></div>
+                    </div>
+                    <!-- <div class="flip-label">Second</div> -->
+                </div>
+            </div>
+            <div class="ampm-badge" id="ampmBadge">AM</div>
+            <div class="date-line" id="dateLine"></div>
+        </div>
+
+        <!-- Quarter progress -->
+        <div class="panel quarter-panel">
+            <div class="panel-title">Year Progress</div>
+            <div class="quarter-year" id="qYear">2026년</div>
+            <div class="quarter-q" id="qLabel">Q2</div>
+            <div class="quarter-sub" id="qSub">16일 남음 · <span class="pct">82%</span></div>
+            <div class="day-grid" id="dayGrid"></div>
+            <div class="quarter-legend">
+                <span><span class="legend-dot" style="background:var(--green)"></span>지난 날</span>
+                <span><span class="legend-dot" style="background:var(--blue)"></span>오늘</span>
+                <span><span class="legend-dot" style="background:var(--red);opacity:.55"></span>주말</span>
+                <span><span class="legend-dot" style="background:rgba(255,255,255,.05)"></span>남은 날</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== Timetable ===== -->
+    <div class="panel tt-panel">
+        <div class="tt-header">
+            <div class="panel-title" style="margin-bottom:0;">Timetable</div>
+            <div class="tt-tabs" id="ttTabs">
+                <div class="tt-tab active" data-term="2026-1">2026년 상반기</div>
+                <div class="tt-tab" data-term="2026-summer">2026년 여름방학</div>
+                <div class="tt-tab" data-term="2026-2">2026년 하반기</div>
+                <div class="tt-tab" data-term="2026-winter">2026년 방학</div>
+                <div class="tt-tab" data-term="2027-1">2027년 상반기</div>
+                <div class="tt-tab" data-term="2027-summer">2027년 여름방학</div>
+                <div class="tt-tab" data-term="2027-2">2027년 하반기</div>
+                <div class="tt-tab" data-term="2027-winter">2027년 방학</div>
+                <div class="tt-tab" data-term="2028-1">2028년 상반기</div>
+                <div class="tt-tab" data-term="2028-summer">2028년 여름방학</div>
+                <div class="tt-tab" data-term="2028-2">2028년 하반기</div>
+                <div class="tt-tab" data-term="2028-winter">2028년 방학</div>
+            </div>
+        </div>
+        <div class="tt-table-wrap">
+            <table class="tt" id="ttTable">
+                <thead>
+                    <tr>
+                        <th style="width:90px;">시간대</th>
+                        <th>월요일</th><th>화요일</th><th>수요일</th><th>목요일</th><th>금요일</th><th>토요일</th><th>일요일</th>
+                    </tr>
+                </thead>
+                <tbody id="ttBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer>© 2026 한지성 All rights reserved.</footer>
+</div>
+
+<script>
+/* ===================== Flip Clock & Date ===================== */
+function pad(n){ return n.toString().padStart(2,'0'); }
+
+function updateClock(){
+    const now = new Date();
+    let h = now.getHours();
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    let h12 = h % 12; if(h12 === 0) h12 = 12;
+    const hh = pad(h12);
+    const mm = pad(now.getMinutes());
+    const ss = pad(now.getSeconds());
+
+    setDigit('h1', hh[0]); setDigit('h2', hh[1]);
+    setDigit('m1', mm[0]); setDigit('m2', mm[1]);
+    setDigit('s1', ss[0]); setDigit('s2', ss[1]);
+
+    document.getElementById('ampmBadge').textContent = ampm;
+
+    const days = ['일','월','화','수','목','금','토'];
+    const dateStr = `${now.getFullYear()}년 ${now.getMonth()+1}월 ${now.getDate()}일 (${days[now.getDay()]})`;
+    document.getElementById('dateLine').textContent = dateStr;
+}
+
+function setDigit(id, val){
+    const el = document.getElementById(id);
+    if(el.textContent !== val){
+        el.textContent = val;
+        el.style.animation = 'none';
+        requestAnimationFrame(()=>{ el.style.animation = 'flipIn 0.35s ease'; });
+    }
+}
+
+const flipStyle = document.createElement('style');
+flipStyle.textContent = `
+@keyframes flipIn{
+    0%{ transform: rotateX(90deg); opacity:0.3; }
+    100%{ transform: rotateX(0deg); opacity:1; }
+}`;
+document.head.appendChild(flipStyle);
+
+updateClock();
+setInterval(updateClock, 1000);
+
+/* ===================== Quarter / Year Progress ===================== */
+function renderQuarter(){
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth(); // 0-indexed
+    const quarter = Math.floor(month/3) + 1;
+
+    const qStartMonth = (quarter-1)*3;
+    const qStart = new Date(year, qStartMonth, 1);
+    const qEnd = new Date(year, qStartMonth+3, 0); // 마지막 날
+    const totalDays = qEnd.getDate() + (new Date(year,qStartMonth+1,0).getDate()) + (new Date(year,qStartMonth+2,0).getDate());
+
+    // 분기 전체 일수 계산
+    const daysInQuarter = [];
+    let cursor = new Date(qStart);
+    while(cursor <= qEnd){
+        daysInQuarter.push(new Date(cursor));
+        cursor.setDate(cursor.getDate()+1);
+    }
+
+    const today = new Date(year, now.getMonth(), now.getDate());
+    const passedDays = daysInQuarter.filter(d => d < today).length;
+    const remainingDays = daysInQuarter.length - daysInQuarter.findIndex(d => d.getTime() === today.getTime()) - 1;
+    const pct = Math.round(((passedDays+1) / daysInQuarter.length) * 100);
+
+    document.getElementById('qYear').textContent = `${year}년`;
+    document.getElementById('qLabel').textContent = `Q${quarter}`;
+    document.getElementById('qSub').innerHTML = `${remainingDays}일 남음 · <span class="pct">${pct}%</span>`;
+
+    const grid = document.getElementById('dayGrid');
+    grid.innerHTML = '';
+    daysInQuarter.forEach(d => {
+        const cell = document.createElement('div');
+        cell.className = 'day-cell';
+        const isToday = d.getTime() === today.getTime();
+        const isWeekend = d.getDay() === 0 || d.getDay() === 6;
+        if(isToday){
+            cell.classList.add('today');
+        } else if(d < today){
+            cell.classList.add(isWeekend ? 'weekend' : 'past');
+        } else {
+            cell.classList.add(isWeekend ? 'weekend' : 'future');
+        }
+        grid.appendChild(cell);
+    });
+}
+renderQuarter();
+
+/* ===================== Weather (Open-Meteo, Seoul) ===================== */
+const weatherIcons = {
+    0:'☀️',1:'🌤',2:'⛅',3:'☁️',45:'🌫',48:'🌫',
+    51:'🌦',53:'🌦',55:'🌧',61:'🌧',63:'🌧',65:'🌧',
+    71:'🌨',73:'🌨',75:'❄️',80:'🌦',81:'🌧',82:'⛈',
+    95:'⛈',96:'⛈',99:'⛈'
+};
+function iconFor(code){
+    return weatherIcons[code] || '🌡';
+}
+
+async function loadWeather(){
+    try{
+        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FSeoul&forecast_days=7');
+        const data = await res.json();
+
+        const cur = data.current;
+        document.getElementById('curTemp').textContent = Math.round(cur.temperature_2m) + '°';
+        document.getElementById('feelsLike').textContent = '체감 ' + Math.round(cur.apparent_temperature) + '°';
+        document.getElementById('humidity').textContent = Math.round(cur.relative_humidity_2m) + '%';
+        document.getElementById('wind').textContent = Math.round(cur.wind_speed_10m) + 'km/h';
+        document.querySelector('.weather-icon').textContent = iconFor(cur.weather_code);
+
+        const days = ['일','월','화','수','목','금','토'];
+        const row = document.getElementById('forecastRow');
+        row.innerHTML = '';
+        data.daily.time.forEach((dateStr, i) => {
+            const d = new Date(dateStr);
+            const label = i === 0 ? '오늘' : days[d.getDay()];
+            const mmdd = `${d.getMonth()+1}/${d.getDate()}`;
+            const hi = Math.round(data.daily.temperature_2m_max[i]);
+            const lo = Math.round(data.daily.temperature_2m_min[i]);
+            const pop = data.daily.precipitation_probability_max[i];
+            const code = data.daily.weather_code[i];
+
+            const cell = document.createElement('div');
+            cell.className = 'forecast-day';
+            cell.innerHTML = `
+                <div class="dname">${label}</div>
+                <div style="font-size:9px;color:var(--text-faint)">${mmdd}</div>
+                <div class="dicon">${iconFor(code)}</div>
+                <div class="temps"><span class="hi">${hi}°</span> <span class="lo">${lo}°</span></div>
+                <div class="pop">💧${pop}%</div>
+            `;
+            row.appendChild(cell);
+        });
+    }catch(e){
+        console.error('Weather load failed', e);
+    }
+}
+loadWeather();
+
+/* ===================== Timetable ===================== */
+const timetables = {
+    '2026-1': {
+        'mon-8' : {label:'헬스', cls:'c-gym', span:2},
+        'mon-10': {label:'TBL영어', cls:'c-tbl', span:2, detail:'ICT 1관 3층 312호실 / 15번 312'},
+        'tue-8' : {label:'헬스', cls:'c-gym', span:1},
+        'tue-10': {label:'BIM개론', cls:'c-bim', span:2, detail:'건축디자인관 7층 714호실 / 3번 714'},
+        'tue-14': {label:'건축공학설계', cls:'c-design', span:2, detail:'건축디자인관 7층 711호실 / 3번 711'},
+        'wed-8' : {label:'헬스', cls:'c-gym', span:1},
+        'wed-10': {label:'건축재료', cls:'c-mat', span:2, detail:'건축디자인관 2층 205호실 / 3번 205'},
+        'wed-14': {label:'정역학', cls:'c-mech', span:3, detail:'건축디자인관 3층 301호실 / 3번 301'},
+        'thu-8' : {label:'헬스', cls:'c-gym', span:1},
+        'thu-10': {label:'C프로그래밍', cls:'c-c', span:2, detail:'ICT 1관 5층 517호실 / 15번 517'},
+        'thu-14': {label:'유닉스실습', cls:'c-linux', span:2, detail:'ICT 1관 5층 517호실 / 15번 517'},
+        'thu-17': {label:'TU멘토링3_진로설계', cls:'c-mento', span:1},
+        'fri-16': {label:'알바', cls:'c-job', span:6, days:['fri','sat','sun']}
+    },
+    '2026-summer': {},
+    '2026-2': {},
+    '2026-winter': {},
+    '2027-1': {},
+    '2027-summer': {},
+    '2027-2': {},
+    '2027-winter': {},
+    '2028-1': {},
+    '2028-summer': {},
+    '2028-2': {},
+    '2028-winter': {}
+};
+
+const dayKeys = ['mon','tue','wed','thu','fri','sat','sun'];
+
+function buildTimetable(term){
+    const tbody = document.getElementById('ttBody');
+    tbody.innerHTML = '';
+    const data = timetables[term] || {};
+
+    // 06:00 ~ 23:00 (1시간 단위, 시작 시각 기준)
+    for(let hour = 6; hour <= 22; hour++){
+        const tr = document.createElement('tr');
+
+        const timeTd = document.createElement('td');
+        timeTd.className = 'time-col';
+        timeTd.textContent = `${pad(hour)}:00 ~ ${pad(hour+1)}:00`;
+        tr.appendChild(timeTd);
+
+        dayKeys.forEach(day => {
+            const key = `${day}-${hour}`;
+            const entry = data[key];
+            const td = document.createElement('td');
+
+            if(entry){
+                td.className = 'cell ' + entry.cls;
+                td.innerHTML = entry.detail
+                    ? `<div class="cell-main">${entry.label}</div><div class="cell-detail">${entry.detail}</div>`
+                    : `<div class="cell-main">${entry.label}</div>`;
+                if(entry.days){
+                    // 가로(요일) + 세로(시간) 동시 병합 (예: 알바)
+                    td.rowSpan = entry.span;
+                    td.colSpan = entry.days.length;
+                } else if(entry.span > 1){
+                    td.rowSpan = entry.span;
+                }
+                tr.appendChild(td);
+            } else {
+                if(isCovered(data, day, hour)) return;
+                td.className = 'empty';
+                tr.appendChild(td);
+            }
+        });
+
+        tbody.appendChild(tr);
+    }
+}
+
+// 병합된 셀에 의해 가려지는 칸인지 확인
+function isCovered(data, day, hour){
+    for(const key in data){
+        const entry = data[key];
+        const [startDay, startHourStr] = key.split('-');
+        const startHour = parseInt(startHourStr);
+        const rows = entry.span || 1;
+
+        if(entry.days){
+            // 시작 요일+시각이 아니면서, 병합 범위(요일/시간) 안에 들어가면 가려짐
+            const inDayRange = entry.days.includes(day);
+            const inHourRange = hour >= startHour && hour < startHour + rows;
+            const isStart = (day === startDay && hour === startHour);
+            if(inDayRange && inHourRange && !isStart) return true;
+        } else if(rows > 1 && day === startDay){
+            if(hour > startHour && hour < startHour + rows) return true;
+        }
+    }
+    return false;
+}
+
+buildTimetable('2026-1');
+
+document.getElementById('ttTabs').addEventListener('click', (e) => {
+    const tab = e.target.closest('.tt-tab');
+    if(!tab) return;
+    document.querySelectorAll('.tt-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    buildTimetable(tab.dataset.term);
+});
+</script>
+</body>
+</html>

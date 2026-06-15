@@ -32,7 +32,6 @@ body{
     position:relative;
 }
 
-/* 배경 글로우 */
 body::before{
     content:"";
     position:fixed;
@@ -68,7 +67,6 @@ body::after{
     padding:36px 28px 80px;
 }
 
-/* ===== Header ===== */
 .header{
     display:flex;
     flex-wrap:wrap;
@@ -139,7 +137,6 @@ body::after{
     font-size:10px;
 }
 
-/* ===== Quick links ===== */
 .links-row{
     display:flex;
     flex-wrap:wrap;
@@ -181,7 +178,6 @@ body::after{
     transform:translateY(-2px);
 }
 
-/* ===== Top grid: weather / clock / quarter ===== */
 .top-grid{
     display:grid;
     grid-template-columns:1fr 1.6fr 1fr;
@@ -221,7 +217,6 @@ body::after{
     display:inline-block;
 }
 
-/* --- Weather --- */
 .weather-main{
     display:flex;
     align-items:center;
@@ -286,7 +281,6 @@ body::after{
 .forecast-day .temps .lo{ color:#93c5fd; }
 .forecast-day .pop{ color:var(--blue); margin-top:2px; }
 
-/* --- Flip Clock --- */
 .clock-panel{ display:flex; flex-direction:column; }
 .flip-clock{
     display:flex;
@@ -366,7 +360,6 @@ body::after{
     letter-spacing:1px;
 }
 
-/* --- Quarter progress --- */
 .quarter-panel{ display:flex; flex-direction:column; align-items:center; }
 .quarter-year{
     font-family:'Playfair Display',serif;
@@ -410,7 +403,6 @@ body::after{
 .quarter-legend span{ display:flex; align-items:center; gap:5px; }
 .legend-dot{ width:10px; height:10px; border-radius:3px; display:inline-block; }
 
-/* ===== Timetable ===== */
 .tt-panel{
     animation:fadeUp .8s ease .15s both;
 }
@@ -486,7 +478,6 @@ table.tt td.cell{ color:var(--text-dim); font-weight:600; font-size:12px; }
 .cell-detail{ font-size:10px; font-weight:400; opacity:.75; line-height:1.4; }
 table.tt td.empty{ color:transparent; }
 
-/* 시간표 셀 색상 */
 .c-tbl   { background:rgba(168,85,247,0.18); color:#e9d5ff !important; }
 .c-bim   { background:rgba(124,58,237,0.22); color:#ddd6fe !important; }
 .c-mat   { background:rgba(96,165,250,0.18); color:#bfdbfe !important; }
@@ -512,7 +503,6 @@ footer{
     to{ opacity:1; transform:translateY(0); }
 }
 
-/* ===== Responsive ===== */
 @media (max-width:1100px){
     .top-grid{ grid-template-columns:1fr 1fr; }
     .quarter-panel{ grid-column:span 2; }
@@ -527,16 +517,279 @@ footer{
     .header{ flex-direction:column; align-items:flex-start; }
     .profile-info{ font-size:12px; gap:10px 18px; }
 }
+
+.blur-overlay{
+    position:fixed; inset:0;
+    backdrop-filter:blur(10px);
+    background:rgba(0,0,0,0.35);
+    z-index:200;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .6s ease;
+}
+.blur-overlay.show{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.survey-prompt{
+    position:fixed;
+    left:50%; top:50%;
+    transform:translate(-50%,-50%) scale(0.92);
+    z-index:201;
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-radius:22px;
+    backdrop-filter:blur(24px);
+    box-shadow:0 0 60px rgba(140,60,230,0.25), inset 0 0 30px rgba(160,80,255,0.06);
+    padding:32px 30px;
+    width:90%;
+    max-width:380px;
+    text-align:center;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .6s ease, transform .6s ease;
+}
+.survey-prompt.show{
+    opacity:1;
+    transform:translate(-50%,-50%) scale(1);
+    pointer-events:auto;
+}
+.survey-prompt h3{
+    font-family:'Playfair Display',serif;
+    font-size:20px;
+    letter-spacing:2px;
+    margin-bottom:12px;
+    background:linear-gradient(180deg,#a855f7,#a855f7);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    text-shadow:0 0 14px rgba(168,85,247,0.4);
+}
+.survey-prompt p{
+    font-size:13px;
+    color:var(--text-dim);
+    line-height:1.7;
+    margin-bottom:24px;
+}
+.survey-prompt-btns{
+    display:flex;
+    gap:10px;
+}
+.survey-btn{
+    flex:1;
+    padding:12px;
+    border-radius:12px;
+    font-size:13px;
+    font-weight:700;
+    font-family:'Poppins',sans-serif;
+    letter-spacing:.5px;
+    cursor:pointer;
+    transition:.25s;
+    border:1px solid var(--panel-border);
+}
+.survey-btn.primary{
+    background:linear-gradient(180deg,#a855f7,#7c3aed);
+    color:#fff;
+    border-color:transparent;
+    box-shadow:0 8px 20px rgba(168,85,247,0.4);
+}
+.survey-btn.primary:hover{ transform:translateY(-2px); box-shadow:0 12px 26px rgba(168,85,247,0.6); }
+.survey-btn.ghost{
+    background:transparent;
+    color:var(--text-dim);
+}
+.survey-btn.ghost:hover{ color:var(--text); border-color:var(--accent); }
+
+.survey-modal{
+    position:fixed;
+    left:50%; top:50%;
+    transform:translate(-50%,-50%) scale(0.92);
+    z-index:202;
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-radius:22px;
+    backdrop-filter:blur(24px);
+    box-shadow:0 0 60px rgba(140,60,230,0.25), inset 0 0 30px rgba(160,80,255,0.06);
+    padding:30px 28px;
+    width:92%;
+    max-width:520px;
+    max-height:82vh;
+    overflow-y:auto;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .5s ease, transform .5s ease;
+}
+.survey-modal.show{
+    opacity:1;
+    transform:translate(-50%,-50%) scale(1);
+    pointer-events:auto;
+}
+.survey-modal::-webkit-scrollbar{ width:6px; }
+.survey-modal::-webkit-scrollbar-thumb{ background:rgba(168,85,247,0.3); border-radius:4px; }
+
+.survey-close{
+    position:absolute;
+    top:18px; right:18px;
+    width:32px; height:32px;
+    border-radius:50%;
+    border:1px solid var(--panel-border);
+    background:rgba(255,255,255,0.03);
+    color:var(--text-dim);
+    font-size:16px;
+    line-height:1;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.2s;
+}
+.survey-close:hover{ color:var(--text); border-color:var(--accent); background:rgba(168,85,247,0.12); }
+
+.survey-modal h3{
+    font-family:'Playfair Display',serif;
+    font-size:22px;
+    letter-spacing:2px;
+    margin-bottom:6px;
+    padding-right:36px;
+    background:linear-gradient(180deg,#a855f7,#a855f7);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    text-shadow:0 0 14px rgba(168,85,247,0.4);
+}
+.survey-modal .survey-sub{
+    font-size:12px;
+    color:var(--text-faint);
+    margin-bottom:22px;
+    letter-spacing:.5px;
+}
+
+.survey-q{
+    margin-bottom:22px;
+}
+.survey-q-title{
+    font-size:14px;
+    color:var(--text);
+    font-weight:600;
+    margin-bottom:12px;
+    line-height:1.5;
+}
+.survey-options{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+.survey-option{
+    flex:1 1 calc(33.33% - 8px);
+    min-width:90px;
+    text-align:center;
+    padding:10px 8px;
+    border-radius:10px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid var(--panel-border);
+    color:var(--text-dim);
+    font-size:12px;
+    font-weight:500;
+    cursor:pointer;
+    transition:.2s;
+    user-select:none;
+}
+.survey-option:hover{ border-color:var(--accent); color:var(--text); }
+.survey-option.selected{
+    background:linear-gradient(180deg,#a855f7,#7c3aed);
+    color:#fff;
+    border-color:transparent;
+    box-shadow:0 6px 16px rgba(168,85,247,0.35);
+}
+
+.survey-textarea{
+    width:100%;
+    min-height:100px;
+    resize:vertical;
+    background:rgba(0,0,0,0.25);
+    border:1px solid var(--panel-border);
+    border-radius:12px;
+    padding:12px 14px;
+    color:var(--text);
+    font-family:'Poppins',sans-serif;
+    font-size:13px;
+    line-height:1.6;
+    outline:none;
+    transition:.2s;
+}
+.survey-textarea::placeholder{ color:var(--text-faint); }
+.survey-textarea:focus{ border-color:var(--accent); box-shadow:0 0 14px rgba(168,85,247,0.25); }
+
+.survey-submit{
+    width:100%;
+    margin-top:8px;
+    padding:14px;
+    border:none;
+    border-radius:14px;
+    font-weight:700;
+    font-family:'Playfair Display',serif;
+    letter-spacing:2px;
+    cursor:pointer;
+    background:linear-gradient(180deg,#a855f7,#7c3aed);
+    color:#fff;
+    box-shadow:0 10px 25px rgba(168,85,247,0.4);
+    transition:.25s;
+}
+.survey-submit:hover{ transform:translateY(-2px); box-shadow:0 14px 32px rgba(168,85,247,0.6); }
+.survey-submit:active{ transform:scale(0.98); }
+
+.thanks-modal{
+    position:fixed;
+    left:50%; top:50%;
+    transform:translate(-50%,-50%) scale(0.9);
+    z-index:203;
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-radius:22px;
+    backdrop-filter:blur(24px);
+    box-shadow:0 0 60px rgba(140,60,230,0.3), inset 0 0 30px rgba(160,80,255,0.08);
+    padding:40px 32px;
+    width:90%;
+    max-width:380px;
+    text-align:center;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .5s ease, transform .5s ease;
+}
+.thanks-modal.show{
+    opacity:1;
+    transform:translate(-50%,-50%) scale(1);
+    pointer-events:auto;
+}
+.thanks-modal .thanks-icon{
+    font-size:42px;
+    margin-bottom:16px;
+    filter:drop-shadow(0 0 14px rgba(168,85,247,0.6));
+}
+.thanks-modal h3{
+    font-family:'Playfair Display',serif;
+    font-size:22px;
+    letter-spacing:2px;
+    margin-bottom:14px;
+    background:linear-gradient(180deg,#a855f7,#a855f7);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    text-shadow:0 0 14px rgba(168,85,247,0.4);
+}
+.thanks-modal p{
+    font-size:13px;
+    color:var(--text-dim);
+    line-height:1.8;
+}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-    <!-- ===== Header ===== -->
+    
     <div class="header">
         <div class="title-block">
-            <!-- <div class="eyebrow">Personal Dashboard</div> -->
-            <!-- <h1>Welcome to <span class="hjs-text">HJS</span></h1> -->
+            
+            
             <h1><span class="hjs-text"> H J S</span></h1>
         </div>
         <div class="profile-info">
@@ -549,23 +802,23 @@ footer{
         </div>
     </div>
 
-    <!-- ===== Quick links ===== -->
+    
     <div class="links-row">
         <a class="link-btn" href="https://open.kakao.com/o/sed9JXxi" target="_blank"><img src="data:image/png;base64,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" alt="카카오톡">카카오톡 바로가기</a>
         <a class="link-btn" href="https://www.instagram.com/j.___________.s?igsh=M2JxaGp3N3U2emMz" target="_blank"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAoACgDASIAAhEBAxEB/8QAGgAAAgIDAAAAAAAAAAAAAAAAAAYEBQIDB//EADcQAAECBAIGBwUJAAAAAAAAAAECBAADBREGEhQhMUFCUQcTMmFxodIVIiOBkRYXVGJ0ksHR8P/EABgBAAMBAQAAAAAAAAAAAAAAAAMEBQIG/8QAIxEAAQQBAwUBAQAAAAAAAAAAAQACAxEhBAUSMUFRYaEUcf/aAAwDAQACEQMRAD8A7STa6iSLG5J2g+rytCo+6RKCynqkoXOc5bgqkIBR4Aki4O/yjLpBdzmuFly5CspcTEyVEHg1kgcwbbfEQmTFMcHUunlVMbP6s9kBytbtOeXJQrspSnn3xpnG8q/tm1xzxCWS3FxIDRjoLJJ8Jn+8+ifh3u7gT6t26JbLpDoTyemUpbhsVK1LnIATc77gmxO++qFgVjEBYacMGUwtsubrPZptbntvbvjY+Ys67TXF2tNb1aSxFQlzKar4cyXxIWncofzDDWRnqPqPJtmnbgtI7WHA1/V03UU8JTl5+7l9PfBCr0dvprzCyEzFKUW85UpBtc5bAi3Mi9rcoIXe3i4hc/qITDK6M9ituOJPX0OWnb8YHs/lP08Ioq20bLxJhpTxKS2S1bCZm2WBO3uhwrrUuacU2JyLCiL3+vM69sUrynyK40bBTmU3eN5QkkTjZK0jYQecSp9SY5yzvQI9q5tmoDIWgmgOQPqx1S5ORi4Y/wAyFPTN0r3QM3VdVm/bky/68FK0T7YYt0HLo2gOsmTs7r27r3i5nUWs6GWacStUt7ZerLwgW5bL27opyzaYVptRKH0h3U3rctkIbHMiShXaUVc+6HY9TYzhV2yMlZwbXIgNAaD5GT4r5nJtXHRfrwzP/VK4rcKfp4wRM6PafNp+FwZycpcTVTkgjg1AE8wbbPnBB3O5G1y27Fp1spacWmrVl4bW+VvTEGdSGs5RulSdYuAfLxO6CCASwRTCpGgpJkj4zbDSiLwwwmbVTd+wj+t2+MJOEqVKmiauWudlsQmaq6fEgbQd3nBBGWaWFmWtTH7tTVcyrwC1gARY2AG2/q8rQQQQwlF//9k=" alt="인스타그램">인스타그램 바로가기</a>
-        <!-- <a class="link-btn" href="https://github.com/bokjisung" target="_blank"><img src="data:image/png;base64,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" alt="깃허브">깃허브 바로가기</a> -->
+        
         <a class="link-btn" href="https://github.com" target="_blank"><img src="data:image/png;base64,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" alt="깃허브">깃허브 바로가기</a>
         <a class="link-btn" href="https://blog.naver.com/codingsolution" target="_blank"><img src="data:image/png;base64,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" alt="네이버블로그">네이버 블로그 바로가기</a>
-        <!-- <a class="link-btn" href="https://blog.naver.com/codingsolution" target="_blank"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAoACgDASIAAhEBAxEB/8QAGQABAAIDAAAAAAAAAAAAAAAAAAMFBAYH/8QALBAAAQQCAAQEBQUAAAAAAAAAAQACAwQFEQYSIUEUFTFRE2GRk9EjJVWB8P/EABoBAAIDAQEAAAAAAAAAAAAAAAIEAAMGAQX/xAAgEQACAwACAQUAAAAAAAAAAAABAgADEQQSIQYxUWGR/9oADAMBAAIRAxEAPwDv6IqzPSWmYxzabHule4N2wbLR3P8AvdC7dVLQHbopb4mVJkKcTyyS1C1w9QXjYU0U0c8Ykie17D3adhaHXxN2R4aK0gJ7ubygfVbrjqgpUo4N7LR1Pue6U43ItuY9lxYvxr7bSey4JlIiJ2NyOckQSEeoadfRcQ83yRHXIW/vO/K7kRsELjfEmCnwuRkBYfCvcTDJrpr2PzCXvBwETO+oEt6JYm4N3PvJg+bZL+Qt/ed+VZYixkr8tn95tQGvA6YOdM4gka6Hr81QreeG+B2XKfico2VnOQY4g7lPL7u79VSgZj4nhcCvkci0KmnPfyQP2bdwvkp8rgK1qyP1jtrjrXNo62is61aKpXjggY2OKMcrWt9AEToGDDN3SrJWqudIHkyVRzQRWIzHLG17D6tcNg/0iLssmHBg8ZVl+LBRrxv7ObGAQrADQRFMyCqqoxRkIiKQp//Z" alt="네이버카페">네이버 카페 바로가기</a> -->
+        
          <a class="link-btn" href="#" onclick="alert('점검중입니다.'); return false;"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAoACgDASIAAhEBAxEB/8QAGQABAAIDAAAAAAAAAAAAAAAAAAMFBAYH/8QALBAAAQQCAAQEBQUAAAAAAAAAAQACAwQFEQYSIUEUFTFRE2GRk9EjJVWB8P/EABoBAAIDAQEAAAAAAAAAAAAAAAIEAAMGAQX/xAAgEQACAwACAQUAAAAAAAAAAAABAgADEQQSIQYxUWGR/9oADAMBAAIRAxEAPwDv6IqzPSWmYxzabHule4N2wbLR3P8AvdC7dVLQHbopb4mVJkKcTyyS1C1w9QXjYU0U0c8Ykie17D3adhaHXxN2R4aK0gJ7ubygfVbrjqgpUo4N7LR1Pue6U43ItuY9lxYvxr7bSey4JlIiJ2NyOckQSEeoadfRcQ83yRHXIW/vO/K7kRsELjfEmCnwuRkBYfCvcTDJrpr2PzCXvBwETO+oEt6JYm4N3PvJg+bZL+Qt/ed+VZYixkr8tn95tQGvA6YOdM4gka6Hr81QreeG+B2XKfico2VnOQY4g7lPL7u79VSgZj4nhcCvkci0KmnPfyQP2bdwvkp8rgK1qyP1jtrjrXNo62is61aKpXjggY2OKMcrWt9AEToGDDN3SrJWqudIHkyVRzQRWIzHLG17D6tcNg/0iLssmHBg8ZVl+LBRrxv7ObGAQrADQRFMyCqqoxRkIiKQp//Z" alt="네이버카페">네이버 카페 바로가기</a>
-    <!-- <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/..." alt="네이버카페"> -->
+    
 </a>
     </div>
 
-    <!-- ===== Top grid ===== -->
+    
     <div class="top-grid">
 
-        <!-- Weather -->
+        
         <div class="panel weather-panel">
             <div class="panel-title">Weather</div>
             <div class="weather-loc">📍 부산 · 대체로 맑음</div>
@@ -585,11 +838,11 @@ footer{
                 반팔, 반바지, 양산
             </div>
             <div class="forecast-row" id="forecastRow">
-                <!-- JS로 채워짐 -->
+                
             </div>
         </div>
 
-        <!-- Flip Clock -->
+        
         <div class="panel clock-panel">
             <div class="panel-title">Live Clock</div>
             <div class="flip-clock" id="flipClock">
@@ -598,7 +851,7 @@ footer{
                         <div class="flip-card"><div class="flip-digit" id="h1">0</div></div>
                         <div class="flip-card"><div class="flip-digit" id="h2">0</div></div>
                     </div>
-                    <!-- <div class="flip-label">Hour</div> -->
+                    
                 </div>
                 <div class="flip-sep">:</div>
                 <div class="flip-unit">
@@ -606,7 +859,7 @@ footer{
                         <div class="flip-card"><div class="flip-digit" id="m1">0</div></div>
                         <div class="flip-card"><div class="flip-digit" id="m2">0</div></div>
                     </div>
-                    <!-- <div class="flip-label">Minute</div> -->
+                    
                 </div>
                 <div class="flip-sep">:</div>
                 <div class="flip-unit">
@@ -614,18 +867,18 @@ footer{
                         <div class="flip-card"><div class="flip-digit" id="s1">0</div></div>
                         <div class="flip-card"><div class="flip-digit" id="s2">0</div></div>
                     </div>
-                    <!-- <div class="flip-label">Second</div> -->
+                    
                 </div>
             </div>
             <div class="ampm-badge" id="ampmBadge">AM</div>
             <div class="date-line" id="dateLine"></div>
         </div>
 
-        <!-- Quarter progress -->
+        
         <div class="panel quarter-panel">
             <div class="panel-title">Year Progress</div>
             <div class="quarter-year" id="qYear">2026년</div>
-            <!-- <div class="quarter-q" id="qLabel">Q2</div> -->
+            
             <div class="quarter-q" id="qLabel"></div>
             <div class="quarter-sub" id="qSub">16일 남음 · <span class="pct">82%</span></div>
             <div class="day-grid" id="dayGrid"></div>
@@ -639,7 +892,7 @@ footer{
 
     </div>
 
-    <!-- ===== Timetable ===== -->
+    
     <div class="panel tt-panel">
         <div class="tt-header">
             <div class="panel-title" style="margin-bottom:0;">Timetable</div>
@@ -652,10 +905,7 @@ footer{
                 <div class="tt-tab" data-term="2027-summer">2027년 여름방학</div>
                 <div class="tt-tab" data-term="2027-2">2027년 하반기</div>
                 <div class="tt-tab" data-term="2027-winter">2027년 겨울방학</div>
-                <!-- <div class="tt-tab" data-term="2028-1">2028년 상반기</div>
-                <div class="tt-tab" data-term="2028-summer">2028년 여름방학</div>
-                <div class="tt-tab" data-term="2028-2">2028년 하반기</div>
-                <div class="tt-tab" data-term="2028-winter">2028년 겨울방학</div> -->
+                
             </div>
         </div>
         <div class="tt-table-wrap">
@@ -671,11 +921,101 @@ footer{
         </div>
     </div>
 
-    <footer>© 2026 한지성 All rights reserved.</footer>
+    <footer>
+        © 2026 한지성 All rights reserved.<br>
+        방문해주셔서 진심으로 감사드립니다. 작은 관심이 저에겐 큰 힘이 됩니다! 🙏
+    </footer>
+</div>
+
+
+<div class="blur-overlay" id="blurOverlay"></div>
+
+<div class="survey-prompt" id="surveyPrompt">
+    <h3>잠시만요 :)</h3>
+    <p>페이지를 둘러봐 주셔서 감사합니다.<br>
+    더 좋은 페이지를 만들기 위해 짧은 설문에 참여해 주실 수 있을까요?</p>
+    <div class="survey-prompt-btns">
+        <button class="survey-btn ghost" id="surveySkipBtn">나중에</button>
+        <button class="survey-btn primary" id="surveyOpenBtn">설문하기</button>
+    </div>
+</div>
+
+<div class="survey-modal" id="surveyModal">
+    <div class="survey-close" id="surveyCloseBtn">✕</div>
+    <h3>간단한 설문조사</h3>
+    <div class="survey-sub">솔직한 의견을 들려주시면 큰 도움이 됩니다.</div>
+
+    <div class="survey-q" data-q="1">
+        <div class="survey-q-title">1. 디자인이 촌스럽다고 생각하시나요?</div>
+        <div class="survey-options">
+            <div class="survey-option">매우 그렇다</div>
+            <div class="survey-option">그렇다</div>
+            <div class="survey-option">보통이다</div>
+            <div class="survey-option">아니다</div>
+            <div class="survey-option">매우 아니다</div>
+        </div>
+    </div>
+
+    <div class="survey-q" data-q="2">
+        <div class="survey-q-title">2. 페이지의 정보가 한눈에 잘 들어오나요?</div>
+        <div class="survey-options">
+            <div class="survey-option">매우 그렇다</div>
+            <div class="survey-option">그렇다</div>
+            <div class="survey-option">보통이다</div>
+            <div class="survey-option">아니다</div>
+            <div class="survey-option">매우 아니다</div>
+        </div>
+    </div>
+
+    <div class="survey-q" data-q="3">
+        <div class="survey-q-title">3. 색상(보라색 톤) 배색이 마음에 드시나요?</div>
+        <div class="survey-options">
+            <div class="survey-option">매우 그렇다</div>
+            <div class="survey-option">그렇다</div>
+            <div class="survey-option">보통이다</div>
+            <div class="survey-option">아니다</div>
+            <div class="survey-option">매우 아니다</div>
+        </div>
+    </div>
+
+    <div class="survey-q" data-q="4">
+        <div class="survey-q-title">4. 모바일에서도 사용하기 편리한가요?</div>
+        <div class="survey-options">
+            <div class="survey-option">매우 그렇다</div>
+            <div class="survey-option">그렇다</div>
+            <div class="survey-option">보통이다</div>
+            <div class="survey-option">아니다</div>
+            <div class="survey-option">매우 아니다</div>
+        </div>
+    </div>
+
+    <div class="survey-q" data-q="5">
+        <div class="survey-q-title">5. 다시 이 페이지를 방문하고 싶으신가요?</div>
+        <div class="survey-options">
+            <div class="survey-option">매우 그렇다</div>
+            <div class="survey-option">그렇다</div>
+            <div class="survey-option">보통이다</div>
+            <div class="survey-option">아니다</div>
+            <div class="survey-option">매우 아니다</div>
+        </div>
+    </div>
+
+    <div class="survey-q" data-q="6">
+        <div class="survey-q-title">6. 개선했으면 하는 점이나 자유 의견이 있다면 적어주세요. (선택)</div>
+        <textarea class="survey-textarea" id="surveyComment" placeholder="자유롭게 의견을 남겨주세요. 작성하지 않아도 제출할 수 있습니다."></textarea>
+    </div>
+
+    <button class="survey-submit" id="surveySubmitBtn">완료</button>
+</div>
+
+<div class="thanks-modal" id="thanksModal">
+    <div class="thanks-icon">💜</div>
+    <h3>감사합니다!</h3>
+    <p>소중한 의견 잘 전달받았습니다.<br>더 좋은 페이지로 보답하겠습니다.</p>
 </div>
 
 <script>
-/* ===================== Flip Clock & Date ===================== */
+
 function pad(n){ return n.toString().padStart(2,'0'); }
 
 function updateClock(){
@@ -718,7 +1058,6 @@ document.head.appendChild(flipStyle);
 updateClock();
 setInterval(updateClock, 1000);
 
-/* ===================== Quarter / Year Progress ===================== */
 function renderQuarter(){
     const now = new Date();
     const year = now.getFullYear();
@@ -742,7 +1081,6 @@ function renderQuarter(){
     document.getElementById('qLabel').textContent = ''; // 분기 라벨 제거 또는 비움
     document.getElementById('qSub').innerHTML = `${remainingDays}일 남음 · <span class="pct">${pct}%</span>`;
 
-    // 공휴일 목록 (한국 기준, 필요시 수정)
     const holidays2026 = [
         '2026-01-01','2026-02-16','2026-02-17','2026-02-18',
         '2026-03-01','2026-03-02','2026-05-05','2026-05-24',
@@ -774,7 +1112,6 @@ function renderQuarter(){
 }
 renderQuarter();
 
-/* ===================== Weather (Open-Meteo, Seoul) ===================== */
 const weatherIcons = {
     0:'☀️',1:'🌤',2:'⛅',3:'☁️',45:'🌫',48:'🌫',
     51:'🌦',53:'🌦',55:'🌧',61:'🌧',63:'🌧',65:'🌧',
@@ -787,8 +1124,6 @@ function iconFor(code){
 
 async function loadWeather(){
     try{
-        // const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FSeoul&forecast_days=7');
-        // 변경 후 (부산: 35.1796, 129.0756)
         const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=35.1796&longitude=129.0756&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FSeoul&forecast_days=7');
         const data = await res.json();
 
@@ -828,7 +1163,7 @@ async function loadWeather(){
 }
 loadWeather();
 setInterval(loadWeather, 180000);
-/* ===================== Timetable ===================== */
+
 const timetables = {
     '2026-1': {
         'mon-10': {label:'TBL영어', cls:'c-tbl', span:2},
@@ -850,22 +1185,6 @@ const timetables = {
         'sun-10': {label:'프로그래밍', cls:'c-program', span:4},
         'sun-16': {label:'알바', cls:'c-job', span:7}
     },
-// const timetables = {
-//     '2026-1': {
-//         'mon-8' : {label:'헬스', cls:'c-gym', span:2},
-//         'mon-10': {label:'TBL영어', cls:'c-tbl', span:2, detail:'ICT 1관 3층 312호실 / 15번 312'},
-//         'tue-8' : {label:'헬스', cls:'c-gym', span:1},
-//         'tue-10': {label:'BIM개론', cls:'c-bim', span:2, detail:'건축디자인관 7층 714호실 / 3번 714'},
-//         'tue-14': {label:'건축공학설계', cls:'c-design', span:2, detail:'건축디자인관 7층 711호실 / 3번 711'},
-//         'wed-8' : {label:'헬스', cls:'c-gym', span:1},
-//         'wed-10': {label:'건축재료', cls:'c-mat', span:2, detail:'건축디자인관 2층 205호실 / 3번 205'},
-//         'wed-14': {label:'정역학', cls:'c-mech', span:3, detail:'건축디자인관 3층 301호실 / 3번 301'},
-//         'thu-8' : {label:'헬스', cls:'c-gym', span:1},
-//         'thu-10': {label:'C프로그래밍', cls:'c-c', span:2, detail:'ICT 1관 5층 517호실 / 15번 517'},
-//         'thu-14': {label:'유닉스실습', cls:'c-linux', span:2, detail:'ICT 1관 5층 517호실 / 15번 517'},
-//         'thu-17': {label:'TU멘토링3_진로설계', cls:'c-mento', span:1},
-//         'fri-16': {label:'알바', cls:'c-job', span:6, days:['fri','sat','sun']}
-//     },
     '2026-summer': {},
     '2026-2': {},
     '2026-winter': {},
@@ -886,7 +1205,6 @@ function buildTimetable(term){
     tbody.innerHTML = '';
     const data = timetables[term] || {};
 
-    // 06:00 ~ 23:00 (1시간 단위, 시작 시각 기준)
     for(let hour = 6; hour <= 22; hour++){
         const tr = document.createElement('tr');
 
@@ -906,7 +1224,6 @@ function buildTimetable(term){
                     ? `<div class="cell-main">${entry.label}</div><div class="cell-detail">${entry.detail}</div>`
                     : `<div class="cell-main">${entry.label}</div>`;
                 if(entry.days){
-                    // 가로(요일) + 세로(시간) 동시 병합 (예: 알바)
                     td.rowSpan = entry.span;
                     td.colSpan = entry.days.length;
                 } else if(entry.span > 1){
@@ -924,7 +1241,6 @@ function buildTimetable(term){
     }
 }
 
-// 병합된 셀에 의해 가려지는 칸인지 확인
 function isCovered(data, day, hour){
     for(const key in data){
         const entry = data[key];
@@ -933,7 +1249,6 @@ function isCovered(data, day, hour){
         const rows = entry.span || 1;
 
         if(entry.days){
-            // 시작 요일+시각이 아니면서, 병합 범위(요일/시간) 안에 들어가면 가려짐
             const inDayRange = entry.days.includes(day);
             const inHourRange = hour >= startHour && hour < startHour + rows;
             const isStart = (day === startDay && hour === startHour);
@@ -953,6 +1268,62 @@ document.getElementById('ttTabs').addEventListener('click', (e) => {
     document.querySelectorAll('.tt-tab').forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
     buildTimetable(tab.dataset.term);
+});
+
+const blurOverlay  = document.getElementById('blurOverlay');
+const surveyPrompt = document.getElementById('surveyPrompt');
+const surveyModal  = document.getElementById('surveyModal');
+const thanksModal  = document.getElementById('thanksModal');
+
+setTimeout(() => {
+    blurOverlay.classList.add('show');
+    surveyPrompt.classList.add('show');
+}, 180000);
+
+function closeAllSurveyUI(){
+    blurOverlay.classList.remove('show');
+    surveyPrompt.classList.remove('show');
+    surveyModal.classList.remove('show');
+    thanksModal.classList.remove('show');
+}
+
+[surveyPrompt, surveyModal, thanksModal].forEach(el => {
+    el.addEventListener('click', (e) => e.stopPropagation());
+});
+
+document.getElementById('surveySkipBtn').addEventListener('click', closeAllSurveyUI);
+
+blurOverlay.addEventListener('click', () => {
+    if(surveyModal.classList.contains('show')){
+        closeAllSurveyUI();
+    } else if(surveyPrompt.classList.contains('show')){
+        closeAllSurveyUI();
+    }
+});
+
+document.getElementById('surveyOpenBtn').addEventListener('click', () => {
+    surveyPrompt.classList.remove('show');
+    surveyModal.classList.add('show');
+});
+
+document.getElementById('surveyCloseBtn').addEventListener('click', closeAllSurveyUI);
+
+document.querySelectorAll('.survey-q .survey-options').forEach(group => {
+    group.addEventListener('click', (e) => {
+        const opt = e.target.closest('.survey-option');
+        if(!opt) return;
+        group.querySelectorAll('.survey-option').forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+    });
+});
+
+document.getElementById('surveySubmitBtn').addEventListener('click', () => {
+    surveyModal.classList.remove('show');
+    thanksModal.classList.add('show');
+
+    setTimeout(() => {
+        closeAllSurveyUI();
+    }, 2200);
 });
 </script>
 </body>

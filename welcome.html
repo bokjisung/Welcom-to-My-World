@@ -798,7 +798,7 @@ footer{
             <span><span class="dot">●</span>전공 : <b>건축공학과 &amp; 컴퓨터공학과</b></span>
             <span><span class="dot">●</span>Email : <b>bokjisung@naver.com</b></span>
             <span><span class="dot">●</span>취미 : <b>캠핑 &amp; 글램핑</b></span>
-            <span><span class="dot">●</span>좋아하는 영화 : <b>인터스텔라2014</b></span>
+            <span><span class="dot">●</span>좋아하는 영화 : <b>인터스텔라(2014)</b></span>
         </div>
     </div>
 
@@ -1010,8 +1010,8 @@ footer{
 
 <div class="thanks-modal" id="thanksModal">
     <div class="thanks-icon">💜</div>
-    <h3>감사합니다!</h3>
     <p>소중한 의견 잘 전달받았습니다.<br>더 좋은 페이지로 보답하겠습니다.</p>
+    <h3>감사합니다!</h3>
 </div>
 
 <script>
@@ -1278,7 +1278,7 @@ const thanksModal  = document.getElementById('thanksModal');
 setTimeout(() => {
     blurOverlay.classList.add('show');
     surveyPrompt.classList.add('show');
-}, 180000);
+}, 30000); // 설문페이지 시간 설정 숫자 ex) 180000 3분 | 300000 5분 | 600000 10분 | 
 
 function closeAllSurveyUI(){
     blurOverlay.classList.remove('show');

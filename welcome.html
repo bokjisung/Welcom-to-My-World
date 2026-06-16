@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>오이소! 보이소! 즐기이소!</title>
+<title>어서오세요!</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap');
 
@@ -37,7 +37,8 @@ body::before{
     position:fixed;
     top:-20%; left:-10%;
     width:60vw; height:60vw;
-    background:radial-gradient(circle, rgba(168,85,247,0.1), transparent 70%);
+    /*background:radial-gradient(circle, rgba(168,85,247,0.1), transparent 70%);*/
+    background:radial-gradient(circle, rgba(168,85,247,0.1));
     filter:blur(60px);
     z-index:-2;
     animation:float1 18s ease-in-out infinite;
@@ -47,7 +48,8 @@ body::after{
     position:fixed;
     bottom:-25%; right:-15%;
     width:55vw; height:55vw;
-    background:radial-gradient(circle, rgba(124,58,237,0.08), transparent 70%);
+    /*background:radial-gradient(circle, rgba(168,85,247,0.1), transparent 70%);*/
+    background:radial-gradient(circle, rgba(168,85,247,0.1));
     filter:blur(70px);
     z-index:-2;
     animation:float2 22s ease-in-out infinite;
@@ -798,7 +800,7 @@ footer{
             <span><span class="dot">●</span>전공 : <b>건축공학과 &amp; 컴퓨터공학과</b></span>
             <span><span class="dot">●</span>Email : <b>bokjisung@naver.com</b></span>
             <span><span class="dot">●</span>취미 : <b>캠핑 &amp; 글램핑</b></span>
-            <span><span class="dot">●</span>좋아하는 영화 : <b>인터스텔라(2014)</b></span>
+            <!-- <span><span class="dot">●</span>좋아하는 영화 : <b>인터스텔라(2014)</b></span> -->
         </div>
     </div>
 
@@ -923,7 +925,8 @@ footer{
 
     <footer>
         © 2026 한지성 All rights reserved.<br>
-        방문해주셔서 진심으로 감사드립니다. 작은 관심이 저에겐 큰 힘이 됩니다람쥐 🙏
+        가급적 🖥️PC 접속을 권장합니다.<br>
+        방문해주셔서 진심으로 감사드립니다. 작은 관심이 저에겐 큰 힘이 됩니다! 🙏
     </footer>
 </div>
 
@@ -947,7 +950,7 @@ footer{
     <div class="survey-sub">솔직하게 답변 안 하면 3일 동안 똥 못 쌈.</div>
 
     <div class="survey-q" data-q="1">
-        <div class="survey-q-title">1. 디자인이 촌스럽다고 생각하시나요? (이건 솔직하지 않아도 돼요.)</div>
+        <div class="survey-q-title">1. 디자인이 촌스럽다고 생각하시나요? (이건 솔직하지 않아도 됩니다.)</div>
         <div class="survey-options">
             <div class="survey-option">매우 그렇다</div>
             <div class="survey-option">그렇다</div>
@@ -1279,7 +1282,7 @@ const thanksModal  = document.getElementById('thanksModal');
 setTimeout(() => {
     blurOverlay.classList.add('show');
     surveyPrompt.classList.add('show');
-}, 11000); // 설문페이지 시간 설정 숫자 ex) 180000 3분 | 300000 5분 | 600000 10분 | 
+}, 15000); // 설문페이지 시간 설정 숫자 ex) 180000 3분 | 300000 5분 | 600000 10분 | 
 
 function closeAllSurveyUI(){
     blurOverlay.classList.remove('show');

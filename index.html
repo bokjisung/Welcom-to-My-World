@@ -308,16 +308,17 @@ body {
 <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
 
 <script>
-const form        = document.getElementById("loginForm");
-const msg         = document.getElementById("message");
-const flash       = document.querySelector(".flash");
-const cursorLight = document.querySelector(".cursor-light");
-const box         = document.querySelector(".login-box");
-const clickSound  = document.getElementById("clickSound");
-const bgVideo     = document.getElementById("bg-video");
-
-function noAccess() {
-    alert("접근 권한이 없습니다.\n개별 연락 부탁드립니다.\n현재 서비스 개발이 진행 중인 관계로,\n**비회원 버튼**으로 안내해 드리겠습니다.\n\n- 한지성 올림");
+    const form        = document.getElementById("loginForm");
+    const msg         = document.getElementById("message");
+    const flash       = document.querySelector(".flash");
+    const cursorLight = document.querySelector(".cursor-light");
+    const box         = document.querySelector(".login-box");
+    const clickSound  = document.getElementById("clickSound");
+    const bgVideo     = document.getElementById("bg-video");
+    
+    function noAccess() {
+        // alert("접근 권한이 없습니다.\n개별 연락 부탁드립니다.\n현재 서비스 개발이 진행 중인 관계로,\n**비회원 버튼**으로 안내해 드리겠습니다.\n\n- 한지성 올림");
+        alert("현재 서비스 개발이 진행 중인 관계로,\n**비회원 버튼**으로 안내해 드리겠습니다.\n가급적 🖥️PC 접속을 권장합니다.\n\n- 한지성 올림");
 }
 
 document.addEventListener("mousemove", (e) => {
@@ -411,7 +412,7 @@ window.addEventListener("resize", () => {
 document.getElementById("zxc").addEventListener("click", function() {
     clickSound.play();
     bgVideo.style.filter = "brightness(0.6) contrast(1.2)";
-    alert("현재 서비스 개발이 진행 중인 관계로,\n**비회원 버튼**으로 안내해 드리겠습니다.\n가급적 🖥️PC 접속을 권장합니다.");
+    alert("현재 서비스 개발이 진행 중인 관계로,\n**비회원 버튼**으로 안내해 드리겠습니다.\n가급적 🖥️PC 접속을 권장합니다.\n\n- 한지성 올림");
 });
 document.getElementById("guestBtn").addEventListener("click", function() {
     clickSound.play();

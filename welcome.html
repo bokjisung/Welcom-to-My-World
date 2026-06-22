@@ -1183,6 +1183,29 @@ async function loadWeather(){
         document.getElementById('wind').textContent = Math.round(cur.wind_speed_10m) + 'km/h';
         document.querySelector('.weather-icon').textContent = iconFor(cur.weather_code);
 
+        const isRain = [51,53,55,61,63,65,80,81,82,95,96,99].includes(code);
+        const isSnow = [71,73,75,77,85,86].includes(code);
+        const isClear = [0,1].includes(code);
+
+        let outfit = [];
+
+        if (feels < 0) {
+            outfit = ['🧥 패딩', '👕 긴팔', '👖 긴바지', '🧤 장갑', '🧣 목도리', '🤚 손난로'];
+        } else if (feels <= 12) {
+            outfit = ['🧥 패딩', '👕 긴팔', '👖 긴바지'];
+        } else if (feels <= 20) {
+            outfit = ['🧥 가디건', '👕 긴팔', '👖 긴바지'];
+        } else {
+            outfit = isClear
+                ? ['👕 반팔', '🩳 반바지', '☂️ 양산']
+                : ['👕 반팔', '🩳 반바지'];
+        }
+
+        if (isRain) outfit.push('☂️ 우산', '🥾 장화');
+        if (isSnow) outfit.push('☂️ 우산', '🥾 장화');
+
+        document.getElementById('outfitText').textContent = outfit.join(', ');
+
         const days = ['일','월','화','수','목','금','토'];
         const row = document.getElementById('forecastRow');
         row.innerHTML = '';
@@ -1212,44 +1235,6 @@ async function loadWeather(){
 }
 loadWeather();
 setInterval(loadWeather, 180000);
-
-
-async function loadWeather(){
-    const cur = data.current;
-    // 수정 전
-    // → outfit 관련 코드 없음. 날씨 불러와도 옷차림은 변하지 않음
-
-    // 수정 후 추가
-    const feels = Math.round(cur.apparent_temperature);
-    const code  = cur.weather_code;
-
-    // 비/눈 판단 (WMO code 기준)
-    const isRain = [51,53,55,61,63,65,80,81,82,95,96,99].includes(code);
-    const isSnow = [71,73,75,77,85,86].includes(code);
-    const isClear = [0,1].includes(code); // 맑음 계열만
-
-    let outfit = [];
-
-    if (feels < 0) {
-        outfit = ['🧥 패딩', '👕 긴팔', '👖 긴바지', '🧤 장갑', '🧣 목도리', '🤚 손난로'];
-    } else if (feels <= 12) {
-        outfit = ['🧥 패딩', '👕 긴팔', '👖 긴바지'];
-    } else if (feels <= 20) {
-        outfit = ['🧥 가디건', '👕 긴팔', '👖 긴바지'];
-    } else {
-        // 20도 초과 → 맑을 때만 양산, 흐리거나 비오면 제외
-        outfit = isClear
-            ? ['👕 반팔', '🩳 반바지', '☂️ 양산']
-            : ['👕 반팔', '🩳 반바지'];
-    }
-
-    // 비/눈 추가
-    if (isRain) outfit.push('☂️ 우산', '🥾 장화');
-    if (isSnow) outfit.push('☂️ 우산', '🥾 장화');
-
-    document.getElementById('outfitText').textContent = outfit.join(', ');
-}
-
 
 
 const timetables = {

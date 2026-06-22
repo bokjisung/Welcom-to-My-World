@@ -26,9 +26,9 @@
   --accent-hover: rgba(124,58,237,0.25);
   --accent-text:  #a78bfa;
 
-  --green:  #4d7c0f;
+  --green:  #34d399;
   --green-t:#86efac;
-  --red:    #991b1b;
+  --red:    #f87171;
   --red-t:  #fca5a5;
   --blue:   #1e40af;
   --blue-t: #93c5fd;
@@ -306,6 +306,7 @@ body {
 }
 
 .flip-clock {
+  scale: 1.2;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -418,7 +419,8 @@ body {
   font-family: var(--mono);
 }
 
-.quarter-sub .pct { color: var(--accent-text); }
+.quarter-sub { color: var(--red); }
+.pct { color: var(--green); }
 
 .day-grid {
   display: grid;
@@ -799,7 +801,7 @@ footer {
 @media (max-width:1100px) {
   .top-grid { grid-template-columns: 1fr 1fr; }
   .quarter-panel { grid-column: span 2; }
-}
+  .flip-clock { gap: 4px; scale:9}}
 
 /* 모바일 */
 @media (max-width:768px) {
@@ -819,7 +821,7 @@ footer {
   .quarter-panel { grid-column: span 1; }
 
   /* 클럭 : 카드 크기 줄이기 */
-  .flip-clock { gap: 4px; }
+  .flip-clock { gap: 4px; scale: 0.9}
   .flip-card  { width: 44px; height: 60px; }
   .flip-digit { font-size: 30px; }
   .flip-sep   { font-size: 24px; margin-top:-12px; }
@@ -883,9 +885,13 @@ footer {
                 <div class="weather-stat">💧 습도<b id="humidity">88%</b></div>
                 <div class="weather-stat">🌬 바람<b id="wind">3km/h</b></div>
             </div>
+            <!-- <div class="outfit-box">
+              <span class="label">👕 오늘의 옷차림</span>
+              반팔, 반바지, 양산        ← 하드코딩, 항상 고정
+            </div> -->
             <div class="outfit-box">
-                <span class="label">👕 오늘의 옷차림</span>
-                <span id="outfitText">불러오는 중…</span>
+              <span class="label">👕 오늘의 옷차림</span>
+              <span id="outfitText">불러오는 중…</span>
             </div>
             <div class="forecast-row" id="forecastRow">
                 
@@ -948,14 +954,13 @@ footer {
             <div class="panel-title" style="margin-bottom:0;">Timetable</div>
             <div class="tt-tabs" id="ttTabs">
                 <div class="tt-tab active" data-term="2026-1">2026년 상반기</div>
-                <div class="tt-tab" data-term="2026-summer">2026년 여름방학</div>
+                <div class="tt-tab active" data-term="2026-summer">여름방학</div>
                 <div class="tt-tab" data-term="2026-2">2026년 하반기</div>
-                <div class="tt-tab" data-term="2026-winter">2026년 겨울방학</div>
+                <div class="tt-tab" data-term="2026-winter">겨울방학</div>
                 <div class="tt-tab" data-term="2027-1">2027년 상반기</div>
-                <div class="tt-tab" data-term="2027-summer">2027년 여름방학</div>
+                <div class="tt-tab" data-term="2027-summer">여름방학</div>
                 <div class="tt-tab" data-term="2027-2">2027년 하반기</div>
-                <div class="tt-tab" data-term="2027-winter">2027년 겨울방학</div>
-                
+                <div class="tt-tab" data-term="2027-winter">겨울방학</div>
             </div>
         </div>
         <div class="tt-table-wrap">
@@ -1021,7 +1026,7 @@ footer {
     </div>
 
     <div class="survey-q" data-q="3">
-        <div class="survey-q-title">3. 색상(보라색 톤) 배색이 마음에 드시나요? (현시점 최대 고민)</div>
+        <div class="survey-q-title">3. 색상(회색 톤) 배색이 마음에 드시나요? (현시점 최대 고민)</div>
         <div class="survey-options">
             <div class="survey-option">매우 그렇다</div>
             <div class="survey-option">그렇다</div>
@@ -1168,65 +1173,66 @@ function iconFor(code){
 }
 
 async function loadWeather(){
-    try{
-        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=35.1796&longitude=129.0756&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FSeoul&forecast_days=7');
+    // open-meteo 공식 파라미터명: current_weather_units 제거, current= 사용
+    const WEATHER_URL =
+        'https://api.open-meteo.com/v1/forecast' +
+        '?latitude=35.1796&longitude=129.0756' +
+        '&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code' +
+        '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max' +
+        '&timezone=Asia%2FSeoul&forecast_days=7';
+
+    try {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 8000); // 8초 타임아웃
+
+        const res  = await fetch(WEATHER_URL, { signal: controller.signal });
+        clearTimeout(timer);
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
 
-        const cur = data.current;
-        document.getElementById('curTemp').textContent = Math.round(cur.temperature_2m) + '°';
-        document.getElementById('feelsLike').textContent = '체감 ' + Math.round(cur.apparent_temperature) + '°';
-        document.getElementById('humidity').textContent = Math.round(cur.relative_humidity_2m) + '%';
-        document.getElementById('wind').textContent = Math.round(cur.wind_speed_10m) + 'km/h';
-        document.querySelector('.weather-icon').textContent = iconFor(cur.weather_code);
+        // ── 현재 날씨 ──────────────────────────────────────
+        const cur   = data.current;
+        const feels = Math.round(cur.apparent_temperature);
+        const wCode = cur.weather_code;
 
-        // ── 오늘의 옷차림 로직 ──────────────────────────
-        const feels   = Math.round(cur.apparent_temperature);
-        const wCode   = cur.weather_code;
+        document.getElementById('curTemp').textContent  = Math.round(cur.temperature_2m) + '°';
+        document.getElementById('feelsLike').textContent = '체감 ' + feels + '°';
+        document.getElementById('humidity').textContent  = Math.round(cur.relative_humidity_2m) + '%';
+        document.getElementById('wind').textContent      = Math.round(cur.wind_speed_10m) + 'km/h';
+        document.querySelector('.weather-icon').textContent = iconFor(wCode);
 
-        // WMO 코드 기준: 비 계열
+        // ── 오늘의 옷차림 ──────────────────────────────────
         const isRain  = [51,53,55,61,63,65,80,81,82,95,96,99].includes(wCode);
-        // WMO 코드 기준: 눈 계열
         const isSnow  = [71,73,75,77,85,86].includes(wCode);
-        // 완전 맑음 (0=맑음, 1=대체로맑음)
-        const isClear = [0, 1].includes(wCode);
+        const isClear = [0,1].includes(wCode);
 
         let outfit = [];
-
         if (feels < 0) {
-            // 영하: 완전 방한
-            outfit = ['🧥 패딩', '👕 긴팔', '👖 긴바지', '🧤 장갑', '🧣 목도리', '🤚 손난로'];
+            outfit = ['🧥 패딩','👕 긴팔','👖 긴바지','🧤 장갑','🧣 목도리','🤚 손난로'];
         } else if (feels <= 12) {
-            // 12도 이하: 패딩 + 긴팔 + 긴바지
-            outfit = ['🧥 패딩', '👕 긴팔', '👖 긴바지'];
+            outfit = ['🧥 패딩','👕 긴팔','👖 긴바지'];
         } else if (feels <= 20) {
-            // 12도 초과 ~ 20도 이하: 가디건 + 긴팔 + 긴바지
-            outfit = ['🧥 가디건', '👕 긴팔', '👖 긴바지'];
+            outfit = ['🧥 가디건','👕 긴팔','👖 긴바지'];
         } else {
-            // 20도 초과: 맑음일 때만 양산 포함, 흐리거나 비오는 날은 양산 제외
-            outfit = isClear
-                ? ['👕 반팔', '🩳 반바지', '☂️ 양산']
-                : ['👕 반팔', '🩳 반바지'];
+            outfit = isClear ? ['👕 반팔','🩳 반바지','☂️ 양산'] : ['👕 반팔','🩳 반바지'];
         }
-
-        // 비/눈 오는 날: 우산 + 장화 추가
-        if (isRain || isSnow) {
-            outfit.push('☂️ 우산', '🥾 장화');
-        }
+        if (isRain || isSnow) outfit.push('☂️ 우산','🥾 장화');
 
         document.getElementById('outfitText').textContent = outfit.join(', ');
-        // ─────────────────────────────────────────────────
 
+        // ── 7일 예보 ───────────────────────────────────────
         const days = ['일','월','화','수','목','금','토'];
-        const row = document.getElementById('forecastRow');
+        const row  = document.getElementById('forecastRow');
         row.innerHTML = '';
         data.daily.time.forEach((dateStr, i) => {
-            const d = new Date(dateStr);
+            const d     = new Date(dateStr);
             const label = i === 0 ? '오늘' : days[d.getDay()];
-            const mmdd = `${d.getMonth()+1}/${d.getDate()}`;
-            const hi = Math.round(data.daily.temperature_2m_max[i]);
-            const lo = Math.round(data.daily.temperature_2m_min[i]);
-            const pop = data.daily.precipitation_probability_max[i];
-            const code = data.daily.weather_code[i];
+            const mmdd  = `${d.getMonth()+1}/${d.getDate()}`;
+            const hi    = Math.round(data.daily.temperature_2m_max[i]);
+            const lo    = Math.round(data.daily.temperature_2m_min[i]);
+            const pop   = data.daily.precipitation_probability_max[i];
+            const code  = data.daily.weather_code[i];
 
             const cell = document.createElement('div');
             cell.className = 'forecast-day';
@@ -1239,12 +1245,25 @@ async function loadWeather(){
             `;
             row.appendChild(cell);
         });
-    }catch(e){
+
+    } catch(e) {
         console.error('Weather load failed', e);
+        // 실패 시 UI에 표시
+        const outfitEl = document.getElementById('outfitText');
+        if (outfitEl) outfitEl.textContent = '날씨 정보를 불러올 수 없습니다';
+        document.getElementById('curTemp').textContent   = '--°';
+        document.getElementById('feelsLike').textContent = '체감 --°';
+
+        // 3초 후 재시도 (최대 3회)
+        if ((loadWeather._retry = (loadWeather._retry || 0) + 1) <= 3) {
+            setTimeout(loadWeather, 3000);
+        }
     }
 }
+loadWeather._retry = 0;
 loadWeather();
-setInterval(loadWeather, 180000);
+setInterval(() => { loadWeather._retry = 0; loadWeather(); }, 180000);
+
 
 const timetables = {
     '2026-1': {
@@ -1264,8 +1283,31 @@ const timetables = {
         'sat-16': {label:'알바', cls:'c-job', span:7},
         'sun-16': {label:'알바', cls:'c-job', span:7}
     },
+    '2026-summer': {
+        'mon-0': {label:'-', cls:'c-design', span:2},
+        'mon-9': {label:'-', cls:'c-tbl', span:4},
+        'mon-14': {label:'-', cls:'c-tbl', span:4},
+        'mon-21' : {label:'헬스', cls:'c-gym', span:2},
+        'tue-0': {label:'-', cls:'c-design', span:2},
+        'tue-9': {label:'-', cls:'c-tbl', span:4 },
+        'tue-14': {label:'-', cls:'c-tbl', span:4 },
+        'tue-21' : {label:'헬스', cls:'c-gym', span:2},
+        'wed-0': {label:'-', cls:'c-design', span:2},
+        'wed-9': {label:'-', cls:'c-tbl', span:4},
+        'wed-14': {label:'-', cls:'c-tbl', span:4 },
+        'wed-21' : {label:'헬스', cls:'c-gym', span:2},
+        'thu-0': {label:'-', cls:'c-design', span:2},
+        'thu-9': {label:'-', cls:'c-tbl', span:4},
+        'thu-14': {label:'-', cls:'c-tbl', span:4},
+        'thu-21' : {label:'헬스', cls:'c-gym', span:2},
+        'fri-0': {label:'-', cls:'c-design', span:2},
+        'fri-16': {label:'알바', cls:'c-job', span:7},
+        'sat-0': {label:'-', cls:'c-design', span:2},
+        'sat-16': {label:'알바', cls:'c-job', span:7},
+        'sun-9': {label:'조기축구', cls:'c-linux', span:3},
+        'sun-16': {label:'알바', cls:'c-job', span:7}
+    },
     '2026-2': {},
-    '2026-summer': {},
     '2026-winter': {},
     '2027-1': {},
     '2027-summer': {},

@@ -1,263 +1,309 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to HJS!</title>
-    <style>
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
-:root{
-  --bg:#0e0f11;
-  --panel:#0c0c0d;
-  --border-hi:rgba(255,255,255,0.09);
-  --border-lo:rgba(255,255,255,0.02);
-  --tx0:#d4d8e0;--tx1:#606672;--tx2:#363b45;
-  --ac:#5b9bd5;--ac-light:#7fb3e0;--ac-dim:rgba(91,155,213,0.07);--ac-mid:#4a86bb;
-  --mono:'JetBrains Mono','Fira Code',monospace;
-  --sans:'Inter',-apple-system,sans-serif;
-}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html{-webkit-font-smoothing:antialiased;}
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to HJS!</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap");
 
-body{
-  height:100vh;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:#0d0e10;
-  overflow:hidden;font-family:var(--sans);user-select:none;position:relative;
-}
+    :root {
+      --bg: #0e0f11; --panel: #0c0c0d;
+      --border-hi: rgba(255,255,255,0.09); --border-lo: rgba(255,255,255,0.02);
+      --tx0: #d4d8e0; --tx1: #606672; --tx2: #363b45;
+      --ac: #5b9bd5; --ac-light: #7fb3e0; --ac-dim: rgba(91,155,213,0.07); --ac-mid: #4a86bb;
+      --mono: 'JetBrains Mono','Fira Code',monospace;
+      --sans: 'Inter',-apple-system,sans-serif;
+      --err: #e05b5b;
+    }
 
-/* 배경 비디오 */
-#bg-video{
-  position:fixed;top:0;left:0;width:100%;height:100%;
-  object-fit:cover;z-index:-1;
-  filter:brightness(0.03) saturate(0);
-}
+    *, ::before, ::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-font-smoothing: antialiased; }
 
-#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;}
+    body {
+      height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: rgb(13,14,16);
+      overflow: hidden; font-family: var(--sans); user-select: none; position: relative;
+    }
 
-.cursor-light{
-  position:fixed;width:280px;height:280px;border-radius:50%;pointer-events:none;
-  background:radial-gradient(circle,rgba(91,155,213,0.055) 0%,transparent 70%);
-  transform:translate(-50%,-50%);z-index:2;mix-blend-mode:screen;opacity:0;
-  transition:opacity .4s;
-}
-.flash{
-  position:fixed;inset:0;
-  background:radial-gradient(circle at center,rgba(91,155,213,0.2),transparent 65%);
-  opacity:0;pointer-events:none;z-index:100;
-}
+    #bg-video {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      object-fit: cover; z-index: -1; filter: brightness(0.03) saturate(0);
+    }
 
-/* ── 타이틀 ── */
-.main-title{
-  font-family:var(--mono);
-  font-size:54px;font-weight:700;letter-spacing:16px;
-  color:rgba(255,255,255,0.88);
-  text-align:center;line-height:1;margin-bottom:48px;
-  position:relative;z-index:3;
-  animation:titleIn .9s cubic-bezier(.16,1,.3,1) both;
-}
-.main-title .hjs-text{
-  display:block;font-family:var(--mono);
-  font-size:32px;font-weight:300;letter-spacing:10px;
-  color:rgba(255,255,255,0.2);margin-top:7px;
-}
-@keyframes titleIn{from{opacity:0;transform:translateY(-18px);}to{opacity:1;transform:translateY(0);}}
+    .cursor-light {
+      position: fixed; width: 280px; height: 280px; border-radius: 50%;
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(91,155,213,0.055) 0%, transparent 70%);
+      transform: translate(-50%,-50%); z-index: 2; mix-blend-mode: screen;
+      opacity: 0; transition: opacity 0.4s;
+    }
 
-/* ══════════════════════════════════════════
-   로그인 박스 — 검정 무광 + 천 재질 + 입체
-   ══════════════════════════════════════════ */
-.login-box{
-  width:364px;padding:38px 32px;
-  position:relative;z-index:3;text-align:center;
-  border-radius:10px;
+    .flash {
+      position: fixed; inset: 0;
+      background: radial-gradient(circle, rgba(91,155,213,0.2), transparent 65%);
+      opacity: 0; pointer-events: none; z-index: 100;
+    }
 
-  /* 무광 블랙 패브릭 느낌 베이스 */
-  background:
-    /* 노이즈 텍스처 (SVG 필터 대신 CSS 패턴으로 구현) */
-    repeating-linear-gradient(
-      0deg,
-      rgba(255,255,255,0.012) 0px,
-      transparent 1px,
-      transparent 3px,
-      rgba(255,255,255,0.006) 3px,
-      transparent 4px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      rgba(255,255,255,0.008) 0px,
-      transparent 1px,
-      transparent 3px
-    ),
-    linear-gradient(
-      160deg,
-      #141416 0%,
-      #0c0c0e 40%,
-      #101012 100%
-    );
+    .main-title {
+      font-family: var(--mono); font-size: 54px; font-weight: 700;
+      letter-spacing: 16px; color: rgba(255,255,255,0.88);
+      text-align: center; line-height: 1; margin-bottom: 48px;
+      position: relative; z-index: 3;
+      animation: titleIn 0.9s cubic-bezier(0.16,1,0.3,1) 0s 1 normal both running;
+      transition: margin-bottom 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
+    .main-title.compact { margin-bottom: 22px; }
+    .main-title .hjs-text {
+      display: block; font-family: var(--mono); font-size: 32px; font-weight: 300;
+      letter-spacing: 10px; color: rgba(255,255,255,0.2); margin-top: 7px;
+    }
+    @keyframes titleIn {
+      0%   { opacity: 0; transform: translateY(-18px); }
+      100% { opacity: 1; transform: translateY(0px); }
+    }
 
-  /* 베젤: 위·왼쪽은 약간 밝게, 아래·오른쪽은 어둡게 */
-  border-top:   1px solid rgba(255,255,255,0.11);
-  border-left:  1px solid rgba(255,255,255,0.07);
-  border-right: 1px solid rgba(0,0,0,0.6);
-  border-bottom:1px solid rgba(0,0,0,0.7);
+    /* ── LOGIN BOX ── */
+    .login-box {
+      width: 364px; padding: 38px 32px;
+      position: relative; z-index: 3; text-align: center; border-radius: 10px;
+      background:
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.01) 0px, transparent 1px, transparent 3px, rgba(255,255,255,0.008) 3px, transparent 4px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.008) 0px, transparent 1px, transparent 3px),
+        linear-gradient(160deg, rgb(20,20,22) 0%, rgb(12,12,14) 40%, rgb(16,16,18) 100%);
+      border: 1px solid;
+      border-color: rgba(255,255,255,0.11) rgba(0,0,0,0.6) rgba(0,0,0,0.7) rgba(255,255,255,0.07);
+      box-shadow:
+        rgba(255,255,255,0.08) 0px 1px 0px inset,
+        rgba(0,0,0,0.4) 0px -1px 0px inset,
+        rgb(0,0,0) 5px 7px 0px,
+        rgba(0,0,0,0.85) 8px 12px 28px,
+        rgba(0,0,0,0.5) 16px 20px 48px,
+        rgba(91,155,213,0.03) 0px 0px 60px;
+      animation: boxIn 1s cubic-bezier(0.16,1,0.3,1) 0.12s 1 normal both running;
+      overflow: hidden;
+      max-height: 420px;
+      transition: max-height 0.55s cubic-bezier(0.16,1,0.3,1),
+                  opacity 0.7s, transform 0.7s;
+    }
+    .login-box::before {
+      content: ""; position: absolute; top: 0; left: 14%; right: 14%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+      border-radius: 1px;
+    }
+    .login-box::after {
+      content: ""; position: absolute; bottom: -3px; right: -3px; width: 80%; height: 80%;
+      border-right: 1px solid rgba(255,255,255,0.02);
+      border-bottom: 1px solid rgba(255,255,255,0.02);
+      border-radius: 0px 0px 12px; pointer-events: none;
+    }
+    .login-box.expanded { max-height: 700px; }
+    .login-box.success { opacity: 0; transform: translateY(-18px) scale(0.95); }
+    @keyframes boxIn {
+      0%   { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0px); }
+    }
 
-  /* 입체 효과:
-     - inset 상단 하이라이트 (빛 반사)
-     - 오른쪽-아래 하드 그림자 (솟아있는 느낌)
-     - 퍼지는 주변 그림자 */
-  box-shadow:
-    inset 0 1px 0   rgba(255,255,255,0.08),
-    inset 0 -1px 0  rgba(0,0,0,0.4),
-    5px  7px 0   #000,
-    8px  12px 28px rgba(0,0,0,0.85),
-    16px 20px 48px rgba(0,0,0,0.5),
-    0 0 60px rgba(91,155,213,0.03);
+    /* ── 헤더 (타이틀 + 닫기) ── */
+    .box-header {
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 26px;
+    }
+    .login-title {
+      font-family: var(--mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 4px; text-transform: uppercase; color: var(--tx2);
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      flex: 1;
+    }
+    .login-title::before, .login-title::after {
+      content: ""; flex: 1; height: 1px; background: rgba(255,255,255,0.05);
+    }
 
-  animation:boxIn 1s cubic-bezier(.16,1,.3,1) .12s both;
-  transition:opacity .7s,transform .7s;
-}
+    .close-signup {
+      display: none;
+      position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+      width: 22px; height: 22px;
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 50%;
+      background: rgba(255,255,255,0.03);
+      color: var(--tx1); font-size: 12px; line-height: 1;
+      cursor: pointer;
+      align-items: center; justify-content: center;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      z-index: 5;
+    }
+    .close-signup:hover {
+      border-color: rgba(91,155,213,0.35);
+      color: var(--ac-light);
+      background: rgba(91,155,213,0.06);
+    }
+    .expanded .close-signup { display: flex; }
 
-/* 상단 미세 하이라이트 선 */
-.login-box::before{
-  content:"";
-  position:absolute;top:0;left:14%;right:14%;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18),transparent);
-  border-radius:1px;
-}
+    /* ── INPUTS ── */
+    .login-box input {
+      width: 100%; padding: 11px 13px; margin-bottom: 9px;
+      border-radius: 6px; border: 1px solid;
+      border-color: rgba(0,0,0,0.6) rgba(255,255,255,0.04) rgba(255,255,255,0.04) rgba(0,0,0,0.4);
+      background: rgba(0,0,0,0.55); color: rgba(255,255,255,0.82);
+      outline: none; font-family: var(--mono); font-size: 13px; letter-spacing: 1px;
+      box-shadow: rgba(0,0,0,0.5) 0px 2px 8px inset;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .login-box input::placeholder { color: var(--tx2); font-family: var(--sans); letter-spacing: 0px; font-size: 12px; }
+    .login-box input:focus {
+      border-color: rgba(91,155,213,0.3);
+      box-shadow: rgba(0,0,0,0.4) 0px 2px 8px inset, rgba(91,155,213,0.08) 0px 0px 0px 2px;
+    }
+    .login-box input.input-error {
+      border-color: rgba(224,91,91,0.45) !important;
+      box-shadow: rgba(0,0,0,0.4) 0px 2px 8px inset, rgba(224,91,91,0.1) 0px 0px 0px 2px !important;
+    }
 
-/* 우측 하단 코너 — 깊이감 강조 */
-.login-box::after{
-  content:"";
-  position:absolute;bottom:-3px;right:-3px;
-  width:80%;height:80%;
-  border-right:1px solid rgba(255,255,255,0.02);
-  border-bottom:1px solid rgba(255,255,255,0.02);
-  border-radius:0 0 12px 0;
-  pointer-events:none;
-}
+    /* ── 회원가입 확장 영역 ── */
+    .signup-fields {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.45s cubic-bezier(0.16,1,0.3,1) 0.05s,
+                  opacity 0.35s ease 0.1s;
+    }
+    .expanded .signup-fields { max-height: 300px; opacity: 1; }
 
-.login-box.success{opacity:0;transform:translateY(-18px) scale(.95);}
+    .divider {
+      display: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+      margin: 10px 0 14px;
+    }
+    .expanded .divider { display: block; }
 
-@keyframes boxIn{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+    /* 인라인 에러 메시지 */
+    .field-err {
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.3px;
+      color: var(--err); text-align: left; padding: 0 2px;
+      margin-top: -6px; margin-bottom: 6px; min-height: 14px;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .field-err.show { opacity: 1; }
 
-.login-title{
-  font-family:var(--mono);font-size:10px;font-weight:500;
-  letter-spacing:4px;text-transform:uppercase;color:var(--tx2);
-  margin-bottom:26px;
-  display:flex;align-items:center;justify-content:center;gap:10px;
-}
-.login-title::before,.login-title::after{content:"";flex:1;height:1px;background:rgba(255,255,255,0.05);}
+    /* ── BUTTONS ── */
+    .gold-btn {
+      width: 100%; padding: 12px; margin-top: 6px; border: none; border-radius: 6px;
+      font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: 4px;
+      cursor: pointer; color: rgb(255,255,255);
+      background: linear-gradient(180deg, #6aaee0 0%, var(--ac) 60%, #4a86bb 100%);
+      box-shadow: rgb(46,95,138) 0px 3px 0px, rgba(91,155,213,0.22) 0px 5px 14px, rgba(255,255,255,0.15) 0px 1px 0px inset;
+      position: relative; overflow: hidden;
+      transition: transform 0.12s, box-shadow 0.12s;
+    }
+    .gold-btn:hover {
+      background: linear-gradient(rgb(123,189,232) 0%, rgb(106,174,224) 60%, rgb(85,146,204) 100%);
+      box-shadow: rgb(46,95,138) 0px 3px 0px, rgba(91,155,213,0.28) 0px 8px 20px, rgba(255,255,255,0.18) 0px 1px 0px inset;
+    }
+    .gold-btn:active {
+      transform: translateY(2px);
+      box-shadow: rgb(46,95,138) 0px 1px 0px, rgba(91,155,213,0.15) 0px 3px 8px, rgba(255,255,255,0.1) 0px 1px 0px inset;
+    }
+    .gold-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+    .gold-btn::before {
+      content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: 0.5s;
+    }
+    .gold-btn:hover::before { left: 100%; }
 
-/* 입력창 — 눌린(inset) 느낌 */
-.login-box input{
-  width:100%;padding:11px 13px;margin-bottom:9px;
-  border-radius:6px;
-  border-top:   1px solid rgba(0,0,0,0.6);
-  border-left:  1px solid rgba(0,0,0,0.4);
-  border-right: 1px solid rgba(255,255,255,0.04);
-  border-bottom:1px solid rgba(255,255,255,0.04);
-  background:rgba(0,0,0,0.55);
-  color:rgba(255,255,255,0.82);
-  outline:none;
-  font-family:var(--mono);font-size:13px;letter-spacing:1px;
-  box-shadow:inset 0 2px 8px rgba(0,0,0,0.5);
-  transition:border-color .2s,box-shadow .2s;
-}
-.login-box input::placeholder{color:var(--tx2);font-family:var(--sans);letter-spacing:0;font-size:12px;}
-.login-box input:focus{
-  border-color:rgba(91,155,213,0.3);
-  box-shadow:inset 0 2px 8px rgba(0,0,0,0.4),0 0 0 2px rgba(91,155,213,0.08);
-}
+    .guest-btn {
+      width: 100%; padding: 11px; margin-top: 8px;
+      border: 1px solid rgba(255,255,255,0.06); border-radius: 6px;
+      font-family: var(--mono); font-size: 12px; font-weight: 400; letter-spacing: 2px;
+      cursor: pointer; background: rgba(255,255,255,0.02); color: var(--tx1);
+      transition: 0.2s; box-shadow: rgba(255,255,255,0.03) 0px 1px 0px inset;
+    }
+    .guest-btn:hover { border-color: rgba(91,155,213,0.22); color: var(--ac-light); background: var(--ac-dim); }
+    .guest-btn:active { transform: scale(0.99); }
 
-/* ENTER 버튼 — 살짝 솟은 느낌 */
-.gold-btn{
-  width:100%;padding:12px;margin-top:6px;
-  border:none;border-radius:6px;
-  font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:4px;
-  cursor:pointer;color:#fff;
-  background:linear-gradient(180deg,#6aaee0 0%,var(--ac) 60%,#4a86bb 100%);
-  box-shadow:
-    0 3px 0 #2e5f8a,
-    0 5px 14px rgba(91,155,213,0.22),
-    inset 0 1px 0 rgba(255,255,255,0.15);
-  position:relative;overflow:hidden;
-  transition:transform .12s,box-shadow .12s;
-}
-.gold-btn:hover{
-  background:linear-gradient(180deg,#7bbde8 0%,#6aaee0 60%,#5592cc 100%);
-  box-shadow:0 3px 0 #2e5f8a,0 8px 20px rgba(91,155,213,0.28),inset 0 1px 0 rgba(255,255,255,0.18);
-}
-.gold-btn:active{
-  transform:translateY(2px);
-  box-shadow:0 1px 0 #2e5f8a,0 3px 8px rgba(91,155,213,0.15),inset 0 1px 0 rgba(255,255,255,0.1);
-}
-.gold-btn::before{
-  content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;
-  background:linear-gradient(120deg,transparent,rgba(255,255,255,0.1),transparent);
-  transition:.5s;
-}
-.gold-btn:hover::before{left:100%;}
+    .signup-link { margin-top: 14px; font-size: 10px; text-align: center; color: var(--tx2); }
+    .signup-link a {
+      color: var(--tx1); text-decoration: none; cursor: pointer;
+      font-family: var(--mono); letter-spacing: 1px; transition: color 0.2s;
+    }
+    .signup-link a:hover { color: var(--ac-light); }
 
-/* 비회원 버튼 */
-.guest-btn{
-  width:100%;padding:11px;margin-top:8px;
-  border:1px solid rgba(255,255,255,0.06);border-radius:6px;
-  font-family:var(--mono);font-size:12px;font-weight:400;letter-spacing:2px;
-  cursor:pointer;
-  background:rgba(255,255,255,0.02);
-  color:var(--tx1);
-  transition:all .2s;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,0.03);
-}
-.guest-btn:hover{border-color:rgba(91,155,213,0.22);color:var(--ac-light);background:var(--ac-dim);}
-.guest-btn:active{transform:scale(.99);}
+    .to-login {
+      display: none;
+      margin-top: 14px; font-size: 10px; text-align: center; color: var(--tx2);
+    }
+    .to-login a { color: var(--tx1); text-decoration: none; cursor: pointer; font-family: var(--mono); letter-spacing: 1px; transition: color 0.2s; }
+    .to-login a:hover { color: var(--ac-light); }
+    .expanded .to-login { display: block; }
+    .expanded .signup-link { display: none; }
 
-.signup-link{margin-top:14px;font-size:10px;text-align:center;color:var(--tx2);}
-.signup-link a{color:var(--tx1);text-decoration:none;cursor:pointer;font-family:var(--mono);letter-spacing:1px;transition:color .2s;}
-.signup-link a:hover{color:var(--ac-light);}
-#message{margin-top:12px;font-size:12px;font-weight:500;min-height:18px;font-family:var(--mono);letter-spacing:.5px;}
+    #message { margin-top: 12px; font-size: 12px; font-weight: 500; min-height: 18px; font-family: var(--mono); letter-spacing: 0.5px; }
 
-@media(max-width:1024px){
-  .main-title{font-size:40px;letter-spacing:11px;margin-bottom:36px;}
-  .main-title .hjs-text{font-size:26px;letter-spacing:7px;}
-  .login-box{width:min(84vw,330px);padding:26px 22px;}
-}
-@media(max-width:480px){
-  .main-title{font-size:30px;letter-spacing:7px;margin-bottom:28px;}
-  .main-title .hjs-text{font-size:20px;letter-spacing:5px;}
-  .login-box{width:88vw;padding:20px 16px;border-radius:8px;
-    box-shadow:3px 5px 0 #000,6px 9px 20px rgba(0,0,0,0.8),0 0 40px rgba(91,155,213,0.02);}
-  .login-box input{padding:10px 12px;font-size:12px;margin-bottom:8px;}
-  .gold-btn,.guest-btn{padding:10px;font-size:11px;}
-  .signup-link{font-size:9px;}
-}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;}}
-</style>
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .main-title { font-size: 40px; letter-spacing: 11px; margin-bottom: 36px; }
+      .main-title .hjs-text { font-size: 26px; letter-spacing: 7px; }
+      .main-title.compact { margin-bottom: 18px; }
+      .login-box { width: min(84vw, 330px); padding: 26px 22px; }
+    }
+    @media (max-width: 480px) {
+      .main-title { font-size: 30px; letter-spacing: 7px; margin-bottom: 28px; }
+      .main-title .hjs-text { font-size: 20px; letter-spacing: 5px; }
+      .main-title.compact { margin-bottom: 14px; }
+      .login-box { width: 88vw; padding: 20px 16px; border-radius: 8px; box-shadow: rgb(0,0,0) 3px 5px 0px, rgba(0,0,0,0.8) 6px 9px 20px, rgba(91,155,213,0.02) 0px 0px 40px; }
+      .login-box input { padding: 10px 12px; font-size: 12px; margin-bottom: 8px; }
+      .gold-btn, .guest-btn { padding: 10px; font-size: 11px; }
+      .signup-link, .to-login { font-size: 9px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after { animation: none !important; transition: none !important; }
+    }
+  </style>
 </head>
 <body>
 
 <video autoplay muted loop id="bg-video">
-    <source src="https://cdn.coverr.co/videos/coverr-golden-light-particles-1574/1080p.mp4" type="video/mp4">
+  <source src="https://cdn.coverr.co/videos/coverr-golden-light-particles-1574/1080p.mp4" type="video/mp4">
 </video>
 
-<canvas id="particles"></canvas>
+<h1 class="main-title" id="mainTitle">HJS<span class="hjs-text"></span></h1>
 
-<h1 class="main-title">HJS<span class="hjs-text"></span></h1>
-<!--<h1 class="main-title">Welcome to <span class="hjs-text">HJS</span></h1>-->
-<!-- <h1 class="main-title"> <span class="hjs-text">H J S</span></h1> -->
+<div class="login-box" id="loginBox">
 
-<div class="login-box">
-    <h2 class="login-title">Login</h2>
-    <form id="loginForm">
-        <input type="text" id="username" placeholder="Username" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <button type="submit" class="gold-btn" id="zxc">ENTER</button>
-        <button type="button" class="guest-btn" id="guestBtn">비회원</button>
-        <div class="signup-link">
-            <a onclick="noAccess()">회원가입</a>
-        </div>
-    </form>
-    <p id="message"></p>
+  <div class="box-header">
+    <h2 class="login-title" id="boxTitle">Login</h2>
+    <button class="close-signup" id="closeSignup" title="닫기">✕</button>
+  </div>
+
+  <form id="loginForm" autocomplete="off">
+    <input type="text"     id="username" placeholder="Username" autocomplete="username">
+    <input type="password" id="password" placeholder="Password" autocomplete="current-password">
+
+    <!-- 회원가입 확장 영역 -->
+    <div class="signup-fields" id="signupFields">
+      <div class="divider"></div>
+
+      <input type="text"  id="nickname" placeholder="닉네임 (2~20자)" autocomplete="off" maxlength="20">
+      <div class="field-err" id="err-nickname"></div>
+
+      <input type="email" id="email" placeholder="이메일 (선택, @ 포함)" autocomplete="off">
+      <div class="field-err" id="err-email"></div>
+    </div>
+
+    <button type="submit" class="gold-btn" id="mainBtn">ENTER</button>
+    <button type="button" class="guest-btn" id="guestBtn">비회원</button>
+
+    <div class="signup-link">
+      <a id="openSignupBtn">회원가입</a>
+    </div>
+    <div class="to-login">
+      <a id="toLoginBtn">이미 계정이 있으신가요? 로그인</a>
+    </div>
+  </form>
+
+  <p id="message"></p>
 </div>
 
 <div class="cursor-light"></div>
@@ -265,125 +311,217 @@ body{
 <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
 
 <script>
-    const form        = document.getElementById("loginForm");
-    const msg         = document.getElementById("message");
-    const flash       = document.querySelector(".flash");
-    const cursorLight = document.querySelector(".cursor-light");
-    const box         = document.querySelector(".login-box");
-    const clickSound  = document.getElementById("clickSound");
-    const bgVideo     = document.getElementById("bg-video");
-    
-    function noAccess() {
-        // alert("접근 권한이 없습니다.\n개별 연락 부탁드립니다.\n현재 서비스 개발이 진행 중인 관계로,\n**비회원 버튼**으로 안내해 드리겠습니다.\n\n- 한지성 올림");
-        alert("현재 서비스 개발이 진행 중인 관계로,\n**비회원 버튼**으로 안내해 드리겠습니다.\n가급적 🖥️PC 접속을 권장합니다.\n\n- 한지성 올림");
+/* ── DOM ── */
+const loginBox      = document.getElementById('loginBox');
+const mainTitle     = document.getElementById('mainTitle');
+const boxTitle      = document.getElementById('boxTitle');
+const mainBtn       = document.getElementById('mainBtn');
+const guestBtn      = document.getElementById('guestBtn');
+const openSignupBtn = document.getElementById('openSignupBtn');
+const toLoginBtn    = document.getElementById('toLoginBtn');
+const closeSignup   = document.getElementById('closeSignup');
+const msg           = document.getElementById('message');
+const flash         = document.querySelector('.flash');
+const cursorLight   = document.querySelector('.cursor-light');
+const clickSound    = document.getElementById('clickSound');
+
+const fUsername = document.getElementById('username');
+const fPassword = document.getElementById('password');
+const fNickname = document.getElementById('nickname');
+const fEmail    = document.getElementById('email');
+const errNickname = document.getElementById('err-nickname');
+const errEmail    = document.getElementById('err-email');
+
+let isSignupMode = false;
+
+/* ── 유틸 ── */
+function setMsg(text, color='#e05b5b') { msg.textContent = text; msg.style.color = color; }
+function clearMsg() { msg.textContent = ''; }
+
+function showFieldErr(el, text) { el.textContent = text; el.classList.add('show'); }
+function clearFieldErr(el)      { el.textContent = ''; el.classList.remove('show'); }
+function clearAllErrors() {
+  clearFieldErr(errNickname);
+  clearFieldErr(errEmail);
+  [fUsername, fPassword, fNickname, fEmail].forEach(i => i.classList.remove('input-error'));
+  clearMsg();
 }
 
-document.addEventListener("mousemove", (e) => {
-    cursorLight.style.left    = e.clientX + "px";
-    cursorLight.style.top     = e.clientY + "px";
-    cursorLight.style.opacity = "1";
+function isValidEmail(v) {
+  return /^[^\s@]+@[^\s@]+\.(com|net|org|co\.kr|kr|io|dev|me|info|biz|edu|gov|ac\.kr)$/.test(v);
+}
+
+/* ── 모드 전환 ── */
+function enterSignupMode() {
+  isSignupMode = true;
+  loginBox.classList.add('expanded');
+  mainTitle.classList.add('compact');
+  boxTitle.textContent = 'Register';
+  mainBtn.textContent  = 'CREATE';
+  guestBtn.style.display = 'none';
+  fNickname.value = ''; fEmail.value = '';
+  clearAllErrors();
+  setTimeout(() => fNickname.focus(), 300);
+}
+function exitSignupMode() {
+  isSignupMode = false;
+  loginBox.classList.remove('expanded');
+  mainTitle.classList.remove('compact');
+  boxTitle.textContent = 'Login';
+  mainBtn.textContent  = 'ENTER';
+  guestBtn.style.display = '';
+  clearAllErrors();
+}
+
+openSignupBtn.addEventListener('click', enterSignupMode);
+toLoginBtn.addEventListener('click',   exitSignupMode);
+closeSignup.addEventListener('click',  exitSignupMode);
+
+/* ── 실시간 유효성 검사 ── */
+fNickname.addEventListener('input', () => {
+  const v = fNickname.value.trim();
+  if (v.length > 0 && v.length < 2) {
+    showFieldErr(errNickname, '닉네임은 2자 이상이어야 합니다.');
+    fNickname.classList.add('input-error');
+  } else {
+    clearFieldErr(errNickname);
+    fNickname.classList.remove('input-error');
+  }
 });
-document.addEventListener("mouseleave", () => cursorLight.style.opacity = "0");
 
-const canvas = document.getElementById("particles");
-const ctx    = canvas.getContext("2d");
-canvas.width  = window.innerWidth;
-canvas.height = window.innerHeight;
-let particles = [];
+fEmail.addEventListener('input', () => {
+  const v = fEmail.value.trim();
+  if (v.length > 0 && !isValidEmail(v)) {
+    showFieldErr(errEmail, '알맞은 이메일형식(@, .com, .net...)이 아닙니다.');
+    fEmail.classList.add('input-error');
+  } else {
+    clearFieldErr(errEmail);
+    fEmail.classList.remove('input-error');
+  }
+});
 
-function createParticles(count, x = canvas.width / 2, y = canvas.height / 2) {
-    for (let i = 0; i < count; i++) {
-        particles.push({
-            x, y,
-            size:          Math.random() * 4 + 1,
-            speedX:        (Math.random() - 0.5) * 6,
-            speedY:        (Math.random() - 0.5) * 6,
-            life:          Math.random() * 100 + 50,
-            angle:         Math.random() * Math.PI * 2,
-            rotationSpeed: (Math.random() - 0.5) * 0.2,
-            shape:         Math.random() > 0.5 ? "star" : "circle"
-        });
-    }
+/* ── 커서 라이트 ── */
+document.addEventListener('mousemove', e => {
+  cursorLight.style.left    = e.clientX + 'px';
+  cursorLight.style.top     = e.clientY + 'px';
+  cursorLight.style.opacity = '1';
+});
+document.addEventListener('mouseleave', () => cursorLight.style.opacity = '0');
+
+/* ── 성공 애니메이션 ── */
+function playSuccessAnim() {
+  try { clickSound.currentTime = 0; clickSound.play(); } catch(_) {}
+  flash.style.transition = 'none'; flash.style.opacity = '1';
+  setTimeout(() => { flash.style.transition = 'opacity 0.6s'; flash.style.opacity = '0'; }, 50);
 }
 
-function drawStar(ctx, r) {
-    ctx.beginPath();
-    for (let i = 0; i < 5; i++) {
-        ctx.lineTo( Math.cos((18 + i*72) * Math.PI / 180) * r,  -Math.sin((18 + i*72) * Math.PI / 180) * r);
-        ctx.lineTo( Math.cos((54 + i*72) * Math.PI / 180) * (r/2), -Math.sin((54 + i*72) * Math.PI / 180) * (r/2));
-    }
-    ctx.closePath();
-    ctx.fill();
-}
+/* ── 폼 제출 ── */
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  clearAllErrors();
+  if (isSignupMode) { await doRegister(); }
+  else              { await doLogin(); }
+});
 
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach((p, i) => {
-        ctx.save();
-        ctx.translate(p.x, p.y);
-        ctx.rotate(p.angle);
-        ctx.fillStyle = "rgba(180,120,255,0.9)";
-        if (p.shape === "star") drawStar(ctx, p.size);
-        else { ctx.beginPath(); ctx.arc(0, 0, p.size, 0, Math.PI*2); ctx.fill(); }
-        ctx.restore();
-        p.x += p.speedX;
-        p.y += p.speedY;
-        p.angle += p.rotationSpeed;
-        p.life--;
-        if (p.life <= 0) particles.splice(i, 1);
+/* ── 로그인 ── */
+async function doLogin() {
+  const username = fUsername.value.trim();
+  const password = fPassword.value;
+  if (!username || !password) { setMsg('아이디와 비밀번호를 입력하세요.'); return; }
+
+  mainBtn.disabled = true; mainBtn.textContent = '...';
+
+  try {
+    const res  = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
     });
-    requestAnimationFrame(animate);
+    const data = await res.json();
+
+    if (data.success) {
+      localStorage.setItem('hjs_token',    data.token);
+      localStorage.setItem('hjs_username', data.user.username);
+      localStorage.setItem('hjs_role',     data.user.role);
+      setMsg('환영합니다!', 'var(--ac-light)');
+      playSuccessAnim();
+      alert("환영합니다!");
+      setTimeout(() => {
+        loginBox.classList.add('success');
+        setTimeout(() => { window.location.href = 'welcome.html'; }, 300);
+      }, 600);
+    } else {
+      setMsg(data.message || '아이디 또는 비밀번호가 틀렸습니다.');
+      mainBtn.disabled = false; mainBtn.textContent = 'ENTER';
+    }
+  } catch(_) {
+    setMsg('서버에 연결할 수 없습니다.');
+    mainBtn.disabled = false; mainBtn.textContent = 'ENTER';
+  }
 }
-animate();
 
-form.addEventListener("submit", function(e) {
-    e.preventDefault();
-    clickSound.play();
+/* ── 회원가입 ── */
+async function doRegister() {
+  const username = fUsername.value.trim();
+  const password = fPassword.value;
+  const nickname = fNickname.value.trim();
+  const email    = fEmail.value.trim();
 
-    const id = document.getElementById("username").value;
-    const pw = document.getElementById("password").value;
+  let hasErr = false;
+  if (!username) { fUsername.classList.add('input-error'); setMsg('아이디를 입력하세요.'); hasErr = true; }
+  if (!password || password.length < 8) { fPassword.classList.add('input-error'); setMsg('비밀번호는 8자 이상이어야 합니다.'); hasErr = true; }
+  if (!nickname || nickname.length < 2) {
+    showFieldErr(errNickname, '닉네임은 2자 이상 입력해야 합니다.');
+    fNickname.classList.add('input-error'); hasErr = true;
+  }
+  if (email && !isValidEmail(email)) {
+    showFieldErr(errEmail, '알맞은 이메일형식(@, .com, .net...)이 아닙니다.');
+    fEmail.classList.add('input-error'); hasErr = true;
+  }
+  if (hasErr) return;
 
-    // if ((id === "qwerqwer" && pw === "qwerqwer") || (id === "1q2w3e4r5t!" && pw === "1q2w3e4r5t!")) {
-    //     msg.textContent = "환영합니다! 미완성(개발중)";
-    //     msg.style.color        = "#00FFFF";
-    //     flash.style.opacity    = "1";
-    //     flash.style.transition = "opacity 0.8s ease";
-    //     setTimeout(() => { flash.style.opacity = "0"; }, 800);
-    //     setTimeout(() => { box.classList.add("success"); }, 500);
-    //     createParticles(200);
-    //     bgVideo.style.filter = "brightness(0.6) contrast(1.2)";
-    //     alert("환영합니다!\n- 한지성 올림");
-    //     window.location.href = 'welcome.html';
-    // } else {
-    //     msg.textContent = "잘못된 아이디 또는 비밀번호입니다.";
-    //     // msg.textContent = "Hint: PC로 들어오셔야 합니다!";
-    //     // msg.textContent = "잘못된 아이디 또는 비밀번호입니다.\nHint: PC로 들어오셔야 합니다!";
-    //     msg.style.color = "#ff4444";
-    // }
-});
+  mainBtn.disabled = true; mainBtn.textContent = '...';
 
-window.addEventListener("resize", () => {
-    canvas.width  = window.innerWidth;
-    canvas.height = window.innerHeight;
-});
-document.getElementById("zxc").addEventListener("click", function() {
-    clickSound.play();
-    bgVideo.style.filter = "brightness(0.6) contrast(1.2)";
-    alert("현재 서비스 개발이 진행 중인 관계로,\n**비회원 버튼**으로 안내해 드리겠습니다.\n가급적 🖥️PC 접속을 권장합니다.\n\n- 한지성 올림");
-});
-document.getElementById("guestBtn").addEventListener("click", function() {
-    clickSound.play();
-    flash.style.opacity    = "1";
-    flash.style.transition = "opacity 0.8s ease";
-    setTimeout(() => { flash.style.opacity = "0"; }, 800);
-    setTimeout(() => { box.classList.add("success"); }, 500);
-    // createParticles(200);
-    bgVideo.style.filter = "brightness(0.6) contrast(1.2)";
-    // alert("환영합니다!\n\n- 한지성 올림");
-    alert("환영합니다!");
-    window.location.href = 'welcome.html';
+  try {
+    const res  = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password, nickname, email: email || null }),
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      setMsg('가입 완료! 로그인해주세요.', 'var(--ac-light)');
+      mainBtn.disabled = false; mainBtn.textContent = 'CREATE';
+      setTimeout(() => exitSignupMode(), 1400);
+    } else {
+      const m = data.message || '';
+      if (m.includes('닉네임')) {
+        showFieldErr(errNickname, m);
+        fNickname.classList.add('input-error');
+      } else if (m.includes('이메일')) {
+        showFieldErr(errEmail, m);
+        fEmail.classList.add('input-error');
+      } else if (m.includes('아이디')) {
+        fUsername.classList.add('input-error');
+        setMsg(m);
+      } else {
+        setMsg(m);
+      }
+      mainBtn.disabled = false; mainBtn.textContent = 'CREATE';
+    }
+  } catch(_) {
+    setMsg('서버에 연결할 수 없습니다.');
+    mainBtn.disabled = false; mainBtn.textContent = 'CREATE';
+  }
+}
+
+/* ── 비회원 ── */
+guestBtn.addEventListener('click', function() {
+  playSuccessAnim();
+  alert("환영합니다!");
+  setTimeout(() => { window.location.href = 'welcome.html'; }, 300);
 });
 </script>
-
 </body>
 </html>

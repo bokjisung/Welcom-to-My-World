@@ -695,7 +695,7 @@ document.getElementById('surveySubmitBtn').addEventListener('click', async () =>
         const token = localStorage.getItem('hjs_token');
         const headers = { 'Content-Type': 'application/json' };
         if (token) headers['Authorization'] = 'Bearer ' + token;
-        await fetch('/api/survey', { method: 'POST', headers, body: JSON.stringify(body) });
+        await fetch('https://welcom-to-my-world-production.up.railway.app/api/survey', { method: 'POST', headers, body: JSON.stringify(body) });
     } catch (_) {}
     // 당일 재노출 방지
     localStorage.setItem('hjs_survey_done', Date.now().toString());

@@ -432,7 +432,7 @@ async function doLogin() {
   mainBtn.disabled = true; mainBtn.textContent = '...';
 
   try {
-    const res  = await fetch('/api/auth/login', {
+    const res  = await fetch('https://welcom-to-my-world-production.up.railway.app/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),
@@ -483,7 +483,7 @@ async function doRegister() {
   mainBtn.disabled = true; mainBtn.textContent = '...';
 
   try {
-    const res  = await fetch('/api/auth/register', {
+    const res  = await fetch('https://welcom-to-my-world-production.up.railway.app/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password, nickname, email: email || null }),

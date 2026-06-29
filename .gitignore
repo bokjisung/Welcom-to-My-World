@@ -3,6 +3,10 @@
 # ============================================================
 
 # 절대 올리면 안 되는 파일
+backend/.env
+backend/.env.local
+backend/.env.production
+backend/.env.*.local
 .env
 .env.local
 .env.production

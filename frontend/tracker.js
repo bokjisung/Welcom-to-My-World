@@ -3,7 +3,7 @@
 // 모든 페이지에서 <script src="tracker.js"> 로 로드
 // ============================================================
 (function () {
-  const API = 'http://welcom-to-my-world-production.up.railway.app/api';
+  const API = 'https://welcom-to-my-world-production.up.railway.app/api';
 
   // ── 세션 ID 발급 (탭 단위 유지) ────────────────────────
   let sessionId = sessionStorage.getItem('_sid');

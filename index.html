@@ -448,7 +448,7 @@ async function doLogin() {
       alert("환영합니다!");
       setTimeout(() => {
         loginBox.classList.add('success');
-        setTimeout(() => { window.location.href = 'welcome.html'; }, 300);
+        setTimeout(() => { window.location.href = 'frontend/welcome.html'; }, 300);
       }, 600);
     } else {
       setMsg(data.message || '아이디 또는 비밀번호가 틀렸습니다.');
@@ -520,7 +520,7 @@ async function doRegister() {
 guestBtn.addEventListener('click', function() {
   playSuccessAnim();
   alert("환영합니다!");
-  setTimeout(() => { window.location.href = 'welcome.html'; }, 300);
+  setTimeout(() => { window.location.href = 'frontend/welcome.html'; }, 300);
 });
 
 // 수정 후 삭제하기 

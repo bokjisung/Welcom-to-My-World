@@ -9,7 +9,6 @@ const path    = require('path');
 const authRouter    = require('./routes/auth');
 const surveyRouter  = require('./routes/survey');
 const logRouter     = require('./routes/log');
-const visitorRouter = require('./routes/visitor');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -26,6 +25,7 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.text({ type: 'text/plain' }));
 
 // 프론트엔드 정적 파일 서빙
 app.use(express.static(path.join(__dirname, '..', 'frontend')));
@@ -34,7 +34,6 @@ app.use(express.static(path.join(__dirname, '..', 'frontend')));
 app.use('/api/auth',    authRouter);
 app.use('/api/survey',  surveyRouter);
 app.use('/api/log',     logRouter);
-app.use('/api/visitor', visitorRouter);
 
 // ── 헬스체크 ───────────────────────────────────────────────
 app.get('/api/health', (req, res) =>

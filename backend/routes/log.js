@@ -84,7 +84,7 @@ router.post('/session', async (req, res) => {
 // ─── POST /api/log/session/end - 세션 종료 ───────────────
 router.post('/session/end', async (req, res) => {
   const raw = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
-  const { session_id, duration_sec } = req;
+  const { session_id, duration_sec } = raw;
 
   // ② session_id 미검증 버그 수정
   if (!session_id) {

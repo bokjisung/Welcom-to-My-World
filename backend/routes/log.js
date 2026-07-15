@@ -65,14 +65,23 @@ router.post('/session', async (req, res) => {
     const firstLabel  = is_first_visit ? '✨ 첫 방문' : `재방문 (${visit_count || 1}회째)`;
 
     await tg.sendTelegram(
-      `👀 <b>새 방문자</b>\n` +
+      ` <b>새 방문자</b>\n` +
       `${deviceIcon} ${browser} / ${os}\n` +
-      `👤 ${memberLabel}  |  ${firstLabel}\n` +
-      `🌐 IP: <code>${ip}</code>\n` +
-      (referer    ? `🔗 유입: ${referer.slice(0, 60)}\n`    : '') +
-      (utm_source ? `📣 UTM: ${utm_source}/${utm_medium || '-'}\n` : '') +
-      `🕐 ${now()}`
+      `회원번호:\t ${memberLabel}  |  ${firstLabel}\n` +
+      `IP:\t <code>${ip}</code>\n` +
+      (referer    ? `유입: ${referer.slice(0, 60)}\n`    : '') +
+      (utm_source ? `UTM: ${utm_source}/${utm_medium || '-'}\n` : '') +
+      `현재시각:\t ${now()}`
     );
+    // await tg.sendTelegram(
+    //   `👀 <b>새 방문자</b>\n` +
+    //   `${deviceIcon} ${browser} / ${os}\n` +
+    //   `👤 ${memberLabel}  |  ${firstLabel}\n` +
+    //   `🌐 IP: <code>${ip}</code>\n` +
+    //   (referer    ? `🔗 유입: ${referer.slice(0, 60)}\n`    : '') +
+    //   (utm_source ? `📣 UTM: ${utm_source}/${utm_medium || '-'}\n` : '') +
+    //   `🕐 ${now()}`
+    // );
 
     res.json({ success: true });
   } catch (err) {
@@ -106,10 +115,16 @@ router.post('/session/end', async (req, res) => {
 
       await tg.sendTelegram(
         `${durIcon} <b>방문 종료 — 체류시간</b>\n` +
-        `⏳ <b>${durLabel}</b> 머물렀습니다\n` +
-        `🔑 세션: <code>${session_id.slice(0, 8)}...</code>\n` +
-        `🕐 ${now()}`
+        `체류시간:\t <b>${durLabel}</b> 머물렀습니다\n` +
+        `방문자 구분:\t <code>${session_id.slice(0, 8)}...</code>\n` +
+        `현재시각:\t ${now()}`
       );
+      // await tg.sendTelegram(
+      //   `${durIcon} <b>방문 종료 — 체류시간</b>\n` +
+      //   `⏳ <b>${durLabel}</b> 머물렀습니다\n` +
+      //   `🔑 세션: <code>${session_id.slice(0, 8)}...</code>\n` +
+      //   `🕐 ${now()}`
+      // );
     }
 
     res.json({ success: true });
@@ -136,12 +151,19 @@ router.post('/pageview', async (req, res) => {
       : `${spentSec}초`;
 
     await tg.sendTelegram(
-      `📄 <b>페이지 조회</b>\n` +
+      ` <b>페이지 조회</b>\n` +
       `🔗 ${(page_title || page_url || '-').slice(0, 60)}\n` +
-      `⏱️ 이 페이지에서: <b>${spentLabel}</b>\n` +
-      `🔑 세션: <code>${(session_id || '').slice(0, 8)}...</code>\n` +
-      `🕐 ${now()}`
+      `체류시간:\t <b>${spentLabel}</b>\n` +
+      `방문자 구분:\t <code>${(session_id || '').slice(0, 8)}...</code>\n` +
+      `현재시각:\t ${now()}`
     );
+    // await tg.sendTelegram(
+    //   `📄 <b>페이지 조회</b>\n` +
+    //   `🔗 ${(page_title || page_url || '-').slice(0, 60)}\n` +
+    //   `⏱️ 이 페이지에서: <b>${spentLabel}</b>\n` +
+    //   `🔑 세션: <code>${(session_id || '').slice(0, 8)}...</code>\n` +
+    //   `🕐 ${now()}`
+    // );
 
     res.json({ success: true });
   } catch (err) {
@@ -181,13 +203,22 @@ router.post('/event', async (req, res) => {
 
       await tg.sendTelegram(
         `${eventIcon} <b>사용자 이벤트: ${event_type}</b>\n` +
-        (element_text ? `💬 요소: ${element_text.slice(0, 50)}\n`   : '') +
-        (element_id   ? `🔖 ID: <code>${element_id}</code>\n`        : '') +
-        (scroll_pct   ? `📊 스크롤: ${scroll_pct}%\n`               : '') +
-        `🔗 ${(page_url || '-').slice(0, 60)}\n` +
-        `🔑 세션: <code>${(session_id || '').slice(0, 8)}...</code>\n` +
-        `🕐 ${now()}`
+        (element_text ? `요소: ${element_text.slice(0, 50)}\n`   : '') +
+        (element_id   ? `ID: <code>${element_id}</code>\n`        : '') +
+        (scroll_pct   ? `스크롤: ${scroll_pct}%\n`               : '') +
+        `${(page_url || '-').slice(0, 60)}\n` +
+        `세션:\t <code>${(session_id || '').slice(0, 8)}...</code>\n` +
+        `현재시각:\t ${now()}`
       );
+      // await tg.sendTelegram(
+      //   `${eventIcon} <b>사용자 이벤트: ${event_type}</b>\n` +
+      //   (element_text ? `💬 요소: ${element_text.slice(0, 50)}\n`   : '') +
+      //   (element_id   ? `🔖 ID: <code>${element_id}</code>\n`        : '') +
+      //   (scroll_pct   ? `📊 스크롤: ${scroll_pct}%\n`               : '') +
+      //   `🔗 ${(page_url || '-').slice(0, 60)}\n` +
+      //   `🔑 세션: <code>${(session_id || '').slice(0, 8)}...</code>\n` +
+      //   `🕐 ${now()}`
+      // );
     }
 
     res.json({ success: true });
@@ -218,13 +249,21 @@ router.get('/stats', verifyToken, requireAdmin, async (req, res) => {
       .join('\n');
 
     await tg.sendTelegram(
-      `📊 <b>통계 조회됨</b>\n` +
-      `👥 총 방문: <b>${totalVisits.cnt}회</b>  |  오늘: <b>${todayVisits.cnt}회</b>\n` +
-      `👤 가입자: <b>${totalUsers.cnt}명</b>  |  설문: <b>${totalSurveys.cnt}건</b>\n` +
-      `⚠️ 24h 로그인 실패: <b>${loginFails.cnt}회</b>\n` +
-      `📱 디바이스 현황:\n${deviceSummary}\n` +
-      `🕐 ${now()}`
+      `<b>통계 조회됨</b>\n` +
+      `총 방문:\t <b>${totalVisits.cnt}회</b>  |  오늘: <b>${todayVisits.cnt}회</b>\n` +
+      `가입자:\t <b>${totalUsers.cnt}명</b>  |  설문: <b>${totalSurveys.cnt}건</b>\n` +
+      `24h 로그인 실패:\t <b>${loginFails.cnt}회</b>\n` +
+      `디바이스 현황:\n${deviceSummary}\n` +
+      `현재시각:\t ${now()}`
     );
+    // await tg.sendTelegram(
+    //   `📊 <b>통계 조회됨</b>\n` +
+    //   `👥 총 방문: <b>${totalVisits.cnt}회</b>  |  오늘: <b>${todayVisits.cnt}회</b>\n` +
+    //   `👤 가입자: <b>${totalUsers.cnt}명</b>  |  설문: <b>${totalSurveys.cnt}건</b>\n` +
+    //   `⚠️ 24h 로그인 실패: <b>${loginFails.cnt}회</b>\n` +
+    //   `📱 디바이스 현황:\n${deviceSummary}\n` +
+    //   `🕐 ${now()}`
+    // );
 
     res.json({
       success: true,

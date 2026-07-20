@@ -1,20 +1,70 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-theme="dark">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Welcome to HJS!</title>
+  <script>
+    (function(){
+      try{
+        var t = localStorage.getItem('hjs_theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+      }catch(e){}
+    })();
+  </script>
   <style>
     @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap");
 
     :root {
-      --bg: #0e0f11; --panel: #0c0c0d;
-      --border-hi: rgba(255,255,255,0.09); --border-lo: rgba(255,255,255,0.02);
-      --tx0: #d4d8e0; --tx1: #606672; --tx2: #363b45;
-      --ac: #5b9bd5; --ac-light: #7fb3e0; --ac-dim: rgba(91,155,213,0.07); --ac-mid: #4a86bb;
+      --bg: #1b1b1e;
+      --tx0: #e4e5e8; --tx1: #86868d; --tx2: #45454b;
+      --ac: #5b9bd5; --ac-light: #7fb3e0; --ac-dim: rgba(91,155,213,0.09); --ac-mid: #4a86bb; --ac-rgb: 91,155,213;
       --mono: 'JetBrains Mono','Fira Code',monospace;
       --sans: 'Inter',-apple-system,sans-serif;
-      --err: #e05b5b;
+      --err: #e0716f; --err-rgb: 224,113,111;
+      --sh-d: rgba(0,0,0,0.62);
+      --sh-d-soft: rgba(0,0,0,0.4);
+      --sh-l: rgba(255,255,255,0.035);
+      --sh-l-soft: rgba(255,255,255,0.02);
+      --hairline: rgba(255,255,255,0.06);
+      --sheen: rgba(255,255,255,0.08);
+    }
+
+    html[data-theme="light"] {
+      --bg: #e9ebf0;
+      --tx0: #2d2f36; --tx1: #6e7178; --tx2: #a4a7b0;
+      --ac: #4a86bb; --ac-light: #5b9bd5; --ac-dim: rgba(74,134,187,0.10); --ac-mid: #3c6f96; --ac-rgb: 74,134,187;
+      --err: #c94b4b; --err-rgb: 201,75,75;
+      --sh-d: rgba(163,177,198,0.55);
+      --sh-d-soft: rgba(163,177,198,0.4);
+      --sh-l: rgba(255,255,255,0.9);
+      --sh-l-soft: rgba(255,255,255,0.7);
+      --hairline: rgba(0,0,0,0.08);
+      --sheen: rgba(255,255,255,0.6);
+    }
+    html[data-theme="pink"] {
+      --bg: #f5e8ec;
+      --tx0: #4a2f38; --tx1: #8a6670; --tx2: #c3a4ad;
+      --ac: #c9668a; --ac-light: #d883a1; --ac-dim: rgba(201,102,138,0.12); --ac-mid: #a84f70; --ac-rgb: 201,102,138;
+      --err: #c2504f; --err-rgb: 194,80,79;
+      --sh-d: rgba(198,157,171,0.5);
+      --sh-d-soft: rgba(198,157,171,0.36);
+      --sh-l: rgba(255,255,255,0.9);
+      --sh-l-soft: rgba(255,255,255,0.7);
+      --hairline: rgba(0,0,0,0.08);
+      --sheen: rgba(255,255,255,0.6);
+    }
+    html[data-theme="blue"] {
+      --bg: #e5eef8;
+      --tx0: #243447; --tx1: #5b7186; --tx2: #9fb2c4;
+      --ac: #3f7fc4; --ac-light: #5b9bd5; --ac-dim: rgba(63,127,196,0.12); --ac-mid: #2f6396; --ac-rgb: 63,127,196;
+      --err: #c25454; --err-rgb: 194,84,84;
+      --sh-d: rgba(160,180,206,0.5);
+      --sh-d-soft: rgba(160,180,206,0.36);
+      --sh-l: rgba(255,255,255,0.9);
+      --sh-l-soft: rgba(255,255,255,0.7);
+      --hairline: rgba(0,0,0,0.08);
+      --sheen: rgba(255,255,255,0.6);
     }
 
     *, ::before, ::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,83 +73,66 @@
     body {
       height: 100vh;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      background: rgb(13,14,16);
+      background: var(--bg);
       overflow: hidden; font-family: var(--sans); user-select: none; position: relative;
     }
 
     #bg-video {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      object-fit: cover; z-index: -1; filter: brightness(0.03) saturate(0);
+      object-fit: cover; z-index: -1; opacity: 0;
     }
 
     .cursor-light {
       position: fixed; width: 280px; height: 280px; border-radius: 50%;
       pointer-events: none;
-      background: radial-gradient(circle, rgba(91,155,213,0.055) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(var(--ac-rgb),0.05) 0%, transparent 70%);
       transform: translate(-50%,-50%); z-index: 2; mix-blend-mode: screen;
       opacity: 0; transition: opacity 0.4s;
     }
 
     .flash {
       position: fixed; inset: 0;
-      background: radial-gradient(circle, rgba(91,155,213,0.2), transparent 65%);
+      background: radial-gradient(circle, rgba(var(--ac-rgb),0.18), transparent 65%);
       opacity: 0; pointer-events: none; z-index: 100;
     }
 
     .main-title {
       font-family: var(--mono); font-size: 54px; font-weight: 700;
-      letter-spacing: 16px; color: rgba(255,255,255,0.88);
+      letter-spacing: 16px; color: var(--tx0);
       text-align: center; line-height: 1; margin-bottom: 48px;
       position: relative; z-index: 3;
+      text-shadow: 2px 2px 4px var(--sh-d-soft);
       animation: titleIn 0.9s cubic-bezier(0.16,1,0.3,1) 0s 1 normal both running;
       transition: margin-bottom 0.5s cubic-bezier(0.16,1,0.3,1);
     }
     .main-title.compact { margin-bottom: 22px; }
     .main-title .hjs-text {
       display: block; font-family: var(--mono); font-size: 32px; font-weight: 300;
-      letter-spacing: 10px; color: rgba(255,255,255,0.2); margin-top: 7px;
+      letter-spacing: 10px; color: var(--tx2); margin-top: 7px;
     }
     @keyframes titleIn {
       0%   { opacity: 0; transform: translateY(-18px); }
       100% { opacity: 1; transform: translateY(0px); }
     }
 
-    /* ── LOGIN BOX ── */
+    /* ── LOGIN BOX (neumorphic raised surface) ── */
     .login-box {
       width: 364px; padding: 38px 32px;
-      position: relative; z-index: 3; text-align: center; border-radius: 10px;
-      background:
-        repeating-linear-gradient(0deg, rgba(255,255,255,0.01) 0px, transparent 1px, transparent 3px, rgba(255,255,255,0.008) 3px, transparent 4px),
-        repeating-linear-gradient(90deg, rgba(255,255,255,0.008) 0px, transparent 1px, transparent 3px),
-        linear-gradient(160deg, rgb(20,20,22) 0%, rgb(12,12,14) 40%, rgb(16,16,18) 100%);
-      border: 1px solid;
-      border-color: rgba(255,255,255,0.11) rgba(0,0,0,0.6) rgba(0,0,0,0.7) rgba(255,255,255,0.07);
+      position: relative; z-index: 3; text-align: center; border-radius: 28px;
+      background: var(--bg);
       box-shadow:
-        rgba(255,255,255,0.08) 0px 1px 0px inset,
-        rgba(0,0,0,0.4) 0px -1px 0px inset,
-        rgb(0,0,0) 5px 7px 0px,
-        rgba(0,0,0,0.85) 8px 12px 28px,
-        rgba(0,0,0,0.5) 16px 20px 48px,
-        rgba(91,155,213,0.03) 0px 0px 60px;
+        14px 14px 30px var(--sh-d),
+        -14px -14px 30px var(--sh-l);
       animation: boxIn 1s cubic-bezier(0.16,1,0.3,1) 0.12s 1 normal both running;
       overflow: hidden;
       max-height: 420px;
       transition: max-height 0.55s cubic-bezier(0.16,1,0.3,1),
-                  opacity 0.7s, transform 0.7s;
-    }
-    .login-box::before {
-      content: ""; position: absolute; top: 0; left: 14%; right: 14%; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
-      border-radius: 1px;
-    }
-    .login-box::after {
-      content: ""; position: absolute; bottom: -3px; right: -3px; width: 80%; height: 80%;
-      border-right: 1px solid rgba(255,255,255,0.02);
-      border-bottom: 1px solid rgba(255,255,255,0.02);
-      border-radius: 0px 0px 12px; pointer-events: none;
+                  opacity 0.7s, transform 0.7s, box-shadow 0.4s;
     }
     .login-box.expanded { max-height: 700px; }
-    .login-box.success { opacity: 0; transform: translateY(-18px) scale(0.95); }
+    .login-box.success {
+      opacity: 0; transform: translateY(-18px) scale(0.95);
+    }
     @keyframes boxIn {
       0%   { opacity: 0; transform: translateY(30px); }
       100% { opacity: 1; transform: translateY(0px); }
@@ -118,46 +151,44 @@
       flex: 1;
     }
     .login-title::before, .login-title::after {
-      content: ""; flex: 1; height: 1px; background: rgba(255,255,255,0.05);
+      content: ""; flex: 1; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--hairline), transparent);
     }
 
     .close-signup {
       display: none;
       position: absolute; right: 0; top: 50%; transform: translateY(-50%);
-      width: 22px; height: 22px;
-      border: 1px solid rgba(255,255,255,0.08); border-radius: 50%;
-      background: rgba(255,255,255,0.03);
+      width: 26px; height: 26px;
+      border: none; border-radius: 50%;
+      background: var(--bg);
+      box-shadow: 4px 4px 8px var(--sh-d-soft), -4px -4px 8px var(--sh-l);
       color: var(--tx1); font-size: 12px; line-height: 1;
       cursor: pointer;
       align-items: center; justify-content: center;
-      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      transition: box-shadow 0.2s, color 0.2s;
       z-index: 5;
     }
     .close-signup:hover {
-      border-color: rgba(91,155,213,0.35);
       color: var(--ac-light);
-      background: rgba(91,155,213,0.06);
+      box-shadow: 2px 2px 5px var(--sh-d-soft), -2px -2px 5px var(--sh-l);
     }
     .expanded .close-signup { display: flex; }
 
-    /* ── INPUTS ── */
+    /* ── INPUTS (neumorphic pressed-in) ── */
     .login-box input {
-      width: 100%; padding: 11px 13px; margin-bottom: 9px;
-      border-radius: 6px; border: 1px solid;
-      border-color: rgba(0,0,0,0.6) rgba(255,255,255,0.04) rgba(255,255,255,0.04) rgba(0,0,0,0.4);
-      background: rgba(0,0,0,0.55); color: rgba(255,255,255,0.82);
+      width: 100%; padding: 12px 14px; margin-bottom: 12px;
+      border-radius: 12px; border: none;
+      background: var(--bg); color: var(--tx0);
       outline: none; font-family: var(--mono); font-size: 13px; letter-spacing: 1px;
-      box-shadow: rgba(0,0,0,0.5) 0px 2px 8px inset;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      box-shadow: inset 5px 5px 10px var(--sh-d-soft), inset -5px -5px 10px var(--sh-l);
+      transition: box-shadow 0.2s;
     }
     .login-box input::placeholder { color: var(--tx2); font-family: var(--sans); letter-spacing: 0px; font-size: 12px; }
     .login-box input:focus {
-      border-color: rgba(91,155,213,0.3);
-      box-shadow: rgba(0,0,0,0.4) 0px 2px 8px inset, rgba(91,155,213,0.08) 0px 0px 0px 2px;
+      box-shadow: inset 5px 5px 10px var(--sh-d-soft), inset -5px -5px 10px var(--sh-l), 0 0 0 1.5px var(--ac-dim);
     }
     .login-box input.input-error {
-      border-color: rgba(224,91,91,0.45) !important;
-      box-shadow: rgba(0,0,0,0.4) 0px 2px 8px inset, rgba(224,91,91,0.1) 0px 0px 0px 2px !important;
+      box-shadow: inset 5px 5px 10px var(--sh-d-soft), inset -5px -5px 10px var(--sh-l), 0 0 0 1.5px rgba(var(--err-rgb),0.4) !important;
     }
 
     /* ── 회원가입 확장 영역 ── */
@@ -173,7 +204,7 @@
     .divider {
       display: none;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+      background: linear-gradient(90deg, transparent, var(--hairline), transparent);
       margin: 10px 0 14px;
     }
     .expanded .divider { display: block; }
@@ -187,41 +218,41 @@
     }
     .field-err.show { opacity: 1; }
 
-    /* ── BUTTONS ── */
+    /* ── BUTTONS (raised neumorphic) ── */
     .gold-btn {
-      width: 100%; padding: 12px; margin-top: 6px; border: none; border-radius: 6px;
+      width: 100%; padding: 13px; margin-top: 6px; border: none; border-radius: 14px;
       font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: 4px;
-      cursor: pointer; color: rgb(255,255,255);
-      background: linear-gradient(180deg, #6aaee0 0%, var(--ac) 60%, #4a86bb 100%);
-      box-shadow: rgb(46,95,138) 0px 3px 0px, rgba(91,155,213,0.22) 0px 5px 14px, rgba(255,255,255,0.15) 0px 1px 0px inset;
+      cursor: pointer; color: var(--ac-light);
+      background: var(--bg);
+      box-shadow: 6px 6px 14px var(--sh-d), -6px -6px 14px var(--sh-l);
       position: relative; overflow: hidden;
-      transition: transform 0.12s, box-shadow 0.12s;
+      transition: box-shadow 0.15s, color 0.15s, transform 0.12s;
     }
     .gold-btn:hover {
-      background: linear-gradient(rgb(123,189,232) 0%, rgb(106,174,224) 60%, rgb(85,146,204) 100%);
-      box-shadow: rgb(46,95,138) 0px 3px 0px, rgba(91,155,213,0.28) 0px 8px 20px, rgba(255,255,255,0.18) 0px 1px 0px inset;
+      color: var(--ac-mid);
+      box-shadow: 4px 4px 10px var(--sh-d), -4px -4px 10px var(--sh-l), 0 0 16px var(--ac-dim);
     }
     .gold-btn:active {
-      transform: translateY(2px);
-      box-shadow: rgb(46,95,138) 0px 1px 0px, rgba(91,155,213,0.15) 0px 3px 8px, rgba(255,255,255,0.1) 0px 1px 0px inset;
+      box-shadow: inset 5px 5px 10px var(--sh-d-soft), inset -5px -5px 10px var(--sh-l);
     }
-    .gold-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+    .gold-btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .gold-btn::before {
       content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.1), transparent);
+      background: linear-gradient(120deg, transparent, var(--sheen), transparent);
       transition: 0.5s;
     }
     .gold-btn:hover::before { left: 100%; }
 
     .guest-btn {
-      width: 100%; padding: 11px; margin-top: 8px;
-      border: 1px solid rgba(255,255,255,0.06); border-radius: 6px;
+      width: 100%; padding: 12px; margin-top: 8px;
+      border: none; border-radius: 14px;
       font-family: var(--mono); font-size: 12px; font-weight: 400; letter-spacing: 2px;
-      cursor: pointer; background: rgba(255,255,255,0.02); color: var(--tx1);
-      transition: 0.2s; box-shadow: rgba(255,255,255,0.03) 0px 1px 0px inset;
+      cursor: pointer; background: var(--bg); color: var(--tx1);
+      box-shadow: 5px 5px 10px var(--sh-d-soft), -5px -5px 10px var(--sh-l-soft);
+      transition: box-shadow 0.2s, color 0.2s;
     }
-    .guest-btn:hover { border-color: rgba(91,155,213,0.22); color: var(--ac-light); background: var(--ac-dim); }
-    .guest-btn:active { transform: scale(0.99); }
+    .guest-btn:hover { color: var(--ac-light); box-shadow: 3px 3px 7px var(--sh-d-soft), -3px -3px 7px var(--sh-l-soft); }
+    .guest-btn:active { box-shadow: inset 4px 4px 8px var(--sh-d-soft), inset -4px -4px 8px var(--sh-l-soft); }
 
     .signup-link { margin-top: 14px; font-size: 10px; text-align: center; color: var(--tx2); }
     .signup-link a {
@@ -241,6 +272,36 @@
 
     #message { margin-top: 12px; font-size: 12px; font-weight: 500; min-height: 18px; font-family: var(--mono); letter-spacing: 0.5px; }
 
+    /* ── 테마 스위처 (뉴모피즘) ── */
+    .theme-switcher {
+      position: fixed; top: 22px; right: 22px; z-index: 50;
+      display: flex; gap: 10px; padding: 10px;
+      border-radius: 20px; background: var(--bg);
+      box-shadow: 6px 6px 14px var(--sh-d), -6px -6px 14px var(--sh-l);
+    }
+    .theme-btn {
+      width: 26px; height: 26px; border-radius: 50%; border: none; cursor: pointer;
+      padding: 0; position: relative;
+      box-shadow: 4px 4px 8px var(--sh-d-soft), -4px -4px 8px var(--sh-l);
+      transition: box-shadow 0.25s ease, transform 0.15s ease;
+    }
+    .theme-btn:hover { transform: translateY(-1px); }
+    .theme-btn.active {
+      box-shadow: inset 3px 3px 6px var(--sh-d-soft), inset -3px -3px 6px var(--sh-l);
+    }
+    .theme-btn.active::after {
+      content: ""; position: absolute; inset: -4px; border-radius: 50%;
+      border: 1.5px solid var(--ac); opacity: 0.7;
+    }
+    .theme-btn[data-theme-btn="dark"]  { background: #1b1b1e; }
+    .theme-btn[data-theme-btn="light"] { background: #e9ebf0; }
+    .theme-btn[data-theme-btn="pink"]  { background: #f5e8ec; }
+    .theme-btn[data-theme-btn="blue"]  { background: #e5eef8; }
+    @media (max-width: 480px) {
+      .theme-switcher { top: 12px; right: 12px; padding: 8px; gap: 8px; }
+      .theme-btn { width: 22px; height: 22px; }
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 1024px) {
       .main-title { font-size: 40px; letter-spacing: 11px; margin-bottom: 36px; }
@@ -252,8 +313,8 @@
       .main-title { font-size: 30px; letter-spacing: 7px; margin-bottom: 28px; }
       .main-title .hjs-text { font-size: 20px; letter-spacing: 5px; }
       .main-title.compact { margin-bottom: 14px; }
-      .login-box { width: 88vw; padding: 20px 16px; border-radius: 8px; box-shadow: rgb(0,0,0) 3px 5px 0px, rgba(0,0,0,0.8) 6px 9px 20px, rgba(91,155,213,0.02) 0px 0px 40px; }
-      .login-box input { padding: 10px 12px; font-size: 12px; margin-bottom: 8px; }
+      .login-box { width: 88vw; padding: 20px 16px; border-radius: 22px; box-shadow: 10px 10px 22px var(--sh-d), -10px -10px 22px var(--sh-l); }
+      .login-box input { padding: 10px 12px; font-size: 12px; margin-bottom: 9px; }
       .gold-btn, .guest-btn { padding: 10px; font-size: 11px; }
       .signup-link, .to-login { font-size: 9px; }
     }
@@ -263,6 +324,13 @@
   </style>
 </head>
 <body>
+
+<div class="theme-switcher" id="themeSwitcher" role="group" aria-label="테마 선택">
+  <button type="button" class="theme-btn" data-theme-btn="dark"  title="다크"></button>
+  <button type="button" class="theme-btn" data-theme-btn="light" title="라이트"></button>
+  <button type="button" class="theme-btn" data-theme-btn="pink"  title="핑크"></button>
+  <button type="button" class="theme-btn" data-theme-btn="blue"  title="블루"></button>
+</div>
 
 <video autoplay muted loop id="bg-video">
   <source src="https://cdn.coverr.co/videos/coverr-golden-light-particles-1574/1080p.mp4" type="video/mp4">
@@ -522,6 +590,29 @@ guestBtn.addEventListener('click', function() {
   alert("환영합니다!");
   setTimeout(() => { window.location.href = 'frontend/welcome.html'; }, 300);
 });
+
+/* ── 테마 스위처 ── */
+(function(){
+  var THEMES = ['dark','light','pink','blue'];
+  function currentTheme(){
+    return document.documentElement.getAttribute('data-theme') || 'dark';
+  }
+  function setActiveBtn(theme){
+    document.querySelectorAll('.theme-btn').forEach(function(b){
+      b.classList.toggle('active', b.getAttribute('data-theme-btn') === theme);
+    });
+  }
+  document.querySelectorAll('.theme-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var t = btn.getAttribute('data-theme-btn');
+      if (THEMES.indexOf(t) === -1) return;
+      document.documentElement.setAttribute('data-theme', t);
+      try { localStorage.setItem('hjs_theme', t); } catch(e){}
+      setActiveBtn(t);
+    });
+  });
+  setActiveBtn(currentTheme());
+})();
 </script>
 <script src="frontend/tracker.js"></script>
 </body>

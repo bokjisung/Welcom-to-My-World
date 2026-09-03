@@ -1,0 +1,28 @@
+가배 발주품 관리 - Railway 최종 배포 체크리스트
+================================================
+
+[필수]
+□ GitHub 저장소 루트에 Dockerfile, app.py, requirements.txt, public 폴더가 있다.
+□ Railway 서비스에 Volume을 추가했다.
+□ Volume Mount Path가 /data 이다.
+□ GABAE_AUTH_PASSWORD를 Railway Variables에 설정했다.
+□ GABAE_AUTH_USERNAME을 설정했다. (기본값 gabae 사용 가능)
+□ Healthcheck Path를 /api/health 로 설정했다.
+□ Replica는 1개다.
+□ Public Domain을 생성했다.
+
+[배포 후]
+□ /api/health 응답이 ok=true 이다.
+□ /api/health 응답이 persistentVolume=true 이다.
+□ 웹 접속 시 아이디/암호 인증이 동작한다.
+□ 품목명 입력 → 저장하기 → 새로고침 후 유지된다.
+□ 다른 휴대폰/PC에서 같은 데이터가 보인다.
+□ 사진이 전체 비율로 보인다.
+□ 다른 기기에서 저장 후 약 10초 안에 최신 내용이 반영된다.
+□ 두 브라우저가 동시에 수정할 때 충돌 안내가 나온다.
+□ Railway Redeploy 후에도 품목/사진이 유지된다.
+
+[주의]
+□ railway.json / railway.toml 에 의존하지 않는다. (2026-09 신규 서비스 기준 deprecated)
+□ SQLite + Railway Volume 구조에서는 replicas를 늘리지 않는다.
+□ GABAE_ALLOW_PUBLIC=1, GABAE_ALLOW_EPHEMERAL=1은 일반 운영에서 사용하지 않는다.

@@ -1,0 +1,11 @@
+.git
+.gitignore
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.log
+.DS_Store
+data/*
+!data/.gitkeep
+tests/__pycache__

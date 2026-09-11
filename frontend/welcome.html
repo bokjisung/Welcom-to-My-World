@@ -362,7 +362,7 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-fa
             <div class="tt-tabs" id="ttTabs">
                 <div class="tt-tab active" data-term="2026-1">2026년 상반기</div>
                 <div class="tt-tab active" data-term="2026-summer">여름방학</div>
-                <div class="tt-tab" data-term="2026-2">2026년 하반기</div>
+                <div class="tt-tab active" data-term="2026-2">2026년 하반기</div>
                 <div class="tt-tab" data-term="2026-winter">겨울방학</div>
                 <div class="tt-tab" data-term="2027-1">2027년 상반기</div>
                 <div class="tt-tab" data-term="2027-summer">여름방학</div>
@@ -635,21 +635,21 @@ const timetables={
     },
     '2026-summer':{
         // 'mon-0': {label:'-', cls:'c-tbl', span:2},
-        'mon-8': {label:'-', cls:'c-design', span:11},
+        'mon-8': {label:'호텔알바', cls:'c-design', span:8},
         // 'mon-14': {label:'-', cls:'c-design', span:4},
-        'mon-21' : {label:'헬스', cls:'c-gym', span:2},
-        // 'tue-0': {label:'-', cls:'c-tbl', span:2},
-        'tue-8': {label:'-', cls:'c-design', span:11 },
+        'mon-19' : {label:'헬스', cls:'c-gym', span:3},
+        // 'tue-0': {label:'-', cls:'c-tbl', span:3},
+        'tue-8': {label:'호텔알바', cls:'c-design', span:8 },
         // 'tue-14': {label:'-', cls:'c-design', span:4 },
-        'tue-21' : {label:'헬스', cls:'c-gym', span:2},
-        // 'wed-0': {label:'-', cls:'c-tbl', span:2},
-        'wed-8': {label:'-', cls:'c-design', span:11},
+        'tue-19' : {label:'헬스', cls:'c-gym', span:3},
+        // 'wed-0': {label:'-', cls:'c-tbl', span:3},
+        'wed-8': {label:'호텔알바', cls:'c-design', span:8},
         // 'wed-14': {label:'-', cls:'c-design', span:4 },
-        'wed-21' : {label:'헬스', cls:'c-gym', span:2},
-        // 'thu-0': {label:'-', cls:'c-tbl', span:2},
-        'thu-8': {label:'-', cls:'c-design', span:11},
+        'wed-19' : {label:'헬스', cls:'c-gym', span:3},
+        // 'thu-0': {label:'-', cls:'c-tbl', span:3},
+        'thu-8': {label:'호텔알바', cls:'c-design', span:8},
         // 'thu-14': {label:'-', cls:'c-design', span:4},
-        'thu-21' : {label:'헬스', cls:'c-gym', span:2},
+        'thu-19' : {label:'헬스', cls:'c-gym', span:2},
         // 'fri-0': {label:'-', cls:'c-tbl', span:2},
         'fri-16': {label:'알바', cls:'c-job', span:7},
         // 'sat-0': {label:'-', cls:'c-tbl', span:2},
@@ -657,7 +657,25 @@ const timetables={
         'sun-9': {label:'축구', cls:'c-linux', span:3},
         'sun-16': {label:'알바', cls:'c-job', span:7}
     },
-    '2026-2':{},'2026-winter':{},'2027-1':{},'2027-summer':{},
+    '2026-2':{
+        'mon-14':{label:'건설사업관리',cls:'c-tbl',span:3},
+        'mon-21':{label:'헬스',cls:'c-gym',span:2},
+        'tue-10':{label:'BIM정보활용',cls:'c-bim',span:3},
+        'tue-14':{label:'GUI프로그래밍',cls:'c-design',span:3},
+        'tue-21':{label:'헬스',cls:'c-gym',span:2},
+        'wed-10':{label:'BIM설계',cls:'c-mat',span:3},
+        'wed-13':{label:'TU멘토링4_역량개발',cls:'c-mento',span:1},
+        'wed-14':{label:'구조역학',cls:'c-mech',span:3},
+        'wed-20':{label:'축구(변동)',cls:'c-gym',span:3},
+        'thu-10':{label:'C프로그래밍응용',cls:'c-c',span:3},
+        'thu-14':{label:'계측및진단',cls:'c-linux',span:3},
+        // 'thu-17':{label:'TU멘토링3_진로설계',cls:'c-mento',span:1},
+        'thu-21':{label:'헬스',cls:'c-gym',span:2},
+        'fri-16':{label:'알바',cls:'c-job',span:7},
+        'sat-16':{label:'알바',cls:'c-job',span:7},
+        'sun-16':{label:'알바',cls:'c-job',span:7}
+    },
+    '2026-winter':{},'2027-1':{},'2027-summer':{},
     '2027-2':{},'2027-winter':{},'2028-1':{},'2028-summer':{},'2028-2':{},'2028-winter':{}
 };
 const dayKeys=['mon','tue','wed','thu','fri','sat','sun'];

@@ -110,6 +110,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--tx0);min-height:10
 .forecast-day .temps .lo{color:var(--syn-blue);}
 .forecast-day .pop{color:var(--syn-blue);margin-top:1px;}
 .clock-panel{display:flex;flex-direction:column;align-items:center;}
+.clock-body{flex:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .flip-clock{display:flex;align-items:center;justify-content:center;gap:6px;padding:6px 0;flex-wrap:nowrap;}
 .flip-unit{display:flex;flex-direction:column;align-items:center;gap:5px;}
 .flip-digits{display:flex;gap:4px;}
@@ -308,34 +309,33 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-fa
         
         <div class="panel clock-panel">
             <div class="panel-title">Live Clock</div>
-            <div class="flip-clock" id="flipClock">
-                <div class="flip-unit">
-                    <div class="flip-digits">
-                        <div class="flip-card"><div class="flip-digit" id="h1">0</div></div>
-                        <div class="flip-card"><div class="flip-digit" id="h2">0</div></div>
+            <div class="clock-body">
+                <div class="flip-clock" id="flipClock">
+                    <div class="flip-unit">
+                        <div class="flip-digits">
+                            <div class="flip-card"><div class="flip-digit" id="h1">0</div></div>
+                            <div class="flip-card"><div class="flip-digit" id="h2">0</div></div>
+                        </div>
                     </div>
-                    
-                </div>
-                <div class="flip-sep">:</div>
-                <div class="flip-unit">
-                    <div class="flip-digits">
-                        <div class="flip-card"><div class="flip-digit" id="m1">0</div></div>
-                        <div class="flip-card"><div class="flip-digit" id="m2">0</div></div>
+                    <div class="flip-sep">:</div>
+                    <div class="flip-unit">
+                        <div class="flip-digits">
+                            <div class="flip-card"><div class="flip-digit" id="m1">0</div></div>
+                            <div class="flip-card"><div class="flip-digit" id="m2">0</div></div>
+                        </div>
                     </div>
-                    
-                </div>
-                <div class="flip-sep">:</div>
-                <div class="flip-unit">
-                    <div class="flip-digits">
-                        <div class="flip-card"><div class="flip-digit" id="s1">0</div></div>
-                        <div class="flip-card"><div class="flip-digit" id="s2">0</div></div>
+                    <div class="flip-sep">:</div>
+                    <div class="flip-unit">
+                        <div class="flip-digits">
+                            <div class="flip-card"><div class="flip-digit" id="s1">0</div></div>
+                            <div class="flip-card"><div class="flip-digit" id="s2">0</div></div>
+                        </div>
                     </div>
-                    
                 </div>
+                <div class="ampm-badge" id="ampmBadge">AM</div>
+                <div class="date-line" id="dateLine"></div>
             </div>
-            <div class="ampm-badge" id="ampmBadge">AM</div>
-            <div class="date-line" id="dateLine"></div>
-        </div>
+        </div> 
 
         
         <div class="panel quarter-panel">

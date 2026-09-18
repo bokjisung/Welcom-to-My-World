@@ -27,6 +27,7 @@
   --c-design:var(--bg);--c-design-t:#c8944a;--c-mech:var(--bg);--c-mech-t:#c07d5e;
   --c-linux:var(--bg);--c-linux-t:#6e8fd6;--c-job:var(--bg);--c-job-t:#c07272;
   --c-gym:var(--bg);--c-gym-t:#8a8a90;--c-mento:var(--bg);--c-mento-t:#c8ad58;
+  --c-run:var(--bg);--c-run-t:#cb8cc4;
   --r4:8px;--r8:12px;--r12:16px;--r16:22px;
   --mono:'JetBrains Mono','Fira Code',monospace;--sans:'Inter',-apple-system,sans-serif;
   --sh-d:rgba(0,0,0,0.6);--sh-d-soft:rgba(0,0,0,0.38);--sh-l:rgba(255,255,255,0.035);--sh-l-soft:rgba(255,255,255,0.02);
@@ -630,8 +631,11 @@ const timetables={
         'thu-17':{label:'TU멘토링3_진로설계',cls:'c-mento',span:1},
         'thu-21':{label:'헬스',cls:'c-gym',span:2},
         'fri-16':{label:'알바',cls:'c-job',span:7},
+        'fri-23':{label:'러닝',cls:'c-run',span:1},
         'sat-16':{label:'알바',cls:'c-job',span:7},
-        'sun-16':{label:'알바',cls:'c-job',span:7}
+        'sat-23':{label:'러닝',cls:'c-run',span:1},
+        'sun-16':{label:'알바',cls:'c-job',span:7},
+        'sun-23':{label:'러닝',cls:'c-run',span:1}
     },
     '2026-summer':{
         // 'mon-0': {label:'-', cls:'c-tbl', span:2},
@@ -669,11 +673,13 @@ const timetables={
         'wed-20':{label:'축구(변동)',cls:'c-gym',span:3},
         'thu-10':{label:'C프로그래밍응용',cls:'c-c',span:3},
         'thu-14':{label:'계측및진단',cls:'c-linux',span:3},
-        // 'thu-17':{label:'TU멘토링3_진로설계',cls:'c-mento',span:1},
         'thu-21':{label:'헬스',cls:'c-gym',span:2},
         'fri-16':{label:'알바',cls:'c-job',span:7},
+        'fri-23':{label:'러닝',cls:'c-run',span:1},
         'sat-16':{label:'알바',cls:'c-job',span:7},
-        'sun-16':{label:'알바',cls:'c-job',span:7}
+        'sat-23':{label:'러닝',cls:'c-run',span:1},
+        'sun-16':{label:'알바',cls:'c-job',span:7},
+        'sun-23':{label:'러닝',cls:'c-run',span:1}
     },
     '2026-winter':{
         'mon-8': {label:'(예정)호텔알바', cls:'c-design', span:8},
@@ -686,10 +692,13 @@ const timetables={
         'thu-19' : {label:'(예정)헬스', cls:'c-gym', span:3},
         'fri-8': {label:'(예정)호텔알바', cls:'c-design', span:8},
         'fri-16': {label:'(예정)알바', cls:'c-job', span:7},
+        'fri-23':{label:'(예정)러닝',cls:'c-run',span:1},
         'sat-8': {label:'(예정)호텔알바', cls:'c-design', span:8},
         'sat-16': {label:'(예정)알바', cls:'c-job', span:7},
+        'sat-23':{label:'(예정)러닝',cls:'c-run',span:1},
         'sun-8': {label:'(예정)호텔알바', cls:'c-design', span:8},
-        'sun-16': {label:'(예정)알바', cls:'c-job', span:7}
+        'sun-16': {label:'(예정)알바', cls:'c-job', span:7},
+        'sun-23':{label:'(예정)러닝',cls:'c-run',span:1}
     },
     '2027-1':{},'2027-summer':{},
     '2027-2':{},'2027-winter':{},'2028-1':{},'2028-summer':{},'2028-2':{},'2028-winter':{}
